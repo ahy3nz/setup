@@ -21,7 +21,7 @@ parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "pmea_frac")
 parser.add_option("--water", action="store",type="float", default = 0.0, dest = "water_frac")
 (options, args) = parser.parse_args()
-outfile = open((options.filename + 'initparam.txt','w'))
+outfile = open((options.filename + 'initparam.txt'),'w')
 outfile.write('Initial APL: {}\n'.format(options.area_per_lipid))
 outfile.write('Initial Tilt: {}\n'.format(options.rotation))
 outfile.close()
