@@ -1,0 +1,81 @@
+[ moleculetype ]
+; Name 		nrexcl
+alc14 		2
+
+
+[ atoms ]
+;      nr    type    renr  residu    atom    cgnr  charge      mass
+       1     CH3       1   alc14     CH3       1   0.000   15.0350
+       2     CH2       1   alc14     CH2       2   0.000   14.0270
+       3     CH2       1   alc14     CH2       3   0.000   14.0270
+       4     CH2       1   alc14     CH2       4   0.000   14.0270
+       5     CH2       1   alc14     CH2       5   0.000   14.0270
+       6     CH2       1   alc14     CH2       6   0.000   14.0270
+       7     CH2       1   alc14     CH2       7   0.000   14.0270
+       8     CH2       1   alc14     CH2       8   0.000   14.0270
+       9     CH2       1   alc14     CH2       9   0.000   14.0270
+      10     CH2       1   alc14     CH2      10   0.000   14.0270
+      11     CH2       1   alc14     CH2      11   0.000   14.0270
+      12     CH2       1   alc14     CH2      12   0.000   14.0270
+      13     CH2       1   alc14     CH2      13   0.000   14.0270
+      14     CH2       1   alc14     CH2      14   0.000   14.0270
+      15      OA       1   alc14      OA      14  -0.000   15.9994
+      16       H       1   alc14       H      14   0.000    1.0080
+
+[ bonds ]
+;    ai    aj funct          c0          c1          c2          c3
+     1     2     2       gb_27
+     2     3     2       gb_27
+     3     4     2       gb_27
+     4     5     2       gb_27
+     5     6     2       gb_27
+     6     7     2       gb_27
+     7     8     2       gb_27
+     8     9     2       gb_27
+     9    10     2       gb_27
+    10    11     2       gb_27
+    11    12     2       gb_27
+    12    13     2       gb_27
+    13    14     2       gb_27
+    14    15     2       gb_20
+    15    16     2        gb_1
+
+[ pairs ]
+;    ai    aj funct          c0          c1
+
+[ angles ]
+;    ai    aj    ak funct          c0          c1
+     1     2     3     2       ga_15
+     2     3     4     2       ga_15
+     3     4     5     2       ga_15
+     4     5     6     2       ga_15
+     5     6     7     2       ga_15
+     6     7     8     2       ga_15
+     7     8     9     2       ga_15
+     8     9    10     2       ga_15
+     9    10    11     2       ga_15
+    10    11    12     2       ga_15
+    11    12    13     2       ga_15
+    12    13    14     2       ga_15
+    13    14    15     2       ga_15
+    14    15    16     2       ga_12
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1          c2
+     1     2     3     4     1       gd_34
+     2     3     4     5     1       gd_34
+     3     4     5     6     1       gd_34
+     4     5     6     7     1       gd_34
+     5     6     7     8     1       gd_34
+     6     7     8     9     1       gd_34
+     7     8     9    10     1       gd_34
+     8     9    10    11     1       gd_34
+     9    10    11    12     1       gd_34
+    10    11    12    13     1       gd_34
+    11    12    13    14     1       gd_34
+    12    13    14    15     1       gd_34
+    13    14    15    16     1       gd_23
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1
+

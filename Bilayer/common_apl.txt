@@ -1,0 +1,9 @@
+Pure DSPC                   49.7, but I used 52 to work
+Pure DPPC                   50.9
+ISIS                        45.5
+HDHD                        39.5
+DSPC-ISIS                   42.5
+DSPC-HDHD                   40.0
+ISIS-HDHD                   40.1
+DPSC-ISIS-HDHD              40.1
+1:1:1 DSPC:alc22:acid22     26.5, but I used 27

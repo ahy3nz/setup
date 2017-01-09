@@ -1,0 +1,24 @@
+#define _FF_GROMOS96
+#define _FF_GROMOS53A6
+
+[ defaults ]
+; nbfunc    comb-rule   gen-pairs   fudgeLJ fudgeQQ
+1   1   yes 1.0 1.0
+
+#include "gromos53a6.ff/ffnonbonded.itp"
+#include "gromos53a6.ff/ffbonded.itp"
+#include "CHOL_b.itp"
+#include "DPPC_b.itp"
+#include "DSPC_b.itp"
+#include "ISIS_b.itp"
+#include "PMEA_b.itp"
+#include "SS_b.itp"
+#include "acd16_b.itp"
+#include "acd22_b.itp"
+#include "alc12_b.itp"
+#include "alc14_b.itp"
+#include "alc16_b.itp"
+#include "alc18_b.itp"
+#include "alc20_b.itp"
+#include "alc22_b.itp"
+#include "alc24_b.itp"

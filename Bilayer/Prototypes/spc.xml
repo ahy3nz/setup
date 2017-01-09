@@ -1,0 +1,31 @@
+<prototype>
+<configuration>
+<type>
+57
+58
+58
+</type>
+<position>
+2.3000 6.2800 1.1300
+1.3700 6.2600 1.5000
+2.3100 5.8900 0.2100
+</position>
+<bond>
+53 0 1
+53 0 2
+</bond>
+<angle>
+55 1 0 2
+</angle>
+<mass>
+15.9994
+1.008
+1.008
+</mass>
+<charge>
+-0.82
+0.41
+0.41
+</charge>
+</configuration>
+</prototype>

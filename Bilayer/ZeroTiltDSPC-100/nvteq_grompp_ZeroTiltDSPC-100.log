@@ -1,0 +1,70 @@
+                   :-) GROMACS - gmx grompp, VERSION 5.1 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov  Herman J.C. Berendsen    Par Bjelkmar   
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra   Sebastian Fritsch 
+  Gerrit Groenhof   Christoph Junghans   Anca Hamuraru    Vincent Hindriksen
+ Dimitrios Karkoulis    Peter Kasson        Jiri Kraus      Carsten Kutzner  
+    Per Larsson      Justin A. Lemkul   Magnus Lundborg   Pieter Meulenhoff 
+   Erik Marklund      Teemu Murtola       Szilard Pall       Sander Pronk   
+   Roland Schulz     Alexey Shvetsov     Michael Shirts     Alfons Sijbers  
+   Peter Tieleman    Teemu Virolainen  Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2015, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx grompp, VERSION 5.1
+Executable:   /raid6/software/gromacs_5.1.0//bin/gmx
+Data prefix:  /raid6/software/gromacs_5.1.0/
+Command line:
+  gmx grompp -f nvt.mdp -c em_ZeroTiltDSPC-100.gro -p ZeroTiltDSPC-100.top -o nvteq_ZeroTiltDSPC-100.tpr
+
+Ignoring obsolete mdp entry 'title'
+
+Back Off! I just backed up mdout.mdp to ./#mdout.mdp.4#
+
+NOTE 1 [file nvt.mdp]:
+  leapfrog does not yet support Nose-Hoover chains, nhchainlength reset to 1
+
+Setting the LD random seed to 2687998034
+Generated 165 of the 1596 non-bonded parameter combinations
+Generating 1-4 interactions: fudge = 1
+Generated 111 of the 1596 1-4 parameter combinations
+Excluding 2 bonded neighbours molecule type 'DSPC'
+Excluding 2 bonded neighbours molecule type 'SOL'
+Setting gen_seed to 2992706964
+Velocities were taken from a Maxwell distribution at 305 K
+Removing all charge groups because cutoff-scheme=Verlet
+Number of degrees of freedom in T-Coupling group non-Water is 13950.57
+Number of degrees of freedom in T-Coupling group Water is 15358.43
+Estimate for the relative computational load of the PME mesh part: 0.19
+
+There was 1 note
+
+Back Off! I just backed up nvteq_ZeroTiltDSPC-100.tpr to ./#nvteq_ZeroTiltDSPC-100.tpr.1#
+
+gcq#549: "Measuring programming progress by lines of code is like measuring aircraft building progress by weight." (Bill Gates)
+
+turning all bonds into constraints...
+turning all bonds into constraints...
+Analysing residue names:
+There are:   128      Other residues
+There are:  2560      Water residues
+Analysing residues not classified as Protein/DNA/RNA/Water and splitting into groups...
+Determining Verlet buffer for a tolerance of 0.005 kJ/mol/ps at 305 K
+Calculated rlist for 1x1 atom pair-list as 1.407 nm, buffer size 0.007 nm
+Set rlist, assuming 4x4 atom pair-list, to 1.400 nm, buffer size 0.000 nm
+Note that mdrun will redetermine rlist based on the actual pair-list setup
+Calculating fourier grid dimensions for X Y Z
+Using a fourier grid of 40x40x80, spacing 0.144 0.144 0.145
+This run will generate roughly 35 Mb of data
