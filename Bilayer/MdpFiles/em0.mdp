@@ -1,0 +1,46 @@
+; minim.mdp - used as input into grompp to generate em.tpr
+integrator  = steep     ; Algorithm (steep = steepest descent minimization)
+emtol       = 1000.0    ; Stop minimization when the maximum force < 1000.0 kJ/mol/nm
+emstep      = 0.01      ; Energy step size
+nsteps      = 50000     ; Maximum number of (minimization) steps to perform
+
+; Parameters describing how to find the neighbors of each atom and how to calculate the interactions
+nstlist         = 1         ; Frequency to update the neighbor list and long range forces
+cutoff-scheme   = Verlet
+ns_type         = grid      ; Method to determine neighbor list (simple, grid)
+coulombtype     = PME       ; Treatment of long range electrostatic interactions
+rcoulomb        = 1.2       ; Short-range electrostatic cut-off
+rvdw            = 1.2       ; Short-range Van der Waals cut-off
+pbc             = xyz       ; Periodic Boundary Conditions (yes/no)
+rvdw-switch = 1.2
+DispCorr = EnerPres
+fourierspacing = 0.12
+pme_order = 6
+ewald_rtol = 1e-06
+epsilon_surface = 0
+tcoupl = no
+pcoupl = no
+free_energy = yes
+init_lambda_state = 0
+delta_lambda = 0
+calc_lambda_neighbors = 1
+;init_lambda_states   0    1    2
+vdw_lambdas         = 1.00 0.50 0.25 
+coul_lambdas        = 0.00 0.00 0.00
+bonded_lambdas      = 0.00 0.00 0.00
+restraint_lambdas   = 0.00 0.00 0.00
+mass_lambdas        = 0.00 0.00 0.00
+temperature_lambdas = 0.00 0.00 0.00
+sc-alpha = 0.5
+sc-coul = no
+sc-power = 1
+sc-sigma = 0.3
+couple-moltype = system
+couple-lambda0 = vdw
+couple-lambda1 = none
+couple-intramol = no
+nstdhdl = 1000
+gen_vel = no
+constraints = h-bonds
+continuation = no
+lincs-order = 12
