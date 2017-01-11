@@ -21,12 +21,17 @@ parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "pmea_frac")
 parser.add_option("--water", action="store",type="float", default = 0.0, dest = "water_frac")
 (options, args) = parser.parse_args()
+
+# Write out initial parameters
 outfile = open((options.filename + 'initparam.txt'),'w')
 outfile.write('Initial APL: {}\n'.format(options.area_per_lipid))
 outfile.write('Initial Tilt: {}\n'.format(options.rotation))
 outfile.close()
+
+# Write Cori scripts
 os.system("python WriteCoriScript.py -f {}".format(options.filename))
-#Write the system in lammps
+
+# Write the system in lammps
 os.system(("python init-bilayer_tilted.py -f {} -a {} -r {} --DSPC {} --DPPC {} --acid16 {} "
             "--acid22 {} --alc12 {} --alc14 {} --alc16 {} --alc18 {} --alc20 {} --alc22 {} "
             "--alc24 {} --ISIS {} --SS {} --CHOL {} --PMEA {} --water {}").format( options.filename,
@@ -50,7 +55,7 @@ os.system(("python init-bilayer_tilted.py -f {} -a {} -r {} --DSPC {} --DPPC {} 
                                 options.water_frac))
 
 
-#Write the system in gromacs
+# Write the system in gromacs 
 os.system(("python bilayer_lmps2gmx.py -f {} -a {} -r {} --DSPC {} --DPPC {} --acid16 {} "
             "--acid22 {} --alc12 {} --alc14 {} --alc16 {} --alc18 {} --alc20 {} --alc22 {} "
             "--alc24 {} --ISIS {} --SS {} --CHOL {} --PMEA {} --water {}").format( options.filename,
@@ -73,5 +78,13 @@ os.system(("python bilayer_lmps2gmx.py -f {} -a {} -r {} --DSPC {} --DPPC {} --a
                              options.pmea_frac,
                              options.water_frac))
 
+
+# Run equilibration steps
+os.system("bash mdprep.sh {}".format(options.filename))
+sys.stdout.flush()
+
+# Sort files into folders
+os.system('mkdir -p {}'.format(options.filename))
+os.system('mv *{}* {}'.format(options.filename, options.filename))
 
 
