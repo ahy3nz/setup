@@ -5,7 +5,9 @@ bilayer_lmps2gmx.py
 Constructs bilayer systmes in gmx while using option parser parameters. Much of the same construction as the lammps construction
 
 bilayersetup.py
-Calls init-bilayer_tilted and bilayer_lmps2gmx.py using option parser parameters.
+Calls init-bilayer_tilted and bilayer_lmps2gmx.py using option parser parameters, writes out initial structure
+parameters, writes slurm submission script to cori, casll mdprep.sh (see below) to prepare for simulated
+tempering or classical MD
 
 Option parser parameters
 -f : specify a filename for lammps file, gmx gro file, and gmx top file 
@@ -40,3 +42,7 @@ UpdateGroWithLmps.py
 This is a supplemental file to replace the coordinates of a gro file with the coordinates of a lammps file. The topology file is untouched.
 The only requirement is that the atoms and types of the gro file match the atoms and types of the lammps file so the gro file can easily
 have respective coordinates replaced. Arguments are --gro and --lmps for the respective gro and lammps files
+
+UpdateTopolCharge.py
+the mdprep framework uses a slowgrowth method for energy minimization on the vdw forces, this file changes the
+topology files to include charges for equilibration post-EM
