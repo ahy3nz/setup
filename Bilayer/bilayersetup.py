@@ -4,6 +4,8 @@ parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "somebilayer", dest = "filename")
 parser.add_option("-a", "--APL", action="store",type="float", default = 0.0, dest = "area_per_lipid")
 parser.add_option("-r", "--rot", action="store", type ="float", default = 12.0, dest = "rotation")
+parser.add_option("--max", action="store", type="float",  dest = maxtemp)
+parser.add_option("--min", action="store", type="float",  dest = mintemp)
 parser.add_option("--DSPC", action="store",type="float", default = 0.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
 parser.add_option("--acd16", action="store",type="float", default = 0.0, dest = "acid16_frac")
@@ -78,10 +80,11 @@ os.system(("python bilayer_lmps2gmx.py -f {} -a {} -r {} --DSPC {} --DPPC {} --a
                              options.pmea_frac,
                              options.water_frac))
 
+# Write Simulated Tempering mdp file
+os.system("python writeSTmdp.py -f {} --min {} --max {}".format(options.filename, options.mintemp, options.maxtemp))
 
 # Run equilibration steps
-os.system("bash mdprep.sh {}".format(options.filename))
-sys.stdout.flush()
+os.system("bash mdpreppbs.sh {}".format(options.filename))
 
 # Sort files into folders
 os.system('mkdir -p {}'.format(options.filename))
