@@ -1,11 +1,10 @@
 import os
+import sys
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "somebilayer", dest = "filename")
 parser.add_option("-a", "--APL", action="store",type="float", default = 0.0, dest = "area_per_lipid")
 parser.add_option("-r", "--rot", action="store", type ="float", default = 12.0, dest = "rotation")
-parser.add_option("--max", action="store", type="float",  dest = "maxtemp")
-parser.add_option("--min", action="store", type="float",  dest = "mintemp")
 parser.add_option("--DSPC", action="store",type="float", default = 0.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
 parser.add_option("--acd16", action="store",type="float", default = 0.0, dest = "acid16_frac")
@@ -30,8 +29,11 @@ outfile.write('Initial APL: {}\n'.format(options.area_per_lipid))
 outfile.write('Initial Tilt: {}\n'.format(options.rotation))
 outfile.close()
 
+
+
 # Write Cori scripts
-os.system("python WriteCoriScript.py -f {}".format(options.filename))
+os.system("python WriteCoriScript.py -f {} --ST".format(options.filename))
+os.system("python WriteCoriScript.py -f {} --MD".format(options.filename))
 
 # Write the system in lammps
 os.system(("python init-bilayer_tilted.py -f {} -a {} -r {} --DSPC {} --DPPC {} --acid16 {} "
@@ -80,8 +82,6 @@ os.system(("python bilayer_lmps2gmx.py -f {} -a {} -r {} --DSPC {} --DPPC {} --a
                              options.pmea_frac,
                              options.water_frac))
 
-# Write Simulated Tempering mdp file
-os.system("python writeSTmdp.py -f {} --min {} --max {}".format(options.filename, options.mintemp, options.maxtemp))
 
 # Run equilibration steps
 os.system("bash mdprep.sh {}".format(options.filename))
