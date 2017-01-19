@@ -32,8 +32,8 @@ outfile.close()
 
 
 # Write Cori scripts
-os.system("python WriteCoriScript.py -f {} --ST".format(options.filename))
-os.system("python WriteCoriScript.py -f {} --MD".format(options.filename))
+os.system("python writeCoriScript.py -f {} --ST".format(options.filename))
+os.system("python writeCoriScript.py -f {} --MD".format(options.filename))
 
 # Write the system in lammps
 os.system(("python init-bilayer_tilted.py -f {} -a {} -r {} --DSPC {} --DPPC {} --acid16 {} "
