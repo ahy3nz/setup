@@ -12,7 +12,7 @@ echo `cat $PBS_NODEFILE`
 
 cd /raid6/homes/ahy3nz/Programs/setup/Bilayer/
 module load gromacs/5.1.0
-python bilayersetuppbs.py -f DSPC-34_alc22-33_acd22-33_1-18 -a 25 -r 14 --DSPC 0.34 --alc22 0.33 --acd22 0.33
+#python bilayersetuppbs.py -f DSPC-34_alc22-33_acd22-33_1-18 -a 25 -r 14 --DSPC 0.34 --alc22 0.33 --acd22 0.33
 #gmx mdrun -ntomp 8 -gpu_id 0 -deffnm ~/Trajectories/JOBNAME/md_JOBNAME
 #gmx mdrun -ntomp 8 -gpu_id 1 -deffnm ~/Trajectories/
 
