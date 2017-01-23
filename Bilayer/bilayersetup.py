@@ -1,5 +1,6 @@
 import os
 import sys
+from scriptWriter import *
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "somebilayer", dest = "filename")
@@ -32,8 +33,13 @@ outfile.close()
 
 
 # Write Cori scripts
-os.system("python writeCoriScript.py -f {} --ST".format(options.filename))
-os.system("python writeCoriScript.py -f {} --MD".format(options.filename))
+scriptWriter = scriptWriter("{}".format(options.filename)) 
+scriptWriter.write_Cori_script(STrun = True)
+scriptWriter.write_Cori_script(MDrun = True)
+scriptWriter.write_Rahman_script(STrun = True)
+scriptWriter.write_Rahman_script(MDrun = True)
+#os.system("python writeCoriScript.py -f {} --ST".format(options.filename))
+#os.system("python writeCoriScript.py -f {} --MD".format(options.filename))
 
 # Write the system in lammps
 os.system(("python init-bilayer_tilted.py -f {} -a {} -r {} --DSPC {} --DPPC {} --acid16 {} "
