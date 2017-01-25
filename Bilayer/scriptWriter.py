@@ -138,9 +138,9 @@ class scriptWriter():
         init_file.close()
 
         if STrun:
-            cont_file = open((filename + 'STcont.sbatch'),'w')
+            cont_file = open((filename + 'STcont.pbs'),'w')
         elif MDrun:
-            cont_file = open((filename + 'MDcont.sbatch'),'w')
+            cont_file = open((filename + 'MDcont.pbs'),'w')
         else:
             sys.exit("Specify ST or MD")
         cont_file.write("#!/bin/sh -l \n")
