@@ -117,9 +117,9 @@ class scriptWriter():
         init_file.write("#PBS -N {}\n".format(filename))
         init_file.write("#PBS -l nodes=1:ppn=16\n")
         if STrun:
-            init_file.write("#PBS -l walltime=10:00:00\n")
+            init_file.write("#PBS -l walltime=14:00:00\n")
         elif MDrun:
-            init_file.write("#PBS -l walltime=20:00:00\n")
+            init_file.write("#PBS -l walltime=24:00:00\n")
         else: 
             pass
         init_file.write("#PBS -q low\n")
