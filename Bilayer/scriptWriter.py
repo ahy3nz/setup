@@ -25,7 +25,7 @@ class scriptWriter():
         else:
             sys.exit("Specify ST or MD")
         init_file.write('#!/bin/bash -l\n')
-        init_file.write('#SBATCH -p low\n')
+        init_file.write('#SBATCH -p regular\n')
         init_file.write('#SBATCH -N 8\n')
         if STrun:
             init_file.write('#SBATCH -t 07:00:00\n')
@@ -56,7 +56,7 @@ class scriptWriter():
         else:
             sys.exit("Specify ST or MD")
         cont_file.write('#!/bin/bash -l\n')
-        cont_file.write('#SBATCH -p low\n')
+        cont_file.write('#SBATCH -p regular\n')
         cont_file.write('#SBATCH -N 8\n')
         if STrun:
             cont_file.write('#SBATCH -t 07:00:00\n')
