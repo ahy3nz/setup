@@ -1,0 +1,8 @@
+#include /raid6/homes/ahy3nz/Programs/setup/FF/CG/martini_ff.itp 
+
+[ system ]
+Coarse-grained bilayer system
+
+[ molecules ] 
+DSPC      64        
+C12OH     64        
