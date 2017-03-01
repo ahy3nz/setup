@@ -126,7 +126,7 @@ def enumerate_system_components(lipid_system_info = None):
     return top_lipids, bot_lipids
 
 
-def write_top_file(filename = 'default', lipid_system_info = None):
+def write_top_file(filename = 'default', lipid_system_info = None, n_solvent = 0):
     """ Generate topology file
 
     Parameters
@@ -145,7 +145,7 @@ def write_top_file(filename = 'default', lipid_system_info = None):
     top_file = open(filename + '.top', 'w')
 
     # Include statment, edit for path to maritini FF
-    top_file.write("#include /raid6/homes/ahy3nz/Programs/setup/FF/CG/martini_ff.itp \n")
+    top_file.write("#include \"/Users/ahy3nz/Programs/setup/FF/CG/martini_ff.itp\" \n")
     top_file.write("\n[ system ]\n")
     top_file.write("Coarse-grained bilayer system\n")
     top_file.write("\n[ molecules ] \n") 
@@ -156,6 +156,9 @@ def write_top_file(filename = 'default', lipid_system_info = None):
         molecule_name = lipid_type[0].name
         if n_molecule != 0:
             top_file.write("{:<10s}{:<10d}\n".format(molecule_name, n_molecule))
+
+    # Write out waters
+    top_file.write("{:<10s}{:<10d}\n".format(water().name, n_solvent))
 
 def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.8, 
         res_index = 0, table_of_contents = None):
@@ -319,5 +322,5 @@ table_of_contents.close()
 
 # Write topology file
 print("Writing <{0}.top> ...".format(filename))
-write_top_file(filename = filename, lipid_system_info = lipid_system_info)
+write_top_file(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
 
