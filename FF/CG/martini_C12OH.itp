@@ -1,0 +1,22 @@
+;;;;;; Martini lipid topology for C12 alcohol
+ 
+
+[ moleculetype ]
+; molname      nrexcl
+  C12OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1 Nda 1 C12OH OH 1 0 
+2 C1 1 C12OH C1  2 0 
+3 C1 1 C12OH C2  3 0 
+
+[ bonds ]
+; i j funct length force.c.
+1  2 1 0.47 1250
+2  3 1 0.47 1250
+
+[ angles ]
+; i j k funct angle force.c.
+1  2  3 2 180.0 25.0 
+
