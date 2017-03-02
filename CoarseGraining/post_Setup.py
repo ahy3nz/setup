@@ -103,7 +103,9 @@ def gather_footer(table_of_contents= None, new_gro_file = None):
         Output gro file
 
     """
-    new_gro_file.write(' '.join(table_of_contents[-1])+"\n")
+    #new_gro_file.write(' '.join(table_of_contents[-1])+"\n")
+    new_gro_file.write('{:>10.5f}{:>10.5f}{:>10.5f}\n'.format(float(table_of_contents[-1][0]), float(table_of_contents[-1][1]), 
+        float(table_of_contents[-1][2])))
 
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
