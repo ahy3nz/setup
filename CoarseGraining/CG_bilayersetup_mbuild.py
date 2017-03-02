@@ -29,9 +29,8 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
         for n in range(n_molecule_per_leaflet):
             random_index = np.random.randint(0, len(ordered_pairs))
             (i,j) = ordered_pairs.pop(random_index)
-            #lipid_molecule = lipid_type[0]
-            #lipid_offset = lipid_type[2]
-            # do geometry transformations
+
+            # Do geometry transformations
             molecule_to_add = mb.clone(lipid_type[0])
             # Apply tilt angle
             mb.spin_y(molecule_to_add, tilt_angle)
@@ -275,11 +274,15 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     highest_toplipid = max(system.xyz[:,2])
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 1
     mb.translate(top_water, [0, 0, shift_topwater])
-    pdb.set_trace()
     system.add(bot_water)
     system.add(top_water)
 
-    return system
+    waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0]), max(top_water.xyz[:,1]), max(top_water.xyz[:,2])])
+
+    return system, waterbox
+
+def write_top_file_box(top_file = None, box = None):
+    table_of_contents.write("{:<8.3f}{:<8.3f}{:<8.3f}\n".format(box.maxs[0], box.maxs[1], box.maxs[2]))
 
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
@@ -350,7 +353,7 @@ table_of_contents = open(filename+'.dat', 'w')
 res_index = 1
 
 # Write topology file
-print("Writing <{0}.top> ...".format(filename))
+print("Writing <{0}> ...".format(filename))
 top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
 
 # Generate bottom layer randomly
@@ -369,20 +372,24 @@ system = mb.Compound()
 system.add(bot_layer)
 system.add(top_layer)
 
-# Solvate system
-system = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+# Solvate system, get new box
+system, box = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
         res_index = res_index, table_of_contents = table_of_contents)
 top_file = write_top_file_footer(top_file = top_file, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
 
 # Shift everything to positive z
 min_z_shift = min(system.xyz[:,2])
 mb.translate(system, [0, 0, -1 * min_z_shift])
+box.maxs[2] += -1*min_z_shift
+
+# Write to table of contents
+top_file = write_top_file_box(top_file = top_file, box = box)
+
 
 # Write gro file suppressing mbuild warnings
-print("Writing <{0}.gro> ...".format(filename))
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    system.save(filename + '.gro',overwrite=True)
+    system.save(filename + '.gro', box =box,overwrite=True)
 table_of_contents.close()
 
 
