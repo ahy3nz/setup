@@ -79,7 +79,8 @@ def gather_body(old_gro_lines = None, table_of_contents = None, new_gro_file = N
 
     """
     # Iterate through the table of contents, which then tells the inner loop how many times to iterate
-    for i, entry in enumerate(table_of_contents):
+    for i in range(len(table_of_contents)-1):
+        entry = table_of_contents[i]
         res_index = entry[0]
         res_name = entry[1]
         res_atoms = int(entry[2])
@@ -91,18 +92,20 @@ def gather_body(old_gro_lines = None, table_of_contents = None, new_gro_file = N
                 new_line[2], new_line[3], new_line[4], new_line[5], new_line[6]))
     return old_gro_lines
 
-def gather_footer(old_gro_lines = None, new_gro_file = None):
+def gather_footer(table_of_contents= None, new_gro_file = None):
     """ Print footer information (box size)
 
     Parameters
     ----------
-    old_gro_lines : list
-        List whose entries are split lines of gro file
+    table_of_contents : file
+        Input file listing residue index, residue name, n_particles for tha residue
     new_gro_file : file
         Output gro file
 
     """
-    new_gro_file.write(' '.join(old_gro_lines[-1])+"\n")
+    #new_gro_file.write(' '.join(table_of_contents[-1])+"\n")
+    new_gro_file.write('{:>10.5f}{:>10.5f}{:>10.5f}\n'.format(float(table_of_contents[-1][0]), float(table_of_contents[-1][1]), 
+        float(table_of_contents[-1][2])))
 
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
@@ -128,5 +131,5 @@ old_gro_lines = gather_body(old_gro_lines = old_gro_lines,
         table_of_contents = table_of_contents, new_gro_file = new_gro_file)
 
 # Footer information
-gather_footer(old_gro_lines = old_gro_lines, new_gro_file = new_gro_file)
+gather_footer(table_of_contents = table_of_contents, new_gro_file = new_gro_file)
 
