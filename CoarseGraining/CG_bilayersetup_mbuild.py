@@ -10,6 +10,36 @@ from Prototypes_CG import *
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, layer_shift = 0, res_index = 0, table_of_contents = None,
         random_z_displacement = 0, top_file = None):
+    """ Generate a bilayer leaflet by laying down molecules in a 2D grid at random grid points
+
+    Parameters
+    ---------
+    n_x : int
+        2D grid dimension
+    n_y : int
+        2D grid dimension
+    tilt_angle : float
+        tilt angle (spun around y-axis)
+    spacing : float
+        spacing between leaflets, based on area per lipid
+    layer_shift : float
+        Leaflet weparation from z-axis (used to separate bilayer leaflets)
+    res_index : int
+        Starting residue index for leaflet construction and residue counting
+    table_of_contents : file
+        Output file listing residue index, residue name, n_particles for tha residue
+    random_z_displacement : float
+        Randomly offset molecules by a small amount
+    
+    Returns
+    -------
+    layer : mb.Compound()
+        Leaflet of molecules
+    resindex : int
+        Running count of molecules placed (excluding waters)
+  
+    """
+
 
     layer = mb.Compound()
 
@@ -215,9 +245,24 @@ def write_top_file_header(filename = 'default', lipid_system_info = None, n_solv
     #top_file.write("{:<10s}{:<10d}\n".format(water().name, n_solvent))
 
 
-def write_top_file_footer(top_file = None, lipid_system_info = None, n_solvent = 0):
+def write_top_file_footer(top_file = None, n_solvent = 0):
+    """ Generate topology file
+
+    Parameters
+    ----------
+    top_file : File
+        Topology file
+    n_solvent : int
+        Number of solvent beads in whole system
+
+    Returns
+    -------
+    Updated topology file
+
+    """
+
     # Just write out the number of solvents we have
-    top_file.write("{:<10s}{:<10d}\n".format(water().name, n_solvent))
+    top_file.write("{:<10s}{:<10d}\n".format(w().name, n_solvent))
     return top_file
 
 def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.8, 
@@ -243,15 +288,18 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     solvated_system : mb.Compound()
         System with water solvating the outside of the bilayer
 
+    water_box : mb.Box()
+        Box object that accounts fot water molecules
+
     """
     # Construct two 3D grids of water
     # Add to table of contents file for post processing
     # Compute distances to translate such that water is either below or above bilayer
     cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
     cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
-    bot_water_list = cube.apply(water())
+    bot_water_list = cube.apply(w())
     for i in range(n_x * n_y * n_solvent_per_lipid):
-        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, water().name, water().n_particles))
+        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, w().name, w().n_particles))
         res_index += 1 
     bot_water = mb.Compound()
     for compound in bot_water_list:
@@ -263,9 +311,9 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
 
     cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
     cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
-    top_water_list = cube.apply(water())
+    top_water_list = cube.apply(w())
     for i in range(n_x * n_y * n_solvent_per_lipid):
-        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, water().name, water().n_particles))
+        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, w().name, w().n_particles))
         res_index += 1
     top_water = mb.Compound()
     for compound in top_water_list:
@@ -281,7 +329,19 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
 
     return system, waterbox
 
-def write_top_file_box(top_file = None, box = None):
+def write_toc_file_box(table_of_contents = None, box = None):
+    """ Generate topology file
+
+    Parameters
+    ----------
+    table_of_contents : file
+        Output file listing residue index, residue name, n_particles for tha residue
+
+    box : mb.Box()
+        System box
+
+
+    """
     table_of_contents.write("{:<8.3f}{:<8.3f}{:<8.3f}\n".format(box.maxs[0], box.maxs[1], box.maxs[2]))
 
 parser = OptionParser()
@@ -375,7 +435,7 @@ system.add(top_layer)
 # Solvate system, get new box
 system, box = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
         res_index = res_index, table_of_contents = table_of_contents)
-top_file = write_top_file_footer(top_file = top_file, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
+top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z
 min_z_shift = min(system.xyz[:,2])
@@ -383,7 +443,7 @@ mb.translate(system, [0, 0, -1 * min_z_shift])
 box.maxs[2] += -1*min_z_shift
 
 # Write to table of contents
-top_file = write_top_file_box(top_file = top_file, box = box)
+write_toc_file_box(table_of_contents = table_of_contents, box = box)
 
 
 # Write gro file suppressing mbuild warnings

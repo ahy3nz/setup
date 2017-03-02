@@ -97,8 +97,8 @@ def gather_footer(table_of_contents= None, new_gro_file = None):
 
     Parameters
     ----------
-    old_gro_lines : list
-        List whose entries are split lines of gro file
+    table_of_contents : file
+        Input file listing residue index, residue name, n_particles for tha residue
     new_gro_file : file
         Output gro file
 
