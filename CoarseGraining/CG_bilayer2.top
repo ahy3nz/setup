@@ -1,0 +1,11 @@
+#include "/Users/ahy3nz/Programs/setup/FF/CG/martini_ff.itp" 
+
+[ system ]
+Coarse-grained bilayer system
+
+[ molecules ] 
+DSPC      32        
+C12OH     32        
+DSPC      32        
+C12OH     32        
+w         640       

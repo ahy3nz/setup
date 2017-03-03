@@ -79,7 +79,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             z_offset = lipid_type[2]
 
             # Apply APL and z_offset to identify the position for the molecule in the grid
-            position = [i * spacing, j * spacing, z_offset + 
+            position = [i * spacing, j * spacing, z_offset + layer_shift +
                     (-1 * np.random.random() * random_z_displacement)]
             mb.translate(molecule_to_add, position)
 
@@ -299,7 +299,7 @@ def write_ndx_file(filename = None, lipid_atom_dict = None):
 
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
-parser.add_option("-a", "--APL", action="store",type="float", default = 0.36, dest = "area_per_lipid")
+parser.add_option("-a", "--APL", action="store",type="float", default = 0.50, dest = "area_per_lipid")
 parser.add_option("-r", "--rot", action="store", type ="float", default = 0.0, dest = "rotation")
 parser.add_option("--DSPC", action="store",type="float", default = 0.5, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
@@ -351,8 +351,8 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
                       (CHOL(), np.floor(n_lipid * options.CHOL_frac), 4.0)] 
                       """
 
-lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
-                     (C12OH(), np.floor(n_lipid * options.C12OH_frac), 2.6)]
+lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
+                     (C12OH(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
                      #(water(), np.floor(n_lipid * n_solvent_per_lipid), 6.0)]
                 
 lipid_atom_dict = OrderedDict()
@@ -378,7 +378,7 @@ top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = 8, n_y
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
 # Rotate bottom layer to form bilayer
-mb.spin_y(bot_layer, theta=np.pi)
+mb.spin_y(top_layer, theta=np.pi)
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
