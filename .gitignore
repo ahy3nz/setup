@@ -1,0 +1,14 @@
+*.xtc
+*.log
+*.edr
+*.tpr
+*.top
+*.gro
+*.pbs
+*.dat
+*.pdb
+*.txt
+*.o*
+*.e*
+*.xvg
+*.ndx
