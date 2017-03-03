@@ -65,6 +65,9 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
     # Loop through each type of molecule (DSPC, DPPC, etc.)
     for i, lipid_type in enumerate(lipid_system_info):
         n_molecule_per_leaflet = int(lipid_type[1]/2)
+        #Add to top file
+        if(n_molecule_per_leaflet !=0):
+            top_file.write("{:<10s}{:<10d}\n".format(lipid_type[0].name, n_molecule_per_leaflet))
         # Loop through the system's quantity of that particular molecule
         for n in range(n_molecule_per_leaflet):
             random_index = np.random.randint(0, len(ordered_pairs))
@@ -80,12 +83,12 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
             # Apply APL and z_offset to identify the position for the molecule in the grid
             position = [i * spacing, j * spacing, z_offset + layer_shift +
-                    (-1 * np.random.random() * random_z_displacement)]
+                        (-1 * np.random.random() * random_z_displacement)]
             mb.translate(molecule_to_add, position)
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
-            
+                
             # Add to table of contents
             table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, molecule_to_add.name, molecule_to_add.n_particles))
 
@@ -98,8 +101,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Increment counters
             res_index += 1
             atom_index += molecule_to_add.n_particles
-        #Add to top file
-        top_file.write("{:<10s}{:<10d}\n".format(molecule_to_add.name, n_molecule_per_leaflet))
+        
 
 
     return layer, res_index, lipid_atom_dict, atom_index
@@ -164,7 +166,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
 
 def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.8, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
-    """ Solvate the top and bottom parts of the bilayer
+    """ Solvate the top and bottom parts of the bilayer, return water box
 
     Parameters
     ---------
@@ -235,7 +237,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     system.add(bot_water)
     system.add(top_water)
 
-    waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0]), max(top_water.xyz[:,1]), max(top_water.xyz[:,2])])
+    waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0])+0.2, max(top_water.xyz[:,1])+0.2, max(top_water.xyz[:,2])+0.2])
 
     
     # Add waters to lipid_atom_dict
@@ -260,7 +262,13 @@ def write_toc_file_box(table_of_contents = None, box = None):
 
 def write_ndx_file(filename = None, lipid_atom_dict = None):
     """ Write gromacs index file
-    Need atom indices
+
+    Parameters
+    ---------
+    filename : str
+        filename to write .ndx file to
+    lipid_atom_dict : OrderedDict()
+        Dictionary whose values are mb.Compounds()s and values are a list of atom indices of that compound
     """
     ndx_file = open(filename+'.ndx','w')
     nonwater_string = ""
@@ -301,11 +309,11 @@ parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
 parser.add_option("-a", "--APL", action="store",type="float", default = 0.50, dest = "area_per_lipid")
 parser.add_option("-r", "--rot", action="store", type ="float", default = 0.0, dest = "rotation")
-parser.add_option("--DSPC", action="store",type="float", default = 0.5, dest = "DSPC_frac")
+parser.add_option("--DSPC", action="store",type="float", default = 1.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
 parser.add_option("--C16FFA", action="store",type="float", default = 0.0, dest = "C16FFA_frac")
 parser.add_option("--C22FFA", action="store",type="float", default = 0.0, dest = "C22FFA_frac")
-parser.add_option("--C12OH", action="store",type="float", default = 0.5,  dest = "C12OH_frac")
+parser.add_option("--C12OH", action="store",type="float", default = 0.0,  dest = "C12OH_frac")
 parser.add_option("--C14OH", action="store",type="float", default = 0.0, dest = "C14OH_frac")
 parser.add_option("--C16OH", action="store",type="float", default = 0.0, dest = "C16OH_frac")
 parser.add_option("--C18OH", action="store",type="float", default = 0.0, dest = "C18OH_frac")
@@ -353,8 +361,10 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
 
 lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
                      (C12OH(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
-                     #(water(), np.floor(n_lipid * n_solvent_per_lipid), 6.0)]
-                
+
+if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid):
+    sys.exit("System setup error: number of components does not match layer size")
+
 lipid_atom_dict = OrderedDict()
 # Table of contents to externally store residue indices and names for post setup
 table_of_contents = open(filename+'.dat', 'w')
@@ -390,9 +400,9 @@ system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
-# Shift everything to positive z
+# Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0, 0, -1 * min_z_shift])
+mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
 box.maxs[2] += -1*min_z_shift
 
 # Write to table of contents
