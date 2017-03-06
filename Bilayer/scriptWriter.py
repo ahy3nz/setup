@@ -8,7 +8,7 @@ import sys
 scriptWriter class 
 stores information about the filename
 has methods to write submission scipts (initial, continue, and repeat files) 
-for Cori and Rahman clusters
+for Cori, Titan, and Rahman clusters
 """
 
 class scriptWriter():
@@ -108,9 +108,9 @@ class scriptWriter():
     def write_Rahman_script(self, STrun = False, MDrun = False):
         filename = self._filename
         if STrun:
-            init_file = open((filename + 'STpbs.pbs'),'w')
+            init_file = open((filename + 'STRahmanpbs.pbs'),'w')
         elif MDrun:
-            init_file = open((filename + 'MDpbs.pbs'),'w')
+            init_file = open((filename + 'MDRahmanpbs.pbs'),'w')
         else:
             sys.exit("Specify ST or MD")
         init_file.write("#!/bin/sh -l\n")
@@ -138,9 +138,9 @@ class scriptWriter():
         init_file.close()
 
         if STrun:
-            cont_file = open((filename + 'STcont.pbs'),'w')
+            cont_file = open((filename + 'STRahmancont.pbs'),'w')
         elif MDrun:
-            cont_file = open((filename + 'MDcont.pbs'),'w')
+            cont_file = open((filename + 'MDRahmancont.pbs'),'w')
         else:
             sys.exit("Specify ST or MD")
         cont_file.write("#!/bin/sh -l \n")
@@ -153,6 +153,69 @@ class scriptWriter():
         cont_file.write("module load gromacs/5.1.0\n")
         cont_file.write("cd ~/Trajectories/{}\n".format(filename))
         cont_file.write("gmx mdrun -ntomp 8 -gpu_id 0 -append \ \n")
+        if STrun:
+            cont_file.write("-s ST_{}.tpr \ \n".format(filename))
+            cont_file.write("-cpi ST_{}.cpt \ \n".format(filename))
+            cont_file.write("-deffnm ST_{}\n".format(filename))
+        elif MDrun:
+            cont_file.write("-s md_{}.tpr \ \n".format(filename))
+            cont_file.write("-cpi md_{}.cpt \ \n".format(filename))
+            cont_file.write("-deffnm md_{}\n".format(filename))
+        else:
+            pass
+        cont_file.close()
+
+    def write_Titan_script(self, STrun = False, MDrun = False):
+        filename = self._filename
+        if STrun:
+            init_file = open((filename + 'STTitanpbs.pbs'),'w')
+        elif MDrun:
+            init_file = open((filename + 'MDTitanpbs.pbs'),'w')
+        else:
+            sys.exit("Specify ST or MD")
+        init_file.write("#!/bin/sh -l\n")
+        init_file.write("#PBS -N {}\n".format(filename))
+        init_file.write("#PBS -l nodes=8\n")
+        if STrun:
+            init_file.write("#PBS -l walltime=02:00:00\n")
+        elif MDrun:
+            init_file.write("#PBS -l walltime=02:00:00\n")
+        else: 
+            pass
+        init_file.write("#PBS -j oe\n")
+        init_file.write("#PBS -A MAT149\n")
+        init_file.write("#PBS -m abe\n")
+        init_file.write("#PBS -M alexander.h.yang@vanderbilt.edu\n")
+        init_file.write("cd $PBS_O_WORKDIR\n")
+        init_file.write("echo `cat $PBS_NODEFILE`\n")
+        init_file.write("module load gromacs/5.1.0\n")
+        init_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
+        if STrun:
+            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm ST_{} >& out.log\n".format(filename))
+        elif MDrun:
+            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm md_{} >& out.log\n".format(filename))
+        else:
+            pass
+        init_file.close()
+
+        if STrun:
+            cont_file = open((filename + 'STTitancont.pbs'),'w')
+        elif MDrun:
+            cont_file = open((filename + 'MDTitancont.pbs'),'w')
+        else:
+            sys.exit("Specify ST or MD")
+        cont_file.write("#!/bin/sh -l \n")
+        cont_file.write("#PBS -N {}\n".format(filename))
+        cont_file.write("#PBS -l nodes=8\n")
+        cont_file.write("#PBS -l walltime=02:00:00\n")
+        cont_file.write("#PBS -j oe\n")
+        cont_file.write("#PBS -A MAT149\n")
+        cont_file.write("#PBS -M alexander.h.yang@vanderbilt.edu\n")
+        cont_file.write("cd $PBS_O_WORKDIR\n")
+        cont_file.write("echo `cat $PBS_NODEFILE`\n")
+        cont_file.write("module load gromacs/5.1.0\n")
+        cont_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
+        cont_file.write("aprun -N 16 -n 8 gmx_mpi -gpuid 00000000 mdrun -append \ \n")
         if STrun:
             cont_file.write("-s ST_{}.tpr \ \n".format(filename))
             cont_file.write("-cpi ST_{}.cpt \ \n".format(filename))
