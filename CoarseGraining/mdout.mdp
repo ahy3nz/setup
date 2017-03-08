@@ -2,7 +2,7 @@
 ;	File 'mdout.mdp' was generated
 ;	By user: ahy3nz (523)
 ;	On host: filey.vuse.vanderbilt.edu
-;	At date: Thu Mar  2 17:47:51 2017
+;	At date: Tue Mar  7 10:42:06 2017
 
 ;
 
@@ -90,7 +90,7 @@ nstcalclr                = -1
 
 ; OPTIONS FOR ELECTROSTATICS AND VDW
 ; Method for doing electrostatics
-coulombtype              = PME
+coulombtype              = cutoff
 coulomb-modifier         = Potential-shift-Verlet
 rcoulomb-switch          = 0
 rcoulomb                 = 1.1
@@ -150,15 +150,15 @@ sa-surface-tension       = -1
 
 ; OPTIONS FOR WEAK COUPLING ALGORITHMS
 ; Temperature coupling  
-tcoupl                   = No
+tcoupl                   = v-rescale
 nsttcouple               = -1
 nh-chain-length          = 10
 print-nose-hoover-chain-variables = no
 ; Groups to couple separately
-tc-grps                  = 
+tc-grps                  = Lipids Water
 ; Time constant (ps) and reference temperature (K)
-tau-t                    = 
-ref-t                    = 
+tau_t                    = 1.0  1.0
+ref_t                    = 320 320
 ; pressure coupling     
 Pcoupl                   = no
 pcoupltype               = Isotropic

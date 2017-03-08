@@ -1,34 +1,17 @@
-;
-; STANDARD MD INPUT OPTIONS FOR MARTINI 2.x
-; Updated 15 Jul 2015 by DdJ
-;
-; for use with GROMACS 5
-; For a thorough comparison of different mdp options in combination with the Martini force field, see:
-; D.H. de Jong et al., Martini straight: boosting performance using a shorter cutoff and GPUs, submitted.
-
-title                    = Martini
-
+; EM parameters for Martini CG molecules
 ; TIMESTEP IN MARTINI 
 ; Most simulations are numerically stable with dt=40 fs, 
 ; however better energy conservation is achieved using a 
 ; 20-30 fs timestep. 
 ; Time steps smaller than 20 fs are not required unless specifically stated in the itp file.
 
-integrator               = md
-dt                       = 0.03  
-nsteps                   = 50000
-nstcomm                  = 100
-;comm-grps = 
-
-nstxout                  = 0
-nstvout                  = 0
-nstfout                  = 0
-nstlog                   = 1000
-nstenergy                = 100
-nstxout-compressed       = 1000
-compressed-x-precision   = 100
-compressed-x-grps        = 
-energygrps               = Lipids Water 
+integrator = steep
+dt = 0.02
+nsteps = 50000
+nstxout = 0
+nstvout = 0
+nstlog = 100
+nstxtcout = 100
 
 ; NEIGHBOURLIST and MARTINI 
 ; To achieve faster simulations in combination with the Verlet-neighborlist
@@ -53,60 +36,14 @@ energygrps               = Lipids Water
 ; apolar solvent. The polarizable water itself will perform the explicit screening
 ; in aqueous environment. In this case, the use of PME is more realistic.
 
-
-cutoff-scheme            = Verlet
-nstlist                  = 20
-ns_type                  = grid
-pbc                      = xyz
-verlet-buffer-tolerance  = 0.005
-
-coulombtype              = PME ;cutoff
-;coulomb-modifier         = Potential-shift-verlet
-rcoulomb                 = 1.1
-epsilon_r                = 15; 2.5 (with polarizable water)
-vdw_type                 = cutoff  
-vdw-modifier             = Potential-shift-verlet
-rvdw                     = 1.1
-
-; MARTINI and TEMPERATURE/PRESSURE
-; normal temperature and pressure coupling schemes can be used. 
-; It is recommended to couple individual groups in your system separately.
-; Good temperature control can be achieved with the velocity rescale (V-rescale)
-; thermostat using a coupling constant of the order of 1 ps. Even better 
-; temperature control can be achieved by reducing the temperature coupling 
-; constant to 0.1 ps, although with such tight coupling (approaching 
-; the time step) one can no longer speak of a weak-coupling scheme.
-; We therefore recommend a coupling time constant of at least 0.5 ps.
-; The Berendsen thermostat is less suited since it does not give
-; a well described thermodynamic ensemble.
-; 
-; Pressure can be controlled with the Parrinello-Rahman barostat, 
-; with a coupling constant in the range 4-8 ps and typical compressibility 
-; in the order of 10e-4 - 10e-5 bar-1. Note that, for equilibration purposes, 
-; the Berendsen barostat probably gives better results, as the Parrinello-
-; Rahman is prone to oscillating behaviour. For bilayer systems the pressure 
-; coupling should be done semiisotropic.
-
-;tcoupl                   = v-rescale 
-;tc-grps                  = Lipids Water
-;tau_t                    = 1.0  1.0 
-;ref_t                    = 320 320 
-Pcoupl = no
-;Pcoupl                   = parrinello-rahman 
-;Pcoupltype               = semiisotropic
-;tau_p                    = 12.00  ; parrinello-rahman is more stable with larger tau-p, DdJ, 20130422
-;compressibility          = 3e-4  3e-4
-;ref_p                    = 1.0  1.0
-;refcoord_scaling         = com
-
-gen_vel                  = no
-gen_temp                 = 320
-gen_seed                 = 473529
-
-
-; MARTINI and CONSTRAINTS 
-; for ring systems and stiff bonds constraints are defined
-; which are best handled using Lincs. 
-
-constraints              = none 
-constraint_algorithm     = Lincs
+rlist = 1.4
+coulombtype = cutoff
+rcoulomb = 1.2
+epsilon_r = 15
+vdw-type = shift
+rvdw-switch = 0.9
+rvdw = 1.2
+tcoupl = v-rescale
+tc-grps = Lipids W
+tau-t = 1.0 1.0
+ref-t = 300 300

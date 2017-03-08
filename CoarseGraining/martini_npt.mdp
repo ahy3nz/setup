@@ -16,7 +16,7 @@ title                    = Martini
 
 integrator               = md
 dt                       = 0.03  
-nsteps                   = 5000
+nsteps                   = 50000
 nstcomm                  = 100
 ;comm-grps = 
 
@@ -60,7 +60,7 @@ ns_type                  = grid
 pbc                      = xyz
 verlet-buffer-tolerance  = 0.005
 
-coulombtype              = PME ;cutoff
+coulombtype              = reaction-field ;cutoff
 ;coulomb-modifier         = Potential-shift-verlet
 rcoulomb                 = 1.1
 epsilon_r                = 15; 2.5 (with polarizable water)
