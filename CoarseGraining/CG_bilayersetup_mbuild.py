@@ -12,6 +12,7 @@ from Prototypes_CG import *
 # Gromacs Forcefield Directory, change!!!
 GMX_FF_DIR = "/Users/ahy3nz/Programs/setup/FF/CG/"
 
+
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
         random_z_displacement = 0, top_file = None, lipid_atom_dict = None, atom_index = 0):
