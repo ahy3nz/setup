@@ -9,7 +9,7 @@ from itertools import product
 from optparse import OptionParser
 from Prototypes_CG import *
 
-GMX_FF_DIR = "/Users/ahy3nz/Programs/setup/FF/CG/"
+GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
@@ -129,8 +129,8 @@ def write_top_file_header(filename = 'default', lipid_system_info = None, n_solv
     top_file = open(filename + '2.top', 'w')
 
     # Include statment, edit for path to maritini FF, make "_b" itp for no charges
-    top_file.write(";#include \"{}martini_ff.itp\" \n".format(GMX_FF_DIR))
-    top_file.write("#include \"{}martini_ff_b.itp\" \n".format(GMX_FF_DIR))
+    top_file.write("#include \"{}martini_ff.itp\" \n".format(GMX_FF_DIR))
+    top_file.write(";#include \"{}martini_ff_b.itp\" \n".format(GMX_FF_DIR))
     top_file.write("\n[ system ]\n")
     top_file.write("Coarse-grained bilayer system\n")
     top_file.write("\n[ molecules ] \n") 
