@@ -2,4 +2,4 @@
 #include "martini_lipids.itp"
 #include "martini_C16FFA.itp"
 #include "martini_C22FFA.itp"
-#include "martini_C12OH.itp"
+#include "martini_OH.itp"
