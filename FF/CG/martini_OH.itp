@@ -1,0 +1,171 @@
+;;;;;; Martini lipid topology for C12 alcohol
+ 
+
+[ moleculetype ]
+; molname      nrexcl
+  C12OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      Nda     1      C12OH      OH       1      0 
+2      C1      1      C12OH      C1       2      0 
+3      C1      1      C12OH      C2       3      0 
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+
+[ moleculetype ]
+; molname      nrexcl
+  C14OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      P2      1      C14OH      OH       1      0 
+2      C1      1      C14OH      C1       2      0 
+3      C1      1      C14OH      C2       3      0 
+4      C1      1      C14OH      C3       4      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+
+[ moleculetype ]
+; molname      nrexcl
+  C16OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      Nda     1      C16OH      OH       1      0 
+2      C1      1      C16OH      C1       2      0 
+3      C1      1      C16OH      C2       3      0 
+4      C1      1      C16OH      C3       4      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+
+[ moleculetype ]
+; molname      nrexcl
+  C18OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      P2      1      C18OH      OH       1      0 
+2      C1      1      C18OH      C1       2      0 
+3      C1      1      C18OH      C2       3      0 
+4      C1      1      C18OH      C3       4      0
+5      C1      1      C18OH      C4       5      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+4       5      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+3       4       5      2      180.0      25.0
+
+[ moleculetype ]
+; molname      nrexcl
+  C20OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      Nda     1      C20OH      OH       1      0 
+2      C1      1      C20OH      C1       2      0 
+3      C1      1      C20OH      C2       3      0 
+4      C1      1      C20OH      C3       4      0
+5      C1      1      C20OH      C4       5      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+4       5      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+3       4       5      2      180.0      25.0
+
+[ moleculetype ]
+; molname      nrexcl
+  C22OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      P2      1      C22OH      OH       1      0 
+2      C1      1      C22OH      C1       2      0 
+3      C1      1      C22OH      C2       3      0 
+4      C1      1      C22OH      C3       4      0
+5      C1      1      C22OH      C4       5      0
+6      C1      1      C22OH      C5       6      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+4       5      1      0.47      1250
+5       6      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+3       4       5      2      180.0      25.0
+4       5       6      2      180.0      25.0
+
+[ moleculetype ]
+; molname      nrexcl
+  C24OH         1
+
+[ atoms ]
+; id type resnr residu atom cgnr charge   mass
+1      Nda     1      C24OH      OH       1      0 
+2      C1      1      C24OH      C1       2      0 
+3      C1      1      C24OH      C2       3      0 
+4      C1      1      C24OH      C3       4      0
+5      C1      1      C24OH      C4       5      0
+6      C1      1      C24OH      C5       6      0
+
+[ bonds ]
+; i j funct length force.c.
+1       2      1      0.47      1250
+2       3      1      0.47      1250
+3       4      1      0.47      1250
+4       5      1      0.47      1250
+5       6      1      0.47      1250
+
+[ angles ]
+; i j k funct angle force.c.
+1       2       3      2      180.0      25.0 
+2       3       4      2      180.0      25.0
+3       4       5      2      180.0      25.0
+4       5       6      2      180.0      25.0
