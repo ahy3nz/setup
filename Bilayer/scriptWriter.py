@@ -189,11 +189,12 @@ class scriptWriter():
         init_file.write("cd $PBS_O_WORKDIR\n")
         init_file.write("echo `cat $PBS_NODEFILE`\n")
         init_file.write("module load gromacs/5.1.0\n")
+        init_file.write("export CRAY_CUDA_MPS=1\n")
         init_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
         if STrun:
-            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm ST_{} >& out.log\n".format(filename))
+            init_file.write("aprun -n 64 -N 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm ST_{} >& out.log\n".format(filename))
         elif MDrun:
-            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm md_{} >& out.log\n".format(filename))
+            init_file.write("aprun -n 64 -N 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm md_{} >& out.log\n".format(filename))
         else:
             pass
         init_file.close()
@@ -214,6 +215,7 @@ class scriptWriter():
         cont_file.write("cd $PBS_O_WORKDIR\n")
         cont_file.write("echo `cat $PBS_NODEFILE`\n")
         cont_file.write("module load gromacs/5.1.0\n")
+        cont_file.write("export CRAY_CUDA_MPS=1\n")
         cont_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
         cont_file.write("aprun -N 16 -n 8 gmx_mpi -gpuid 00000000 mdrun -append \ \n")
         if STrun:
