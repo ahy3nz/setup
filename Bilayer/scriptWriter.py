@@ -189,11 +189,12 @@ class scriptWriter():
         init_file.write("cd $PBS_O_WORKDIR\n")
         init_file.write("echo `cat $PBS_NODEFILE`\n")
         init_file.write("module load gromacs/5.1.0\n")
+        init_file.write("export CRAY_CUDA_MPS=1\n")
         init_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
         if STrun:
-            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm ST_{} >& out.log\n".format(filename))
+            init_file.write("aprun -n 64 -N 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm ST_{} >& out.log\n".format(filename))
         elif MDrun:
-            init_file.write("aprun -N 16 -n 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm md_{} >& out.log\n".format(filename))
+            init_file.write("aprun -n 64 -N 8 gmx_mpi mdrun -gpu_id 00000000 -deffnm md_{} >& out.log\n".format(filename))
         else:
             pass
         init_file.close()
@@ -214,8 +215,9 @@ class scriptWriter():
         cont_file.write("cd $PBS_O_WORKDIR\n")
         cont_file.write("echo `cat $PBS_NODEFILE`\n")
         cont_file.write("module load gromacs/5.1.0\n")
+        cont_file.write("export CRAY_CUDA_MPS=1\n")
         cont_file.write("cd $MEMBERWORK/mat149/Trajectories/{}\n".format(filename))
-        cont_file.write("aprun -N 16 -n 8 gmx_mpi -gpuid 00000000 mdrun -append \ \n")
+        cont_file.write("aprun -n 64 -N 8 gmx_mpi -gpuid 00000000 mdrun -append \ \n")
         if STrun:
             cont_file.write("-s ST_{}.tpr \ \n".format(filename))
             cont_file.write("-cpi ST_{}.cpt \ \n".format(filename))
@@ -227,3 +229,17 @@ class scriptWriter():
         else:
             pass
         cont_file.close()
+        if MDrun:
+            repeat_file = open((filename+'MDTitanrepeat.sh'), 'w')
+            repeat_file.write('export item = `{}MDTitanpbs.pbs`\n'.format(filename))
+            repeat_file.write('for i in {0..5}\n')
+            repeat_file.write('do\n')
+            repeat_file.write('     item=$(qsub -W depend=afterany:${item} {}MDTitancont.pbs) \n'.format(filename))
+            repeat_file.write('done\n')
+        elif STrun:
+            repeat_file = open((filename+'STTitanrepeat.sh'), 'w')
+            repeat_file.write('export item = `{}STTitanpbs.pbs`\n'.format(filename))
+            repeat_file.write('for i in {0..5}\n')
+            repeat_file.write('do\n')
+            repeat_file.write('     item=$(qsub -W depend=afterany:${item} {}STTitancont.pbs) \n'.format(filename))
+            repeat_file.write('done\n')

@@ -8,6 +8,7 @@ import sys
 from itertools import product
 from optparse import OptionParser
 from Prototypes_CG import *
+from scriptWriter import *
 
 # Gromacs Forcefield Directory, change!!!
 GMX_FF_DIR = "/Users/ahy3nz/Programs/setup/FF/CG/"
@@ -426,6 +427,8 @@ table_of_contents.close()
 # Write to an index file
 write_ndx_file(filename = filename, lipid_atom_dict = lipid_atom_dict)
 
-
+# Write job scripts
+thing1 = scriptWriter('{}'.format(filename))
+thing1.write_Rahman_script(MDrun = True)
 
 
