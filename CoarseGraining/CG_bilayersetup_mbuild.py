@@ -10,9 +10,7 @@ from optparse import OptionParser
 from Prototypes_CG import *
 from scriptWriter import *
 
-# Gromacs Forcefield Directory, change!!!
-GMX_FF_DIR = "/Users/ahy3nz/Programs/setup/FF/CG/"
-
+GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
@@ -215,7 +213,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
-    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.2
+    shift_botwater = abs(highest_botwater - lowest_botlipid) + 1
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -233,7 +231,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
-    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.2
+    shift_topwater = abs(highest_toplipid - lowest_topwater) + 1
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -243,15 +241,12 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     system.add(bot_water)
     system.add(top_water)
 
-    waterbox = mb.Box(mins = [0,0,0], maxs = [max(system.xyz[:,0])+0.2, max(system.xyz[:,1])+0.2, max(system.xyz[:,2])+0.2])
+    waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0])+0.2, max(top_water.xyz[:,1])+0.2, max(top_water.xyz[:,2])+0.2])
 
     
     # Add waters to lipid_atom_dict
     lipid_atom_dict['w'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * w().n_particles), 1))
-    #lipid_atom_dict['w'] = list(range(atom_index, atom_index + ( n_x * n_y * n_solvent_per_lipid * w().n_particles), 1))
-
     atom_index += 2 * n_x * n_y * n_solvent_per_lipid * w().n_particles
-    #atom_index +=  n_x * n_y * n_solvent_per_lipid * w().n_particles
     return system, waterbox, lipid_atom_dict, atom_index
 
 def write_toc_file_box(table_of_contents = None, box = None):
@@ -343,10 +338,10 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-n_x = 8
-n_y = 8
+n_x = 16
+n_y = 16
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 20 # This is usually 20 waters per molecule, but a water bead is 4 waters
 n_solvent = n_lipid * n_solvent_per_lipid
 random_z_displacement = 0.3
 
@@ -385,14 +380,14 @@ print("Writing <{0}> ...".format(filename))
 top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
 
 # Generate bottom layer randomly
-bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = 8, n_y = 8, lipid_system_info = lipid_system_info, 
+bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
         tilt_angle = tilt_angle, spacing = spacing, layer_shift = 0,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 
-# Generate the top layer randomly, should be shifted 3.2
-top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = 8, n_y = 8, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.7,
+# Generate the top layer randomly
+top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.2,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
@@ -406,7 +401,7 @@ system.add(top_layer)
 
 # Solvate system, get new box
 system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
-        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index, water_spacing = spacing)
+        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z and off x and y axes
