@@ -15,8 +15,9 @@ title                    = Martini
 ; Time steps smaller than 20 fs are not required unless specifically stated in the itp file.
 
 integrator               = md
-dt                       = 0.025  
-nsteps                   = 24000000
+<<<<<<< HEAD
+dt                       = 0.03  
+nsteps                   = 50000
 nstcomm                  = 100
 ;comm-grps = 
 

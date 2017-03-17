@@ -60,7 +60,7 @@ ns_type                  = grid
 pbc                      = xyz
 verlet-buffer-tolerance  = 0.005
 
-coulombtype              = PME ;cutoff
+coulombtype              = cutoff ;cutoff
 ;coulomb-modifier         = Potential-shift-verlet
 rcoulomb                 = 1.1
 epsilon_r                = 15; 2.5 (with polarizable water)
