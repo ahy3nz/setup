@@ -10,9 +10,9 @@ comm-grps                   = non-water water
 ; Output control
 nstxout                     = 0             ; Don't save coordinates 
 nstvout                     = 0             ; Don't save velocities
-nstenergy                   = 5000
-nstlog                      = 5000
-nstxtcout                   = 5000
+nstenergy                   = 500000
+nstlog                      = 500000
+nstxtcout                   = 500000
 
 ;bond parameters
 continuation                = yes
