@@ -32,5 +32,6 @@ gmx mdrun -ntomp 1 -deffnm nvteq_$1
 #gmx grompp -f md.mdp -c nvteq_$1.gro -p $1.top -o md_$1.tpr  > md_grompp_$1.log 2>&1
 cp md.mdp md_$1.mdp
 gmx grompp -f ST_$1.mdp -c nvteq_$1.gro -p $1.top -o ST_$1.tpr  > ST_grompp_$1.log 2>&1
-#cp ST.mdp ST_$1.mdp
+cp ST.mdp ST_$1.mdp
 
+rm "#mdout"*
