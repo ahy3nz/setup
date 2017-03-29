@@ -16,9 +16,9 @@ topfile = open(options.topfilename,'r')
 topfilelines = topfile.readlines()
 newlines = []
 for i, line in enumerate(topfilelines):
-    if "ff_b.itp" in line:
+    if "ff_b.itp" in line or "spc_b.itp" in line:
         newline = (";" + line)
-    elif "ff.itp" in line:
+    elif "ff.itp" in line or "spc.itp" in line:
         newline = line.replace(";", "")
     else:
         newline = line

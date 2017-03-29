@@ -135,7 +135,8 @@ def write_top_file_header(filename = 'default', lipid_system_info = None, n_solv
     top_file.write(";#include \"{}ff.itp\" \n".format(GMX_FF_DIR))
     top_file.write("#include \"{}ff_b.itp\" \n".format(GMX_FF_DIR))
     top_file.write("; Include SPC water topology \n")
-    top_file.write("#include \"gromos53a6.ff/spc.itp\" \n") 
+    top_file.write(";#include \"gromos53a6.ff/spc.itp\" \n") 
+    top_file.write("#include \"{}spc_b.itp\" \n".format(GMX_FF_DIR))
     top_file.write("\n[ system ]\n")
     #top_file.write("Coarse-grained bilayer system\n")
     top_file.write("All-atom bilayer system\n")
@@ -175,7 +176,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     top_file.write("{:<10s}{:<10d}\n".format('SOL', n_solvent))
     return top_file
 
-def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.8, 
+def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.5, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
@@ -220,11 +221,11 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
-    shift_botwater = abs(highest_botwater - lowest_botlipid) + 1
+    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.4
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
-        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, H2O().name, H2O().n_particles))
+        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1 
     
     # Construct 3D grid of water
@@ -238,17 +239,18 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
-    shift_topwater = abs(highest_toplipid - lowest_topwater) + 1
+    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.4
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
-        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, H2O().name, H2O().n_particles))
+        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1
 
     system.add(bot_water)
     system.add(top_water)
 
-    waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0])+0.2, max(top_water.xyz[:,1])+0.2, max(top_water.xyz[:,2])+0.2])
+    #waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0])+0.2, max(top_water.xyz[:,1])+0.2, max(top_water.xyz[:,2])+0.2])
+    waterbox = mb.Box(mins = [0,0,0], maxs = [max(system.xyz[:,0])+0.2, max(system.xyz[:,1])+0.2, max(system.xyz[:,2])+0.2])
 
     
     # Add waters to lipid_atom_dict
@@ -303,14 +305,14 @@ def write_ndx_file(filename = None, lipid_atom_dict = None):
             # Get the water, nonwater, and system groups
              
             system_string += string_to_add
-            if 'w' in key:
+            if 'SOL' in key:
                 water_string += string_to_add 
             else:
                 nonwater_string += string_to_add
         
-    ndx_file.write(" [ Lipids ] \n")
+    ndx_file.write(" [ non-water ] \n")
     ndx_file.write(nonwater_string+"\n")
-    ndx_file.write(" [ Water ] \n")
+    ndx_file.write(" [ water ] \n")
     ndx_file.write(water_string+"\n")
     ndx_file.write(" [ System ] \n")
     ndx_file.write(system_string+"\n")
@@ -322,15 +324,15 @@ parser.add_option("-a", "--APL", action="store",type="float", default = 0.50, de
 parser.add_option("-r", "--rot", action="store", type ="float", default = 0.0, dest = "rotation")
 parser.add_option("--DSPC", action="store",type="float", default = 1.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
-parser.add_option("--C16FFA", action="store",type="float", default = 0.0, dest = "C16FFA_frac")
-parser.add_option("--C22FFA", action="store",type="float", default = 0.0, dest = "C22FFA_frac")
-parser.add_option("--C12OH", action="store",type="float", default = 0.0,  dest = "C12OH_frac")
-parser.add_option("--C14OH", action="store",type="float", default = 0.0, dest = "C14OH_frac")
-parser.add_option("--C16OH", action="store",type="float", default = 0.0, dest = "C16OH_frac")
-parser.add_option("--C18OH", action="store",type="float", default = 0.0, dest = "C18OH_frac")
-parser.add_option("--C20OH", action="store",type="float", default = 0.0, dest = "C20OH_frac")
-parser.add_option("--C22OH", action="store",type="float", default = 0.0, dest = "C22OH_frac")
-parser.add_option("--C24OH", action="store",type="float", default = 0.0, dest = "C24OH_frac")
+parser.add_option("--acd16", action="store",type="float", default = 0.0, dest = "acd16_frac")
+parser.add_option("--acd22", action="store",type="float", default = 0.0, dest = "acd22_frac")
+parser.add_option("--Calc12", action="store",type="float", default = 0.0,  dest = "Calc12_frac")
+parser.add_option("--Calc14", action="store",type="float", default = 0.0, dest = "Calc14_frac")
+parser.add_option("--Calc16", action="store",type="float", default = 0.0, dest = "Calc16_frac")
+parser.add_option("--Calc18", action="store",type="float", default = 0.0, dest = "Calc18_frac")
+parser.add_option("--Calc20", action="store",type="float", default = 0.0, dest = "Calc20_frac")
+parser.add_option("--Calc22", action="store",type="float", default = 0.0, dest = "Calc22_frac")
+parser.add_option("--Calc24", action="store",type="float", default = 0.0, dest = "Calc24_frac")
 parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "ISIS_frac")
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
 parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
@@ -343,6 +345,13 @@ filename = options.filename
 tilt_angle = options.rotation * np.pi/180
 area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
+
+# Write out initial parameters
+outfile = open((options.filename + 'initparam.txt'),'w')
+outfile.write('Initial APL: {}\n'.format(options.area_per_lipid))
+outfile.write('Initial Tilt: {}\n'.format(options.rotation))
+outfile.close()
+
 
 # Default parameters, less likely to be changed
 n_x = 8#8
@@ -358,51 +367,52 @@ random_z_displacement = 0.3
 """
 lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
                       (DPPC(), np.ceil(n_lipid * options.DPPC_frac), 2.6)
-                      (C16FFA(), np.floor(n_lipid * options.C16FFA_frac), 4.4),
-                      (C22FFA(), np.floor(n_lipid * options.C22FFA_frac), 3.2),
-                      (C12OH(), np.floor(n_lipid * options.C12OH_frac), 2.6),
-                      (C14OH(), np.floor(n_lipid * options.C14OH_frac), 2.8),
-                      (C16OH(), np.floor(n_lipid * options.C16OH_frac), 2.6),
-                      (C18OH(), np.floor(n_lipid * options.C18OH_frac), 2.4),
-                      (C20OH(), np.floor(n_lipid * options.C20OH_frac), 3.0),
-                      (C22OH(), np.floor(n_lipid * options.C22OH_frac), 3.2),
-                      (C24OH(), np.floor(n_lipid * options.C24OH_frac), 3.2),
+                      (acd16(), np.floor(n_lipid * options.acd16_frac), 4.4),
+                      (acd22(), np.floor(n_lipid * options.acd22_frac), 3.2),
+                      (alc12(), np.floor(n_lipid * options.Calc12_frac), 2.6),
+                      (alc14(), np.floor(n_lipid * options.Calc14_frac), 2.8),
+                      (alc16(), np.floor(n_lipid * options.Calc16_frac), 2.6),
+                      (alc18(), np.floor(n_lipid * options.Calc18_frac), 2.4),
+                      (alc20(), np.floor(n_lipid * options.Calc20_frac), 3.0),
+                      (alc22(), np.floor(n_lipid * options.Calc22_frac), 3.2),
+                      (alc24(), np.floor(n_lipid * options.Calc24_frac), 3.2),
                       (ISIS(), np.floor(n_lipid * options.ISIS_frac), 3.0),
                       (CHOL(), np.floor(n_lipid * options.CHOL_frac), 4.0)] 
                       """
 """
 lipid_system_info = [(DSPC(), int(round(n_lipid * options.DSPC_frac)), 0.0),
                       (DPPC(), int(round(n_lipid * options.DPPC_frac)), 0.3),
-                      (C16FFA(), int(round(n_lipid * options.C16FFA_frac)), 1.4),
-                      (C22FFA(), int(round(n_lipid * options.C22FFA_frac)), 1.0),
-                      (C12OH(), int(round(n_lipid * options.C12OH_frac)), 1.4),
-                      (C14OH(), int(round(n_lipid * options.C14OH_frac)), 1.2),
-                      (C16OH(), int(round(n_lipid * options.C16OH_frac)), 1.0),
-                      (C18OH(), int(round(n_lipid * options.C18OH_frac)), 0.8),
-                      (C20OH(), int(round(n_lipid * options.C20OH_frac)), 0.6),
-                      (C22OH(), int(round(n_lipid * options.C22OH_frac)), 0.6),
-                      (C24OH(), int(round(n_lipid * options.C24OH_frac)), 0.6),
+                      (acd16(), int(round(n_lipid * options.acd16_frac)), 1.4),
+                      (acd22(), int(round(n_lipid * options.acd22_frac)), 1.0),
+                      (alc12(), int(round(n_lipid * options.Calc12_frac)), 1.4),
+                      (alc14(), int(round(n_lipid * options.Calc14_frac)), 1.2),
+                      (alc16(), int(round(n_lipid * options.Calc16_frac)), 1.0),
+                      (alc18(), int(round(n_lipid * options.Calc18_frac)), 0.8),
+                      (alc20(), int(round(n_lipid * options.Calc20_frac)), 0.6),
+                      (alc22(), int(round(n_lipid * options.Calc22_frac)), 0.6),
+                      (alc24(), int(round(n_lipid * options.Calc24_frac)), 0.6),
                       (ISIS(), int(round(n_lipid * options.ISIS_frac)), 0.4),
                       (CHOL(), int(round(n_lipid * options.CHOL_frac)), 0.8)] 
 """
+# Hard coded lipid system info for complex systems
 lipid_system_info = [(DSPC(), 14, 0.0),
-                      (DPPC(), 0, 0.3),
-                      (C16FFA(), 0, 1.4),
-                      (C22FFA(), 0, 1.0),
-                      (C12OH(), 0, 1.4),
-                      (C14OH(), 0, 1.2),
-                      (C16OH(), 24, 1.0),
-                      (C18OH(), 0, 0.8),
-                      (C20OH(), 0, 0.6),
-                      (C22OH(), 76, 0.6),
-                      (C24OH(), 0, 0.6),
-                      (ISIS(), 14, 0.4),
-                      (CHOL(), 0, 0.8)] 
+                      (DPPC(), 0, -0.3),
+                      (acd16(), 0, -0.5),
+                      (acd22(), 22, -1.0),
+                      (alc12(), 0, -1.4),
+                      (alc14(), 0, -1.2),
+                      (alc16(), 48, -0.5),
+                      (alc18(), 0, -0.8),
+                      (alc20(), 0, -0.3),
+                      (alc22(), 30, -0.3),
+                      (alc24(), 0, -0.6),
+                      (ISIS(), 14, -2.5),
+                      (CHOL(), 0, -0.8)] 
 
                       
 
 #lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
-                     #(C12OH(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
+                     #(Calc12(), np.floor(n_lipid * options.Calc12_frac), 1.4)] #was 2.6
 if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid):
     sys.exit("System setup error: number of components does not match layer size")
 
@@ -427,9 +437,8 @@ top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
         tilt_angle = tilt_angle, spacing = spacing, layer_shift = 0,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
-pdb.set_trace()       
 # Rotate bottom layer to form bilayer
-mb.spin_y(bot_layer, theta=np.pi)
+mb.spin_y(top_layer, theta=np.pi)
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
@@ -437,10 +446,11 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-#system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
-#        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
+system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
+"""
 #new stuff
 systembox=system._gen_box()
 # Bilayer needs to be shifted to fit inside the box for gromacs (can't have any negative coordinates)
@@ -453,9 +463,14 @@ leaflet_water_z = n_solvent_per_layer * 2.66602458e-2/cross_area
 # Redefine the box to account for shifted coordinates and add extra space in z-direcction
 smallbox = mb.Box(mins = [0, 0, systembox.mins[2] - leaflet_water_z], 
         maxs = [n_x * spacing, n_y * spacing, systembox.maxs[2] + leaflet_water_z])
+# shift everything to be in box
+min_z_shift = min(system.xyz[:,2])
+mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
+smallbox.maxs[2] += -1*min_z_shift
 # The solvate box will have a reduced cross-sectional area to prevent waters in strange locations
 solvatebox = mb.Box(mins = [0.5, 0.5, smallbox.mins[2]],
     maxs = [smallbox.maxs[0] - 0.5, smallbox.maxs[1] - 0.5, smallbox.maxs[2]])
+
 
 # Solvate system
 system = mb.solvate(system, H2O(), 2*n_solvent_per_layer, solvatebox)
@@ -485,27 +500,38 @@ for i in range(2* n_x * n_y * n_solvent_per_lipid):
         res_index += 1
 write_toc_file_box(table_of_contents = table_of_contents, box = smallbox)
 # end new stuff
+"""
+
+# Script writer stuff
+scriptWriter = scriptWriter("{}".format(options.filename)) 
+scriptWriter.write_Titan_script(STrun = True)
+scriptWriter.write_Titan_script(MDrun = True)
+scriptWriter.write_Cori_script(STrun = True)
+scriptWriter.write_Cori_script(MDrun = True)
+scriptWriter.write_Rahman_script(STrun = True)
+scriptWriter.write_Rahman_script(MDrun = True)
+
 
 # Shift everything to positive z and off x and y axes
-#min_z_shift = min(system.xyz[:,2])
-#mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-#box.maxs[2] += -1*min_z_shift
-#
-## Write to table of contents
-#write_toc_file_box(table_of_contents = table_of_contents, box = box)
-#
-#
-## Write gro file suppressing mbuild warnings
-#with warnings.catch_warnings():
-#    warnings.simplefilter("ignore")
-#    system.save(filename + '.gro', box =box,overwrite=True)
-#    #system.save(filename + '.gsd')
-#table_of_contents.close()
-#
-## Write to an index file
-#write_ndx_file(filename = filename, lipid_atom_dict = lipid_atom_dict)
-#
-## Write job scripts
+min_z_shift = min(system.xyz[:,2])
+mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
+box.maxs[2] += -1*min_z_shift
+
+# Write to table of contents
+write_toc_file_box(table_of_contents = table_of_contents, box = box)
+
+
+# Write gro file suppressing mbuild warnings
+with warnings.catch_warnings():
+    warnings.simplefilter("ignore")
+    system.save(filename + '.gro', box =box,overwrite=True)
+    #system.save(filename + '.gsd')
+table_of_contents.close()
+
+# Write to an index file
+write_ndx_file(filename = filename, lipid_atom_dict = lipid_atom_dict)
+
+# Write job scripts
 #thing1 = scriptWriter('{}'.format(filename))
 #thing1.write_Rahman_script(MDrun = True)
 
