@@ -11,6 +11,31 @@ from Prototypes_CG import *
 from scriptWriter import *
 
 GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
+# Mapping martini atomtpyes to atom names that are of that type
+TYPE_TO_NAME_DICT = {'_Q0': ('_NC3'), '_QA': ('_PO4'),
+        '_Na': ('_GL1', '_GL2'), '_Nda': ('_LOH', '_COH', '_AOH', '_LgOH'),
+        '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF'),
+        '_C1': ('_C1', '_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B') }
+
+def convert_name_to_type(particle):
+    """ Convert atom name to its corresponding atomtype
+
+    Parameters
+    ----------
+    particle : mb.Compound()
+    
+    Returns
+    -------
+
+    """
+
+    old_name = particle.name
+    for atomtype in TYPE_TO_NAME_DICT:
+        corresponding_atoms = TYPE_TO_NAME_DICT[atomtype]
+        if str(old_name) in corresponding_atoms:
+            particle.name = atomtype
+        else:
+            pass
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
@@ -78,6 +103,17 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
             # Do geometry transformations
             molecule_to_add = mb.clone(lipid_type[0])
+
+            # Rename the children of the molecule accordingly(not working)
+            for child in molecule_to_add.children:
+                convert_name_to_type(child)
+                print(child.name)
+
+            # Set charges (for the phospholipids)(not working)
+            if 'PC' in molecule_to_add.name:
+                molecule_to_add.children[0].charge = 1
+                molecule_to_add.children[1].charge = -1
+
             # Apply tilt angle
             mb.spin_y(molecule_to_add, tilt_angle)
 
@@ -210,6 +246,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     bot_water_list = cube.apply(w())
     bot_water = mb.Compound()
     for compound in bot_water_list:
+        convert_name_to_type(compound)
         bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
@@ -228,6 +265,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     top_water_list = cube.apply(w())
     top_water = mb.Compound()
     for compound in top_water_list:
+        convert_name_to_type(compound)
         top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
@@ -338,10 +376,10 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-n_x = 16
-n_y = 16
+n_x = 16 #8
+n_y = 16 #8
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 20 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
 n_solvent = n_lipid * n_solvent_per_lipid
 random_z_displacement = 0.3
 
@@ -416,7 +454,9 @@ write_toc_file_box(table_of_contents = table_of_contents, box = box)
 # Write gro file suppressing mbuild warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
-    system.save(filename + '.gro', box =box,overwrite=True)
+    #system.save(filename + '.gro', box =box,overwrite=True)
+    system.save(filename + '.hoomdxml', overwrite=True)
+    system.save(filename + '.gsd', overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
