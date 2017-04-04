@@ -1,0 +1,10 @@
+<ForceField>
+    <AtomTypes>
+    <Type name="Q0" class="Q0" element="_Q0" mass="72" charge="1.0" def="[_Q0]" desc="PC head"/>
+    <Type name="Qa" class="Qa" element="_Qa" mass="72" charge="-1.0" def="[_Qa]" desc="PC head"/>
+    <Type name="Na" class="Na" element="_Na" mass="72" def="[_Na]" desc="Na"/>
+    <Type name="C1" class="C1" element="_C1" mass="72" def="[_C1]" desc="C1"/>
+    <Type name="Nda" class="Nda" element="_Nda" mass="72" def="[_Nda]" desc="Nda"/>
+    <Type name="P2" class="P2" element="_P2" mass="72" def="[_P2]" desc="P2"/>
+    <Type name="P4" class="P4" element="_P4" mass="72" def="[_P4]" desc="P4"/>
+    <Type name="BP4" class="BP4" element="_BP4" mass="72" def="[_BP4]" desc="BP4"/>
