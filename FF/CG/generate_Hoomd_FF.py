@@ -51,6 +51,6 @@ for x,z in itertools.combinations_with_replacement(atomtypes,2):
         outfile.write(xml_line+"\n")
 #<Angle class1="tail" class2="mhead2" class3="oh2" angle="7" k="7"/>
 outfile.write("</HarmonicAngleForce>\n")
-outfile.write("</Forcefield\n")
+outfile.write("</Forcefield>\n")
 outfile.close()
 
