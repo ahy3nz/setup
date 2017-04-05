@@ -1,5 +1,6 @@
-<Forcefield>
-<Atomtypes>
+<ForceField>
+<AtomTypes>
+    <Type name="W" class="W" element="_W" mass="72" def="[_W]"/>
 	<Type name="P5" class="P5" element="_P5" mass="72" def="[_P5]"/>
 	<Type name="P4" class="P4" element="_P4" mass="72" def="[_P4]"/>
 	<Type name="BP4" class="BP4" element="_BP4" mass="72" def="[_BP4]"/>
@@ -8,7 +9,7 @@
 	<Type name="P2" class="P2" element="_P2" mass="72" def="[_P2]"/>
 	<Type name="P1" class="P1" element="_P1" mass="72" def="[_P1]"/>
 	<Type name="SP1" class="SP1" element="_SP1" mass="72" def="[_SP1]"/>
-	<Type name="Nda" class="Nda" element="_Nda" mass="72" def="[_Nda]"/>
+    <!--<Type name="Nda" class="Nda" element="_Nda" mass="72" def="[_Nda]"/>-->
 	<Type name="Nd" class="Nd" element="_Nd" mass="72" def="[_Nd]"/>
 	<Type name="SNd" class="SNd" element="_SNd" mass="72" def="[_SNd]"/>
 	<Type name="Na" class="Na" element="_Na" mass="72" def="[_Na]"/>
@@ -26,11 +27,11 @@
 	<Type name="C1" class="C1" element="_C1" mass="72" def="[_C1]"/>
 	<Type name="AC1" class="AC1" element="_AC1" mass="72" def="[_AC1]"/>
 	<Type name="SC1" class="SC1" element="_SC1" mass="72" def="[_SC1]"/>
-	<Type name="Qda" class="Qda" element="_Qda" mass="72" def="[_Qda]"/>
+    <!--<Type name="Qda" class="Qda" element="_Qda" mass="72" def="[_Qda]"/>-->
 	<Type name="Qd" class="Qd" element="_Qd" mass="72" def="[_Qd]"/>
-	<Type name="Qa" class="Qa" element="_Qa" mass="72" charge="-1.0" def="[_Qa]" desc="PC head"/>
-	<Type name="Q0" class="Q0" element="_Q0" mass="72" charge="1.0" def="[_Q0]" desc="PC head"/>
-</Atomtypes>
+	<Type name="Qa" class="Qa" element="_Qa" mass="72"  def="[_Qa]" desc="PC head"/>
+	<Type name="Q0" class="Q0" element="_Q0" mass="72"  def="[_Q0]" desc="PC head"/>
+</AtomTypes>
 <HarmonicBondForce>
 	<Bond class1="P5" class2="P5" length="1" k="1"/>
 	<Bond class1="P5" class2="P4" length="1" k="1"/>
@@ -14450,4 +14451,37 @@
 	<Angle class1="Q0" class2="Qa" class3="Q0" angle="1" k="1"/>
 	<Angle class1="Q0" class2="Q0" class3="Q0" angle="1" k="1"/>
 </HarmonicAngleForce>
-</Forcefield>
+<NonbondedForce coulomb14scale="0" lj14scale="0">
+    <Atom type="P5" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="P4" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="BP4" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SP4" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="P3" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="P2" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="P1" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SP1" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="Nda" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="Nd" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SNd" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="Na" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SNa" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="N0" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="C5" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SC5" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="C4" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SC4" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="C3" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SC3" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="C2" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="AC2" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SC2" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="C1" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="AC1" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="SC1" charge="0" sigma="1" epsilon="1"/>
+    <!--<Atom type="Qda" charge="0" sigma="1" epsilon="1"/>-->
+	<Atom type="Qd" charge="0" sigma="1" epsilon="1"/>
+	<Atom type="Qa" charge="1" sigma="1" epsilon="1"/>
+	<Atom type="Q0" charge="-1" sigma="1" epsilon="1"/>
+	<Atom type="W" charge="0" sigma="1" epsilon="1"/>
+</NonbondedForce>
+</ForceField>
