@@ -1,13 +1,13 @@
 from Prototypes_CG.DSPC import *
-from Prototypes_CG.C12OH import *
-from Prototypes_CG.C14OH import *
-from Prototypes_CG.C16OH import *
-from Prototypes_CG.C18OH import *
-from Prototypes_CG.C20OH import *
-from Prototypes_CG.C22OH import *
-from Prototypes_CG.C24OH import *
-from Prototypes_CG.C16FFA import *
-from Prototypes_CG.C22FFA import *
+from Prototypes_CG.OH12 import *
+from Prototypes_CG.OH14 import *
+from Prototypes_CG.OH16 import *
+from Prototypes_CG.OH18 import *
+from Prototypes_CG.OH20 import *
+from Prototypes_CG.OH22 import *
+from Prototypes_CG.OH24 import *
+from Prototypes_CG.FA16 import *
+from Prototypes_CG.FA22 import *
 from Prototypes_CG.w import *
-__all__ = ["C12OH", "C14OH", "C16OH", "C18OH", "C20OH", "C22OH", "C24OH", "C16FFA",
-    "C22FFA", "DSPC", "w" ]
+__all__ = ["OH12", "OH14", "OH16", "OH18", "OH20", "OH22", "OH24", "FA16",
+    "FA22A", "DSPC", "w" ]

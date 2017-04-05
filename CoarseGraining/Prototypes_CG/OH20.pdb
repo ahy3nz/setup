@@ -1,0 +1,15 @@
+TITLE     OH20  CG molecule
+REMARK    THIS IS A SIMULATION BOX
+CRYST1   10.000   10.000   10.000  90.00  90.00  90.00 P 1           1
+MODEL        1
+ATOM      1  _OH OH20    1       0.000   0.000   0.000  1.00  0.00            
+ATOM      2  _C1 OH20    1       0.000   0.000   4.700  1.00  0.00            
+ATOM      3  _C2 OH20    1       0.000   0.000   9.400  1.00  0.00            
+ATOM      4  _C3 OH20    1       0.000   0.000  14.100  1.00  0.00            
+ATOM      5  _C4 OH20    1       0.000   0.000  18.800  1.00  0.00            
+CONECT    1    2
+CONECT    2    3
+CONECT    3    4
+CONECT    4    5
+TER
+ENDMDL
