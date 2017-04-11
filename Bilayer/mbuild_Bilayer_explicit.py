@@ -425,36 +425,36 @@ lipid_system_info = [(DSPC(), int(round(n_lipid * options.DSPC_frac)), 0.0),
 #                      (CHOL(), 0, -0.8)] 
 
 # For absolute numbers
-"""
 lipid_system_info = [(DSPC(), options.DSPC_frac, 0.0),
                       (DPPC(), options.DPPC_frac, -0.3),
-                      (acd16(), options.acd16_frac, -0.5),
-                      (acd22(), options.acd22_frac, -1.0),
-                      (alc12(), options.alc12_frac, -1.4),
-                      (alc14(), options.alc14_frac, -1.2),
-                      (alc16(), options.alc16_frac, -0.5),
-                      (alc18(), options.alc18_frac, -0.8),
-                      (alc20(), options.alc20_frac, -0.3),
-                      (alc22(), options.alc22_frac, -0.3),
-                      (alc24(), options.alc24_frac, -0.6),
-                      (ISIS(), options.ISIS_frac, -2.5),
+                      (acd16(), options.acd16_frac, -1.0),
+                      (acd22(), options.acd22_frac, -1.5),
+                      (alc12(), options.alc12_frac, -1.9),
+                      (alc14(), options.alc14_frac, -1.7),
+                      (alc16(), options.alc16_frac, -1.0),
+                      (alc18(), options.alc18_frac, -1.3),
+                      (alc20(), options.alc20_frac, -0.8),
+                      (alc22(), options.alc22_frac, -0.8),
+                      (alc24(), options.alc24_frac, -1.1),
+                      (ISIS(), options.ISIS_frac, -3.0),
                       (CHOL(), options.CHOL_frac, -0.8)] 
 
-"""
 # For doing fractions
+"""
 lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                       (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
-                      (acd16(), np.floor(n_lipid*options.acd16_frac), -1.0),
-                      (acd22(), np.floor(n_lipid*options.acd22_frac), -1.5),
-                      (alc12(), np.floor(n_lipid*options.alc12_frac), -1.9),
-                      (alc14(), np.floor(n_lipid*options.alc14_frac), -1.7),
-                      (alc16(), np.floor(n_lipid*options.alc16_frac), -1.0),
-                      (alc18(), np.floor(n_lipid*options.alc18_frac), -1.3),
-                      (alc20(), np.floor(n_lipid*options.alc20_frac), -0.8),
-                      (alc22(), np.floor(n_lipid*options.alc22_frac), -0.8),
-                      (alc24(), np.floor(n_lipid*options.alc24_frac), -1.1),
-                      (ISIS(), np.floor(n_lipid*options.ISIS_frac), -3.0),
+                      (acd16(), np.floor(n_lipid*options.acd16_frac), -0.5),
+                      (acd22(), np.floor(n_lipid*options.acd22_frac), -1.0),
+                      (alc12(), np.floor(n_lipid*options.alc12_frac), -1.4),
+                      (alc14(), np.floor(n_lipid*options.alc14_frac), -1.2),
+                      (alc16(), np.floor(n_lipid*options.alc16_frac), -0.5),
+                      (alc18(), np.floor(n_lipid*options.alc18_frac), -0.8),
+                      (alc20(), np.floor(n_lipid*options.alc20_frac), -0.3),
+                      (alc22(), np.floor(n_lipid*options.alc22_frac), -0.3),
+                      (alc24(), np.floor(n_lipid*options.alc24_frac), -0.6),
+                      (ISIS(), np.floor(n_lipid*options.ISIS_frac), -2.5),
                       (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
+                      """
 
                       
 
