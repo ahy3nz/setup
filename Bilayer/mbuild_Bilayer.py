@@ -111,7 +111,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
 
 
-def write_top_file_header(filename = 'default', lipid_system_info = None, n_solvent = 0):
+def write_top_file_header(filename = 'default', lipid_system_info = None):
     """ Generate topology file
 
     Parameters
@@ -491,7 +491,7 @@ atom_index = 1
 
 # Write topology file
 print("Writing <{0}> ...".format(filename))
-top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
+top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info)
 
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
