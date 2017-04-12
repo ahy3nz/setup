@@ -11,10 +11,11 @@ from Prototypes_CG import *
 from scriptWriter import *
 
 GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
+HOOMD_FF="/raid6/homes/ahy3nz/Programs/setup/FF/CG/myforcefield.xml"
 # Mapping martini atomtpyes to atom names that are of that type
-TYPE_TO_NAME_DICT = {'_Q0': ('_NC3'), '_QA': ('_PO4'),
+TYPE_TO_NAME_DICT = {'_Q0': ('_NC3', ''), '_QA': ('_PO4', ''),
         '_Na': ('_GL1', '_GL2'), '_Nda': ('_LOH', '_COH', '_AOH', '_LgOH'),
-        '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF'),
+        '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF', ''),
         '_C1': ('_C1', '_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B') }
 
 def convert_name_to_type(particle):
@@ -32,10 +33,14 @@ def convert_name_to_type(particle):
     old_name = particle.name
     for atomtype in TYPE_TO_NAME_DICT:
         corresponding_atoms = TYPE_TO_NAME_DICT[atomtype]
-        if str(old_name) in corresponding_atoms:
-            particle.name = atomtype
-        else:
-            pass
+        for single_atom in corresponding_atoms:
+            #print(old_name+', ' + single_atom)
+            if str(old_name) == str(single_atom):
+                particle.name = atomtype
+        #if str(old_name) in corresponding_atoms:
+            #particle.name = atomtype
+            else:
+                pass
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
@@ -107,7 +112,6 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Rename the children of the molecule accordingly(not working)
             for child in molecule_to_add.children:
                 convert_name_to_type(child)
-                print(child.name)
 
             # Set charges (for the phospholipids)(not working)
             if 'PC' in molecule_to_add.name:
@@ -147,7 +151,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
 
 
-def write_top_file_header(filename = 'default', lipid_system_info = None, n_solvent = 0):
+def write_top_file_header(filename = 'default', lipid_system_info = None):
     """ Generate topology file
 
     Parameters
@@ -238,41 +242,62 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         Counter for indexing atoms for lipid_atom_dict
 
     """
+    # Do some math to compute water spacing and box length/width/height
+    length = max(system.xyz[:,0])
+    width = max(system.xyz[:,1])
+    n_water_leaflet = n_x * n_y * n_solvent_per_lipid # mol
+    MW = 18.02 # g/mol
+    molar_density = (MW/6.022e23)*1e21 # nm3 molecule-1, volume of one water molecule
+    volume = molar_density * n_water_leaflet # nm3, volume of water for one leaflet
+    height = volume / (length * width) # nm, use this volume to get height of water grid
+    water_spacing =  (molar_density ** (1/3)) # in any direction, the spacing is roughly the cube root of the molar density
+    n_water_x = int(np.ceil(length/water_spacing)) # number of waters along x-direction
+    n_water_y = int(np.ceil(width/water_spacing)) # number of waters along y-direction
+    n_water_z = int(np.ceil(n_water_leaflet/(n_water_x * n_water_y))) # number of waters along z-direction
+
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
+    #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
     bot_water_list = cube.apply(w())
     bot_water = mb.Compound()
     for compound in bot_water_list:
-        convert_name_to_type(compound)
-        bot_water.add(compound)
+        for child in compound:
+            convert_name_to_type(child)
+            bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 1
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
-    for i in range(n_x * n_y * n_solvent_per_lipid):
+    #for i in range(n_x * n_y * n_solvent_per_lipid):
+    for i in range(n_water_x * n_water_y * n_water_z):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, w().name, w().n_particles))
         res_index += 1 
     
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
+    #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
     top_water_list = cube.apply(w())
     top_water = mb.Compound()
     for compound in top_water_list:
-        convert_name_to_type(compound)
-        top_water.add(compound)
+        for child in compound:
+            convert_name_to_type(child)
+            top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 1
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
-    for i in range(n_x * n_y * n_solvent_per_lipid):
+    #for i in range(n_x * n_y * n_solvent_per_lipid):
+    for i in range(n_water_x * n_water_y * n_water_z):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, w().name, w().n_particles))
         res_index += 1
 
@@ -283,9 +308,12 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
 
     
     # Add waters to lipid_atom_dict
-    lipid_atom_dict['w'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * w().n_particles), 1))
-    atom_index += 2 * n_x * n_y * n_solvent_per_lipid * w().n_particles
-    return system, waterbox, lipid_atom_dict, atom_index
+    #lipid_atom_dict['w'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * w().n_particles), 1))
+    #atom_index += 2 * n_x * n_y * n_solvent_per_lipid * w().n_particles
+    lipid_atom_dict['w'] = list(range(atom_index, atom_index + (2 * n_water_x * n_water_y * n_water_z * w().n_particles), 1))
+    atom_index += 2 * n_water_x * n_water_y * n_water_z * w().n_particles
+    n_solvent = 2 * n_water_x * n_water_y * n_water_z
+    return system, waterbox, lipid_atom_dict, atom_index, n_solvent
 
 def write_toc_file_box(table_of_contents = None, box = None):
     """ Write box information to table of contents file
@@ -380,7 +408,6 @@ n_x = 16 #8
 n_y = 16 #8
 n_lipid = 2 * n_x * n_y
 n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
-n_solvent = n_lipid * n_solvent_per_lipid
 random_z_displacement = 0.3
 
 
@@ -402,7 +429,7 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
                       """
 
 lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
-                     (C12OH(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
+                     (OH12(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
 
 if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid):
     sys.exit("System setup error: number of components does not match layer size")
@@ -415,7 +442,7 @@ atom_index = 1
 
 # Write topology file
 print("Writing <{0}> ...".format(filename))
-top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
+top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info)
 
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
@@ -438,25 +465,27 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
 mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-box.maxs[2] += -1*min_z_shift
+box.maxs[2] = max(system.xyz[:,2]) 
+
 
 # Write to table of contents
 write_toc_file_box(table_of_contents = table_of_contents, box = box)
 
 
 # Write gro file suppressing mbuild warnings
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
+#with warnings.catch_warnings():
+    #warnings.simplefilter("ignore")
     #system.save(filename + '.gro', box =box,overwrite=True)
-    system.save(filename + '.hoomdxml', overwrite=True)
-    system.save(filename + '.gsd', overwrite=True)
+system.save(filename + 'noff.hoomdxml',overwrite=True )
+system.save(filename + '.hoomdxml',forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + '.gsd', forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
