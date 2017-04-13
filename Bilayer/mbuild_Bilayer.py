@@ -357,11 +357,7 @@ parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
 parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "PMEA_frac")
-<<<<<<< HEAD
-parser.add_option("--explicit", action="store_true" dest = "explicit")
-=======
 parser.add_option("--explicit", action="store_true", dest = "explicit")
->>>>>>> solvate_acd24
 #parser.add_option("--water", action="store",type="float", default = 0.0, dest = "Water_frac")
 (options, args) = parser.parse_args()
 
