@@ -237,7 +237,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
-    for i in range(n_water_x * n_water_y * n_water_z):
+    for i in range(n_solvent_leaflet):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1 
     
@@ -259,7 +259,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
-    for i in range(n_water_x * n_water_y * n_water_z):
+    for i in range(n_solvent_leaflet):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1
 
@@ -271,10 +271,9 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
 
     
     # Add waters to lipid_atom_dict
-    lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_water_x * n_water_y * n_water_z * H2O().n_particles), 1))
+    lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_solvent_leaflet * H2O().n_particles), 1))
     #atom_index += 2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles
-    atom_index += 2 * n_water_x * n_water_y * n_water_z * H2O().n_particles
-    n_solvent = 2 * n_water_x * n_water_y * n_water_z
+    atom_index += 2 * n_solvent_leaflet* H2O().n_particles
     return system, waterbox, lipid_atom_dict, atom_index
 
 def write_toc_file_box(table_of_contents = None, box = None):
