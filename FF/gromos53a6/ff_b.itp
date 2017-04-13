@@ -22,3 +22,4 @@
 #include "alc20_b.itp"
 #include "alc22_b.itp"
 #include "alc24_b.itp"
+#include "acd24_b.itp"
