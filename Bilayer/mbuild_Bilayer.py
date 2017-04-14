@@ -176,7 +176,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     top_file.write("{:<10s}{:<10d}\n".format('SOL', n_solvent))
     return top_file
 
-def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.4, 
+def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.3, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
@@ -210,22 +210,21 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         Counter for indexing atoms for lipid_atom_dict
 
     """
-    # Do some math to compute water spacing and box length/width/height
-      # Construct 3D grid of water
+    # Construct 3D grid of water, based on box length/width, and water's molar volume
+    # water occupies about 0.3 nm3 per molecule
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    n_solvent_leaflet = n_x * n_y * n_solvent_per_lipid
-    volume_solvent = 0.03 * n_solvent_leaflet # 0.03 nm3 is approximately the volume of one water molecule
-    
     length = max(system.xyz[:,0])
     width = max(system.xyz[:,1])
-    height = volume_solvent / (length * width)
-    n_water_x = int(np.ceil(length/water_spacing))
-    n_water_y = int(np.ceil(width/water_spacing))
+    n_solvent_leaflet = n_x * n_y * n_solvent_per_lipid
+    n_water_x = int(np.floor(length/water_spacing))
+    n_water_y = int(np.floor(width/water_spacing))
     n_water_z = int(np.ceil(n_solvent_leaflet / (n_water_x * n_water_y)))
-    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    height = n_water_z * water_spacing
+    #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
     #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
-    cube.scale( [ length, width, height])
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
     bot_water_list = cube.apply(H2O())
     bot_water_list = bot_water_list[ : n_solvent_leaflet]
     bot_water = mb.Compound()
@@ -245,9 +244,9 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
     #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
     #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
-    cube.scale( [ length, width, height])
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
     top_water_list = cube.apply(H2O())
     top_water_list = top_water_list[ : n_solvent_leaflet]
     top_water = mb.Compound()
@@ -356,7 +355,7 @@ parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
 parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "PMEA_frac")
-parser.add_option("--explicit", action="store_true", dest = "explicit")
+parser.add_option("--explicit", action ="store_true",dest="explicit")
 #parser.add_option("--water", action="store",type="float", default = 0.0, dest = "Water_frac")
 (options, args) = parser.parse_args()
 
@@ -379,7 +378,7 @@ n_y = 8 #8
 n_lipid = 2 * n_x * n_y
 n_solvent_per_lipid = 20#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
 n_solvent = n_lipid * n_solvent_per_lipid
-random_z_displacement = 0.3
+random_z_displacement = 0.05
 
 
 
@@ -447,36 +446,36 @@ lipid_system_info = [(DSPC(), int(round(n_lipid * options.DSPC_frac)), 0.0),
 # For absolute numbers
 if options.explicit:
     lipid_system_info = [(DSPC(), options.DSPC_frac, 0.0),
-                       (DPPC(), options.DPPC_frac, -0.3),
-                       (acd16(), options.acd16_frac, -1.4),
-                       (acd22(), options.acd22_frac, -1.1),
-                       (alc12(), options.alc12_frac, -1.4),
-                       (alc14(), options.alc14_frac, -1.4),
-                       (alc16(), options.alc16_frac, -1.4),
-                       (alc18(), options.alc18_frac, -1.3),
-                       (alc20(), options.alc20_frac, -1.2),
-                       (alc22(), options.alc22_frac, -1.1),
-                       (alc24(), options.alc24_frac, -1.0),
-                       (acd24(), options.acd24_frac, -1.0),
-                       (ISIS(), options.ISIS_frac, -3.0),
-                       (CHOL(), options.CHOL_frac, -0.8)] 
+                          (DPPC(), options.DPPC_frac, -0.3),
+                          (acd16(), options.acd16_frac, -1.4),
+                          (acd22(), options.acd22_frac, -1.1),
+                          (alc12(), options.alc12_frac, -1.5),
+                          (alc14(), options.alc14_frac, -1.5),
+                          (alc16(), options.alc16_frac, -1.4),
+                          (alc18(), options.alc18_frac, -1.3),
+                          (alc20(), options.alc20_frac, -1.2),
+                          (alc22(), options.alc22_frac, -1.1),
+                          (alc24(), options.alc24_frac, -1.0),
+                          (acd24(), options.alc24_frac, -1.0),
+                          (ISIS(), options.ISIS_frac, -2.5),
+                          (CHOL(), options.CHOL_frac, -0.8)] 
 
 # For doing fractions
 else:
     lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
-                       (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
-                       (acd16(), np.floor(n_lipid*options.acd16_frac), -1.4),
-                       (acd22(), np.floor(n_lipid*options.acd22_frac), -1.1),
-                       (alc12(), np.floor(n_lipid*options.alc12_frac), -1.4),
-                       (alc14(), np.floor(n_lipid*options.alc14_frac), -1.4),
-                       (alc16(), np.floor(n_lipid*options.alc16_frac), -1.4),
-                       (alc18(), np.floor(n_lipid*options.alc18_frac), -1.3),
-                       (alc20(), np.floor(n_lipid*options.alc20_frac), -1.2),
-                       (alc22(), np.floor(n_lipid*options.alc22_frac), -1.1),
-                       (alc24(), np.floor(n_lipid*options.alc24_frac), -1.0),
-                       (acd24(), np.floor(n_lipid*options.acd24_frac), -1.0),
-                       (ISIS(), np.floor(n_lipid*options.ISIS_frac), -3.0),
-                       (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
+                          (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
+                          (acd16(), np.floor(n_lipid*options.acd16_frac), -1.4),
+                          (acd22(), np.floor(n_lipid*options.acd22_frac), -1.1),
+                          (alc12(), np.floor(n_lipid*options.alc12_frac), -1.5),
+                          (alc14(), np.floor(n_lipid*options.alc14_frac), -1.5),
+                          (alc16(), np.floor(n_lipid*options.alc16_frac), -1.4),
+                          (alc18(), np.floor(n_lipid*options.alc18_frac), -1.3),
+                          (alc20(), np.floor(n_lipid*options.alc20_frac), -1.2),
+                          (alc22(), np.floor(n_lipid*options.alc22_frac), -1.1),
+                          (alc24(), np.floor(n_lipid*options.alc24_frac), -1.0),
+                          (acd24(), np.floor(n_lipid*options.acd24_frac), -1.0),
+                          (ISIS(), np.floor(n_lipid*options.ISIS_frac), -3.0),
+                          (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
 
                       
 
@@ -497,7 +496,7 @@ top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_
 
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.2,
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.5,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 

@@ -2,7 +2,6 @@ import pdb
 import numpy as np
 import mdtraj as mdtraj
 import sys
-from Prototypes_CG import *
 from optparse import OptionParser
 
 
