@@ -213,9 +213,19 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    length = max(system.xyz[:,0])
+    width = max(system.xyz[:,1])
+    n_solvent_leaflet = n_x * n_y * n_solvent_per_lipid
+    n_water_x = int(np.floor(length/water_spacing))
+    n_water_y = int(np.floor(width/water_spacing))
+    n_water_z = int(np.ceil(n_solvent_leaflet / (n_water_x * n_water_y)))
+    height = n_water_z * water_spacing
+    #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
+    #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
     bot_water_list = cube.apply(H2O())
+    bot_water_list = bot_water_list[ : n_solvent_leaflet]
     bot_water = mb.Compound()
     for compound in bot_water_list:
         bot_water.add(compound)
@@ -231,9 +241,12 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+   # cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
+   # cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+    cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
+    cube.scale([length, width, height])
     top_water_list = cube.apply(H2O())
+    top_water_list = top_water_list[ : n_solvent_leaflet]
     top_water = mb.Compound()
     for compound in top_water_list:
         top_water.add(compound)
