@@ -6,3 +6,4 @@ class acd24(mb.Compound):
         mb.load(os.getcwd()  + '/Prototypes/acd24.pdb', compound=self)
         mb.translate(self, -self[-2].pos)
 
+
