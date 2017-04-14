@@ -111,7 +111,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
 
 
-def write_top_file_header(filename = 'default', lipid_system_info = None):
+def write_top_file_header(filename = 'default', lipid_system_info = None, n_solvent = 0):
     """ Generate topology file
 
     Parameters
@@ -176,7 +176,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     top_file.write("{:<10s}{:<10d}\n".format('SOL', n_solvent))
     return top_file
 
-def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.3, 
+def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.5, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
@@ -210,8 +210,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         Counter for indexing atoms for lipid_atom_dict
 
     """
-    # Construct 3D grid of water, based on box length/width, and water's molar volume
-    # water occupies about 0.3 nm3 per molecule
+    # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
     length = max(system.xyz[:,0])
@@ -235,16 +234,15 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.4
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
-    #for i in range(n_x * n_y * n_solvent_per_lipid):
-    for i in range(n_solvent_leaflet):
+    for i in range(n_x * n_y * n_solvent_per_lipid):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1 
     
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
     # Add to table of contents file for post processing
-    #cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
-    #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
+   # cube = mb.Grid3DPattern(n_x, n_y, n_solvent_per_lipid)
+   # cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
     cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
     cube.scale([length, width, height])
     top_water_list = cube.apply(H2O())
@@ -257,8 +255,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.4
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
-    #for i in range(n_x * n_y * n_solvent_per_lipid):
-    for i in range(n_solvent_leaflet):
+    for i in range(n_x * n_y * n_solvent_per_lipid):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
         res_index += 1
 
@@ -270,9 +267,8 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
 
     
     # Add waters to lipid_atom_dict
-    lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_solvent_leaflet * H2O().n_particles), 1))
-    #atom_index += 2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles
-    atom_index += 2 * n_solvent_leaflet* H2O().n_particles
+    lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles), 1))
+    atom_index += 2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles
     return system, waterbox, lipid_atom_dict, atom_index
 
 def write_toc_file_box(table_of_contents = None, box = None):
@@ -492,7 +488,7 @@ atom_index = 1
 
 # Write topology file
 print("Writing <{0}> ...".format(filename))
-top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info)
+top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_system_info, n_solvent = n_solvent)
 
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
@@ -514,7 +510,7 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index  = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
@@ -583,7 +579,7 @@ scriptWriter.write_Rahman_script(MDrun = True)
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
 mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-box.maxs[2] = max(system.xyz[:,2]) 
+box.maxs[2] += -1*min_z_shift
 
 # Write to table of contents
 write_toc_file_box(table_of_contents = table_of_contents, box = box)
