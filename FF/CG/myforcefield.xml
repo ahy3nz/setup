@@ -14480,8 +14480,8 @@
 	<Atom type="SC1" charge="0" sigma="1" epsilon="1"/>
     <!--<Atom type="Qda" charge="0" sigma="1" epsilon="1"/>-->
 	<Atom type="Qd" charge="0" sigma="1" epsilon="1"/>
-	<Atom type="Qa" charge="1" sigma="1" epsilon="1"/>
-	<Atom type="Q0" charge="-1" sigma="1" epsilon="1"/>
+	<Atom type="Qa" charge="-1" sigma="1" epsilon="1"/>
+	<Atom type="Q0" charge="1" sigma="1" epsilon="1"/>
 	<Atom type="W" charge="0" sigma="1" epsilon="1"/>
 </NonbondedForce>
 </ForceField>
