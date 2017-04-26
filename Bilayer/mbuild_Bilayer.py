@@ -377,69 +377,8 @@ n_solvent = n_lipid * n_solvent_per_lipid
 random_z_displacement = 0.05
 
 
-
-# Todo: Obtain prototypes for more bilayer molecules
-"""
-lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
-                      (DPPC(), np.ceil(n_lipid * options.DPPC_frac), 2.6)
-                      (acd16(), np.floor(n_lipid * options.acd16_frac), 4.4),
-                      (acd22(), np.floor(n_lipid * options.acd22_frac), 3.2),
-                      (alc12(), np.floor(n_lipid * options.Calc12_frac), 2.6),
-                      (alc14(), np.floor(n_lipid * options.Calc14_frac), 2.8),
-                      (alc16(), np.floor(n_lipid * options.Calc16_frac), 2.6),
-                      (alc18(), np.floor(n_lipid * options.Calc18_frac), 2.4),
-                      (alc20(), np.floor(n_lipid * options.Calc20_frac), 3.0),
-                      (alc22(), np.floor(n_lipid * options.Calc22_frac), 3.2),
-                      (alc24(), np.floor(n_lipid * options.Calc24_frac), 3.2),
-                      (ISIS(), np.floor(n_lipid * options.ISIS_frac), 3.0),
-                      (CHOL(), np.floor(n_lipid * options.CHOL_frac), 4.0)] 
-                      """
-"""
-lipid_system_info = [(DSPC(), int(round(n_lipid * options.DSPC_frac)), 0.0),
-                      (DPPC(), int(round(n_lipid * options.DPPC_frac)), 0.3),
-                      (acd16(), int(round(n_lipid * options.acd16_frac)), 1.4),
-                      (acd22(), int(round(n_lipid * options.acd22_frac)), 1.0),
-                      (alc12(), int(round(n_lipid * options.Calc12_frac)), 1.4),
-                      (alc14(), int(round(n_lipid * options.Calc14_frac)), 1.2),
-                      (alc16(), int(round(n_lipid * options.Calc16_frac)), 1.0),
-                      (alc18(), int(round(n_lipid * options.Calc18_frac)), 0.8),
-                      (alc20(), int(round(n_lipid * options.Calc20_frac)), 0.6),
-                      (alc22(), int(round(n_lipid * options.Calc22_frac)), 0.6),
-                      (alc24(), int(round(n_lipid * options.Calc24_frac)), 0.6),
-                      (ISIS(), int(round(n_lipid * options.ISIS_frac)), 0.4),
-                      (CHOL(), int(round(n_lipid * options.CHOL_frac)), 0.8)] 
-"""
-# Hard coded lipid system info for complex systems
-# This is for 50 WVTR
-#lipid_system_info = [(DSPC(), 14, 0.0),
-#                      (DPPC(), 0, -0.3),
-#                      (acd16(), 0, -0.5),
-#                      (acd22(), 22, -1.0),
-#                      (alc12(), 0, -1.4),
-#                      (alc14(), 0, -1.2),
-#                      (alc16(), 48, -0.5),
-#                      (alc18(), 0, -0.8),
-#                      (alc20(), 0, -0.3),
-#                      (alc22(), 30, -0.3),
-#                      (alc24(), 0, -0.6),
-#                      (ISIS(), 14, -2.5),
-#                      (CHOL(), 0, -0.8)] 
-#
-#lipid_system_info = [(DSPC(), 14, 0.0),
-#                      (DPPC(), 0, -0.3),
-#                      (acd16(), 0, -0.5),
-#                      (acd22(), 22, -1.0),
-#                      (alc12(), 0, -1.4),
-#                      (alc14(), 0, -1.2),
-#                      (alc16(), 48, -0.5),
-#                      (alc18(), 0, -0.8),
-#                      (alc20(), 0, -0.3),
-#                      (alc22(), 30, -0.3),
-#                      (alc24(), 0, -0.6),
-#                      (ISIS(), 14, -2.5),
-#                      (CHOL(), 0, -0.8)] 
-
 # For absolute numbers
+'''
 if options.explicit:
     lipid_system_info = [(DSPC(), options.DSPC_frac, 0.0),
                           (DPPC(), options.DPPC_frac, -0.3),
@@ -455,25 +394,28 @@ if options.explicit:
                           (acd24(), options.alc24_frac, -1.0),
                           (ISIS(), options.ISIS_frac, -2.5),
                           (CHOL(), options.CHOL_frac, -0.8)] 
+                          '''
+if options.explicit:
+    n_lipid = 1
 
 # For doing fractions
-else:
-    lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
+lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
-                          (acd16(), np.floor(n_lipid*options.acd16_frac), -1.2),
-                          (acd22(), np.floor(n_lipid*options.acd22_frac), -1.1),
-                          (alc12(), np.floor(n_lipid*options.alc12_frac), -1.2),
-                          (alc14(), np.floor(n_lipid*options.alc14_frac), -1.2),
-                          (alc16(), np.floor(n_lipid*options.alc16_frac), -1.2),
-                          (alc18(), np.floor(n_lipid*options.alc18_frac), -1.2),
-                          (alc20(), np.floor(n_lipid*options.alc20_frac), -1.2),
-                          (alc22(), np.floor(n_lipid*options.alc22_frac), -1.1),
-                          (alc24(), np.floor(n_lipid*options.alc24_frac), -1.0),
-                          (acd24(), np.floor(n_lipid*options.acd24_frac), -1.0),
+                          (alc12(), np.floor(n_lipid*options.alc12_frac), -0.5),
+                          (alc14(), np.floor(n_lipid*options.alc14_frac), -0.5),
+                          (alc16(), np.floor(n_lipid*options.alc16_frac), -0.5),
+                          (acd16(), np.floor(n_lipid*options.acd16_frac), -0.5),
+                          (alc18(), np.floor(n_lipid*options.alc18_frac), -0.5),
+                          (alc20(), np.floor(n_lipid*options.alc20_frac), -0.4),
+                          (alc22(), np.floor(n_lipid*options.alc22_frac), -0.4),
+                          (acd22(), np.floor(n_lipid*options.acd22_frac), -0.5),
+                          (alc24(), np.floor(n_lipid*options.alc24_frac), -0.3),
+                          (acd24(), np.floor(n_lipid*options.acd24_frac), -0.3),
                           (ISIS(), np.floor(n_lipid*options.ISIS_frac), -2.5),
                           (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
 
                       
+n_lipid = 2 * n_x * n_y
 
 #lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
                      #(Calc12(), np.floor(n_lipid * options.Calc12_frac), 1.4)] #was 2.6
