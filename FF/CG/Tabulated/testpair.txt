@@ -1,2 +1,0 @@
-P5 	P5 	1 	0.24145E-00 	0.26027E-02 ; supra attractive
-
