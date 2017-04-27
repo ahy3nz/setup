@@ -10,4 +10,4 @@ from Prototypes_CG.FA16 import *
 from Prototypes_CG.FA22 import *
 from Prototypes_CG.w import *
 __all__ = ["OH12", "OH14", "OH16", "OH18", "OH20", "OH22", "OH24", "FA16",
-    "FA22A", "DSPC", "w" ]
+    "FA22", "DSPC", "w" ]
