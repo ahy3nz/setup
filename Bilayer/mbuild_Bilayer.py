@@ -522,6 +522,9 @@ scriptWriter.write_Rahman_script(STrun = True)
 scriptWriter.write_Rahman_script(MDrun = True)
 scriptWriter.write_Accre_script(STrun = True)
 scriptWriter.write_Accre_script(MDrun = True)
+scriptWriter.write_Edison_script(STrun = True)
+scriptWriter.write_Edison_script(MDrun = True)
+
 
 
 # Shift everything to positive z and off x and y axes
