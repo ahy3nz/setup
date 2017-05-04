@@ -176,7 +176,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     top_file.write("{:<10s}{:<10d}\n".format('SOL', n_solvent))
     return top_file
 
-def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.5, 
+def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.3, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
@@ -231,7 +231,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
-    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.4
+    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -252,7 +252,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
-    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.4
+    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -338,6 +338,8 @@ parser.add_option("-r", "--rot", action="store", type ="float", default = 0.0, d
 parser.add_option("--DSPC", action="store",type="float", default = 1.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
 parser.add_option("--acd16", action="store",type="float", default = 0.0, dest = "acd16_frac")
+parser.add_option("--acd18", action="store",type="float", default = 0.0, dest = "acd18_frac")
+parser.add_option("--acd20", action="store",type="float", default = 0.0, dest = "acd20_frac")
 parser.add_option("--acd22", action="store",type="float", default = 0.0, dest = "acd22_frac")
 parser.add_option("--alc12", action="store",type="float", default = 0.0,  dest = "alc12_frac")
 parser.add_option("--alc14", action="store",type="float", default = 0.0, dest = "alc14_frac")
@@ -401,16 +403,18 @@ if options.explicit:
 # For doing fractions
 lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
-                          (alc12(), np.floor(n_lipid*options.alc12_frac), -0.5),
-                          (alc14(), np.floor(n_lipid*options.alc14_frac), -0.5),
-                          (alc16(), np.floor(n_lipid*options.alc16_frac), -0.5),
-                          (acd16(), np.floor(n_lipid*options.acd16_frac), -0.5),
-                          (alc18(), np.floor(n_lipid*options.alc18_frac), -0.5),
-                          (alc20(), np.floor(n_lipid*options.alc20_frac), -0.4),
-                          (alc22(), np.floor(n_lipid*options.alc22_frac), -0.4),
+                          (alc12(), np.floor(n_lipid*options.alc12_frac), -0.2),
+                          (alc14(), np.floor(n_lipid*options.alc14_frac), -0.2),
+                          (alc16(), np.floor(n_lipid*options.alc16_frac), -0.4),
+                          (acd16(), np.floor(n_lipid*options.acd16_frac), -0.4),
+                          (alc18(), np.floor(n_lipid*options.alc18_frac), -0.4),
+                          (acd18(), np.floor(n_lipid*options.acd18_frac), -0.4),
+                          (alc20(), np.floor(n_lipid*options.alc20_frac), -0.5),
+                          (acd20(), np.floor(n_lipid*options.acd20_frac), -0.5),
+                          (alc22(), np.floor(n_lipid*options.alc22_frac), -0.5),
                           (acd22(), np.floor(n_lipid*options.acd22_frac), -0.5),
-                          (alc24(), np.floor(n_lipid*options.alc24_frac), -0.3),
-                          (acd24(), np.floor(n_lipid*options.acd24_frac), -0.3),
+                          (alc24(), np.floor(n_lipid*options.alc24_frac), -0.4),
+                          (acd24(), np.floor(n_lipid*options.acd24_frac), -0.4),
                           (ISIS(), np.floor(n_lipid*options.ISIS_frac), -2.5),
                           (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
 
@@ -434,7 +438,7 @@ top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_
 
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.5,
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 
@@ -516,6 +520,8 @@ scriptWriter.write_Cori_script(STrun = True)
 scriptWriter.write_Cori_script(MDrun = True)
 scriptWriter.write_Rahman_script(STrun = True)
 scriptWriter.write_Rahman_script(MDrun = True)
+scriptWriter.write_Accre_script(STrun = True)
+scriptWriter.write_Accre_script(MDrun = True)
 
 
 # Shift everything to positive z and off x and y axes
