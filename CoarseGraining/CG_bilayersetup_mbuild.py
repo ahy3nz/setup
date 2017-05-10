@@ -208,7 +208,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     top_file.write("{:<10s}{:<10d}\n".format(w().name, n_solvent))
     return top_file
 
-def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.8, 
+def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.3, 
         res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
@@ -246,14 +246,10 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     length = max(system.xyz[:,0])
     width = max(system.xyz[:,1])
     n_water_leaflet = n_x * n_y * n_solvent_per_lipid # mol
-    MW = 18.02 # g/mol
-    molar_density = (MW/6.022e23)*1e21 # nm3 molecule-1, volume of one water molecule
-    volume = molar_density * n_water_leaflet # nm3, volume of water for one leaflet
-    height = volume / (length * width) # nm, use this volume to get height of water grid
-    water_spacing =  (molar_density ** (1/3)) # in any direction, the spacing is roughly the cube root of the molar density
     n_water_x = int(np.ceil(length/water_spacing)) # number of waters along x-direction
     n_water_y = int(np.ceil(width/water_spacing)) # number of waters along y-direction
     n_water_z = int(np.ceil(n_water_leaflet/(n_water_x * n_water_y))) # number of waters along z-direction
+    height = n_water_z * water_spacing
 
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
@@ -263,6 +259,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     cube.scale([length, width, height])
     #cube.scale( [ water_spacing * n_x, water_spacing * n_y, water_spacing * n_solvent_per_lipid])
     bot_water_list = cube.apply(w())
+    bot_water_list = bot_water_list[ : n_water_leaflet]
     bot_water = mb.Compound()
     for compound in bot_water_list:
         for child in compound:
@@ -270,7 +267,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
             bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
-    shift_botwater = abs(highest_botwater - lowest_botlipid) + 1
+    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
     mb.translate(bot_water, [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -286,6 +283,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     cube = mb.Grid3DPattern(n_water_x, n_water_y, n_water_z)
     cube.scale([length, width, height])
     top_water_list = cube.apply(w())
+    top_water_list = top_water_list[ : n_water_leaflet]
     top_water = mb.Compound()
     for compound in top_water_list:
         for child in compound:
@@ -293,7 +291,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
             top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
-    shift_topwater = abs(highest_toplipid - lowest_topwater) + 1
+    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
     mb.translate(top_water, [0, 0, shift_topwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -404,10 +402,13 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-n_x = 16 #8
-n_y = 16 #8
+#n_x = 16 #8
+#n_y = 16 #8
+n_x = 1
+n_y = 1
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+#n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 2
 random_z_displacement = 0.3
 
 
@@ -463,6 +464,7 @@ mb.spin_y(top_layer, theta=np.pi)
 system = mb.Compound()
 system.add(bot_layer)
 system.add(top_layer)
+pdb.set_trace()
 
 # Solvate system, get new box
 system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
@@ -484,7 +486,7 @@ write_toc_file_box(table_of_contents = table_of_contents, box = box)
     #warnings.simplefilter("ignore")
     #system.save(filename + '.gro', box =box,overwrite=True)
 system.save(filename + 'noff.hoomdxml',overwrite=True )
-system.save(filename + '.hoomdxml',forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + '.hoomdxml',box=box,forcefield_files=HOOMD_FF, overwrite=True)
 system.save(filename + '.gsd', forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
