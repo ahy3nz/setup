@@ -16,6 +16,7 @@
 #include "acd16.itp"
 #include "acd22.itp"
 #include "alc12.itp"
+#include "acd12.itp"
 #include "alc14.itp"
 #include "alc16.itp"
 #include "acd18.itp"
