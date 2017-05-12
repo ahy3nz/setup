@@ -1,0 +1,76 @@
+[ moleculetype ]
+; Name 		nrexcl
+acd12 		2
+
+new = 16-old
+[ atoms ]
+;      nr    type    renr  residu    atom    cgnr  charge      mass
+       1     CH3       1   acd12     CH3       1   0.000   15.0350
+       2     CH2       1   acd12     CH2       2   0.000   14.0270
+       3     CH2       1   acd12     CH2       3   0.000   14.0270
+       4     CH2       1   acd12     CH2       4   0.000   14.0270
+       5     CH2       1   acd12     CH2       5   0.000   14.0270
+       6     CH2       1   acd12     CH2       6   0.000   14.0270
+       7     CH2       1   acd12     CH2       7   0.000   14.0270
+       8     CH2       1   acd12     CH2       8   0.000   14.0270
+       9     CH2       1   acd12     CH2       9   0.000   14.0270
+      10     CH2       1   acd12     CH2      10   0.000   14.0270
+      11     CH2       1   acd12     CH2      11   0.000   14.0270
+      12       O       1   acd12       O      12  -0.380   15.9994
+      13       C       1   acd12       C      12   0.530   12.0110
+      14      OA       1   acd12      OA      12  -0.548   15.9994
+      15       H       1   acd12       H      12   0.398    1.0080
+
+[ bonds ]
+;  ai   aj  funct   c0         c1
+   15   14    2   gb_1 
+   14   13    2   gb_13
+   13   12    2   gb_5
+   12   11    2   gb_27
+   11   10    2   gb_27
+   10    9    2   gb_27
+    9    8    2   gb_27
+    8    7    2   gb_27
+    7    6    2   gb_27
+    6    5    2   gb_27
+    5    4    2   gb_27
+    4    3    2   gb_27
+    3    2    2   gb_27
+    2    1    2   gb_27
+[ pairs ]
+;  ai   aj  funct  ;  all 1-4 pairs but the ones excluded in GROMOS itp
+
+[ angles ]
+;  ai   aj   ak  funct   angle     fc
+   15   14   13    2    ga_12
+   14   13   12    2    ga_33
+   14   13   11    2    ga_19
+   12   13   11    2    ga_30
+   13   11   10    2    ga_15
+   11   10    9    2    ga_15
+   10    9    8    2    ga_15
+    9    8    7    2    ga_15
+    8    7    6    2    ga_15
+    7    6    5    2    ga_15
+    6    5    4    2    ga_15
+    5    4    3    2    ga_15
+    4    3    2    2    ga_15
+    3    2    1    2    ga_15
+[ dihedrals ]
+; GROMOS improper dihedrals
+;  ai   aj   ak   al  funct   angle     fc
+   13   12   14   11    2      gi_1
+
+[ dihedrals ]
+;  ai   aj   ak   al  funct    ph0      cp     mult
+   15   14   13   12    1    gd_32
+   12   13   11   10    1    gd_12
+   13   11   10    9    1    gd_40
+   11   10    9    8    1    gd_40
+   10    9    8    7    1    gd_34
+    9    8    7    6    1    gd_34
+    8    7    6    5    1    gd_34
+    7    6    5    4    1    gd_34
+    6    5    4    3    1    gd_34
+    5    4    3    2    1    gd_34
+    4    3    2    1    1    gd_34
