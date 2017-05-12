@@ -1,3 +1,4 @@
+from Prototypes.acd12 import *
 from Prototypes.alc12 import *
 from Prototypes.alc14 import *
 from Prototypes.acd16 import *
@@ -15,4 +16,4 @@ from Prototypes.DPPC import *
 from Prototypes.DSPC import *
 from Prototypes.ISIS import *
 from Prototypes.H2O import *
-__all__ = ["alc12", "alc14", "acd16", "alc16", "acd18", "alc18", "acd20", "alc20", "acd22", "alc22", "alc24", "acd24", "CHOL", "DPPC", "DSPC", "ISIS", "H2O"]
+__all__ = ["acd12", "alc12", "alc14", "acd16", "alc16", "acd18", "alc18", "acd20", "alc20", "acd22", "alc22", "alc24", "acd24", "CHOL", "DPPC", "DSPC", "ISIS", "H2O"]
