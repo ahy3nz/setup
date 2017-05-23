@@ -13,7 +13,7 @@ from scriptWriter import *
 GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
 HOOMD_FF="/raid6/homes/ahy3nz/Programs/setup/FF/CG/myforcefield.xml"
 # Mapping martini atomtpyes to atom names that are of that type
-TYPE_TO_NAME_DICT = {'_Q0': ('_NC3', ''), '_QA': ('_PO4', ''),
+TYPE_TO_NAME_DICT = {'_Q0': ('_NC3', ''), '_Qa': ('_PO4', ''),
         '_Na': ('_GL1', '_GL2'), '_Nda': ('_LOH', '_COH', '_AOH', '_LgOH'),
         '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF', ''),
         '_C1': ('_C1', '_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B') }
@@ -402,13 +402,13 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-#n_x = 16 #8
-#n_y = 16 #8
-n_x = 1
-n_y = 1
+n_x = 16 #8
+n_y = 16 #8
+#n_x = 1
+#n_y = 1
 n_lipid = 2 * n_x * n_y
-#n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
-n_solvent_per_lipid = 2
+n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+#n_solvent_per_lipid = 2
 random_z_displacement = 0.3
 
 
@@ -464,7 +464,6 @@ mb.spin_y(top_layer, theta=np.pi)
 system = mb.Compound()
 system.add(bot_layer)
 system.add(top_layer)
-pdb.set_trace()
 
 # Solvate system, get new box
 system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
@@ -474,7 +473,10 @@ top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
 mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-box.maxs[2] = max(system.xyz[:,2]) 
+box.maxs[2] = max(system.xyz[:,2]) + 0.1
+box.maxs[1] = max(system.xyz[:,1]) + 0.1
+box.maxs[0] = max(system.xyz[:,0]) + 0.1
+
 
 
 # Write to table of contents
@@ -485,8 +487,21 @@ write_toc_file_box(table_of_contents = table_of_contents, box = box)
 #with warnings.catch_warnings():
     #warnings.simplefilter("ignore")
     #system.save(filename + '.gro', box =box,overwrite=True)
+    
+# In gromacs coordiantes, the smallest coordiante is just 0,0,0 
+# We can just shift everything by the max/2
+# Before saving hoomdxml, center everything around 0,0,0
+
+#system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
+#box.mins[0] = min(system.xyz[:,0])-1
+#box.mins[1] = min(system.xyz[:,1])-1
+#box.mins[2] = min(system.xyz[:,2])-1
+#box.maxs[0] = max(system.xyz[:,0])+1
+#box.maxs[1] = max(system.xyz[:,1])+1
+#box.maxs[2] = max(system.xyz[:,2])+1
 system.save(filename + 'noff.hoomdxml',overwrite=True )
-system.save(filename + '.hoomdxml',box=box,forcefield_files=HOOMD_FF, overwrite=True)
+pdb.set_trace()
+system.save(filename + '.hoomdxml', box=box,forcefield_files=HOOMD_FF, overwrite=True)
 system.save(filename + '.gsd', forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
