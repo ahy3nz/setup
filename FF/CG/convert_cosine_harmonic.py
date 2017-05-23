@@ -69,8 +69,8 @@ cos_forces = k_cos * ( np.cos(theta_range) - np.cos(theta_0)) * (-np.sin(theta_r
 cos_energies =  0.5 * k_cos * ((np.cos(theta_range)- np.cos(theta_0))**2)
 
 # DO the actual curve fitting
-#k_harm,covars = curve_fit(harmonic_force, theta_range, cos_forces) # Fit to forces
-k_harm,covars = curve_fit(harmonic_energy, theta_range, cos_energies) # Fit to energies
+k_harm,covars = curve_fit(harmonic_force, theta_range, cos_forces) # Fit to forces
+#k_harm,covars = curve_fit(harmonic_energy, theta_range, cos_energies) # Fit to energies
 
 # generate some points
 harmonic_forces = harmonic_force(theta_range, k_harm)
