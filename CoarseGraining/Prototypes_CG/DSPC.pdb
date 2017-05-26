@@ -19,7 +19,7 @@ ATOM     14 _C5B DSPC    1       .0310   .9700  2.7650  1.00  0.00
 CONECT    1    2
 CONECT    2    3
 CONECT    3    4
-CONECT    4    5
+CONECT    3    5
 CONECT    5    6
 CONECT    6    7
 CONECT    7    8
