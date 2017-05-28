@@ -2,7 +2,6 @@
 ; Name 		nrexcl
 acd12 		2
 
-new = 16-old
 [ atoms ]
 ;      nr    type    renr  residu    atom    cgnr  charge      mass
        1     CH3       1   acd12     CH3       1   0.000   15.0350
