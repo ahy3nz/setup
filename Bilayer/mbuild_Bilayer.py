@@ -10,7 +10,7 @@ from optparse import OptionParser
 from Prototypes import *
 from scriptWriter import *
 
-GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/gromos53a6/"
+GMX_FF_DIR = "/home/yangah/Programs/setup/FF/gromos53a6/"
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
@@ -337,10 +337,12 @@ parser.add_option("-a", "--APL", action="store",type="float", default = 0.50, de
 parser.add_option("-r", "--rot", action="store", type ="float", default = 0.0, dest = "rotation")
 parser.add_option("--DSPC", action="store",type="float", default = 1.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default = 0.0, dest = "DPPC_frac")
+parser.add_option("--acd12", action="store",type="float", default = 0.0, dest = "acd12_frac")
 parser.add_option("--acd16", action="store",type="float", default = 0.0, dest = "acd16_frac")
 parser.add_option("--acd18", action="store",type="float", default = 0.0, dest = "acd18_frac")
 parser.add_option("--acd20", action="store",type="float", default = 0.0, dest = "acd20_frac")
 parser.add_option("--acd22", action="store",type="float", default = 0.0, dest = "acd22_frac")
+parser.add_option("--acd24", action="store",type="float", default = 0.0, dest = "acd24_frac")
 parser.add_option("--alc12", action="store",type="float", default = 0.0,  dest = "alc12_frac")
 parser.add_option("--alc14", action="store",type="float", default = 0.0, dest = "alc14_frac")
 parser.add_option("--alc16", action="store",type="float", default = 0.0, dest = "alc16_frac")
@@ -403,6 +405,7 @@ if options.explicit:
 # For doing fractions
 lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
+                          (acd12(), np.floor(n_lipid*options.acd12_frac), -0.2),
                           (alc12(), np.floor(n_lipid*options.alc12_frac), -0.2),
                           (alc14(), np.floor(n_lipid*options.alc14_frac), -0.2),
                           (alc16(), np.floor(n_lipid*options.alc16_frac), -0.4),
