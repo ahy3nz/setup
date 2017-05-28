@@ -350,7 +350,6 @@ parser.add_option("--alc18", action="store",type="float", default = 0.0, dest = 
 parser.add_option("--alc20", action="store",type="float", default = 0.0, dest = "alc20_frac")
 parser.add_option("--alc22", action="store",type="float", default = 0.0, dest = "alc22_frac")
 parser.add_option("--alc24", action="store",type="float", default = 0.0, dest = "alc24_frac")
-parser.add_option("--acd24", action="store",type="float", default = 0.0, dest = "acd24_frac")
 parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "ISIS_frac")
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
 parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
