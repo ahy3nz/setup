@@ -494,23 +494,12 @@ system.save(filename + '.gro', box =box,overwrite=True)
 # Also need to divide by 10 because of a unit conversion
 
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
-box.mins[0] = min(system.xyz[:,0])-1
-box.mins[1] = min(system.xyz[:,1])-1
-box.mins[2] = min(system.xyz[:,2])-1
-box.maxs[0] = max(system.xyz[:,0])+1
-box.maxs[1] = max(system.xyz[:,1])+1
-box.maxs[2] = max(system.xyz[:,2])+1
 system.xyz /= 10
-box.mins[0] /= 10
-box.mins[1] /= 10
-box.mins[2] /= 10
-box.maxs[0] /= 10
-box.maxs[1] /= 10
-box.maxs[2] /= 10
-box._lengths = box.maxs-box.mins
+box = system.boundingbox()
+box.lengths = box.lengths+0.2
 #system.save(filename + 'noff.hoomdxml',overwrite=True )
 system.save(filename + '.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + '.gsd', forcefield_files=HOOMD_FF,overwrite=True)
+system.save(filename + '.gsd', box=box, forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
