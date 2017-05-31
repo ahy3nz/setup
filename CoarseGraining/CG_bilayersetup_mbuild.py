@@ -119,7 +119,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
                 molecule_to_add.children[1].charge = -1
 
             # Apply tilt angle
-            mb.spin_y(molecule_to_add, tilt_angle)
+            molecule_to_add.spin(tilt_angle, [0,1,0])
 
             # Apply z_offset
             z_offset = lipid_type[2]
@@ -127,7 +127,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Apply APL and z_offset to identify the position for the molecule in the grid
             position = [i * spacing, j * spacing, z_offset + layer_shift +
                         (-1 * np.random.random() * random_z_displacement)]
-            mb.translate(molecule_to_add, position)
+            molecule_to_add.translate(position)
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
@@ -268,7 +268,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
-    mb.translate(bot_water, [0, 0, -1 * shift_botwater])
+    bot_water.translate([0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
     for i in range(n_water_x * n_water_y * n_water_z):
@@ -292,7 +292,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
-    mb.translate(top_water, [0, 0, shift_topwater])
+    top_water.translate([0, 0, shift_topwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
     for i in range(n_water_x * n_water_y * n_water_z):
@@ -402,12 +402,12 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-n_x = 16 #8
-n_y = 16 #8
+n_x = 8 #8
+n_y = 8 #8
 #n_x = 1
 #n_y = 1
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 20#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
 #n_solvent_per_lipid = 2
 random_z_displacement = 0.3
 
@@ -453,12 +453,12 @@ bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
 
 # Generate the top layer randomly
 top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.2,
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 5.0,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
 # Rotate bottom layer to form bilayer
-mb.spin_y(top_layer, theta=np.pi)
+top_layer.spin(np.pi, [0,1,0])
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
@@ -466,13 +466,13 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 1.2, 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
+system.translate( [0.1, 0.1, -1 * min_z_shift])
 box.maxs[2] = max(system.xyz[:,2]) + 0.1
 box.maxs[1] = max(system.xyz[:,1]) + 0.1
 box.maxs[0] = max(system.xyz[:,0]) + 0.1
@@ -494,23 +494,12 @@ system.save(filename + '.gro', box =box,overwrite=True)
 # Also need to divide by 10 because of a unit conversion
 
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
-box.mins[0] = min(system.xyz[:,0])-1
-box.mins[1] = min(system.xyz[:,1])-1
-box.mins[2] = min(system.xyz[:,2])-1
-box.maxs[0] = max(system.xyz[:,0])+1
-box.maxs[1] = max(system.xyz[:,1])+1
-box.maxs[2] = max(system.xyz[:,2])+1
-system.xyz /= 10
-box.mins[0] /= 10
-box.mins[1] /= 10
-box.mins[2] /= 10
-box.maxs[0] /= 10
-box.maxs[1] /= 10
-box.maxs[2] /= 10
-box._lengths = box.maxs-box.mins
+#system.xyz /= 10
+box = system.boundingbox
+box.lengths = box.lengths+0.2
 #system.save(filename + 'noff.hoomdxml',overwrite=True )
 system.save(filename + '.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + '.gsd', forcefield_files=HOOMD_FF,overwrite=True)
+system.save(filename + '.gsd', box=box, forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
