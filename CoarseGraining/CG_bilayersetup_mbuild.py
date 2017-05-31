@@ -127,7 +127,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Apply APL and z_offset to identify the position for the molecule in the grid
             position = [i * spacing, j * spacing, z_offset + layer_shift +
                         (-1 * np.random.random() * random_z_displacement)]
-            mb.translate(molecule_to_add, position)
+            molecule_to_add.translate(position)
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
@@ -268,7 +268,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
-    mb.translate(bot_water, [0, 0, -1 * shift_botwater])
+    bot_water.translate([0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
     for i in range(n_water_x * n_water_y * n_water_z):
@@ -292,7 +292,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
-    mb.translate(top_water, [0, 0, shift_topwater])
+    top_water.translate([0, 0, shift_topwater])
     # Add waters to table of contents
     #for i in range(n_x * n_y * n_solvent_per_lipid):
     for i in range(n_water_x * n_water_y * n_water_z):
@@ -458,7 +458,7 @@ top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
 # Rotate bottom layer to form bilayer
-mb.spin_y(top_layer, theta=np.pi)
+top_layer.spin(np.pi, [0,1,0])
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
@@ -472,7 +472,7 @@ top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
+system.translate( [0.1, 0.1, -1 * min_z_shift])
 box.maxs[2] = max(system.xyz[:,2]) + 0.1
 box.maxs[1] = max(system.xyz[:,1]) + 0.1
 box.maxs[0] = max(system.xyz[:,0]) + 0.1
