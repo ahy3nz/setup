@@ -79,7 +79,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Do geometry transformations
             molecule_to_add = mb.clone(lipid_type[0])
             # Apply tilt angle
-            mb.spin_y(molecule_to_add, tilt_angle)
+            molecule_to_add.spin(tilt_angle, [0, 1, 0])
 
             # Apply z_offset
             z_offset = lipid_type[2]
@@ -87,7 +87,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Apply APL and z_offset to identify the position for the molecule in the grid
             position = [i * spacing, j * spacing, z_offset + layer_shift +
                         (-1 * np.random.random() * random_z_displacement)]
-            mb.translate(molecule_to_add, position)
+            molecule.to_add.translate(position)
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
@@ -232,7 +232,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
-    mb.translate(bot_water, [0, 0, -1 * shift_botwater])
+    bot_water.translate( [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
@@ -253,7 +253,7 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
     shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
-    mb.translate(top_water, [0, 0, shift_topwater])
+    top_water.translate([0,0, shift_topwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
         table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, "HOH", H2O().n_particles))
@@ -450,7 +450,7 @@ top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 # Rotate bottom layer to form bilayer
-mb.spin_y(top_layer, theta=np.pi)
+top_layer.spin(np.pi, [0, 1, 0])
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
@@ -531,7 +531,7 @@ scriptWriter.write_Edison_script(MDrun = True)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
+system.translate( [0.1, 0.1, -1 * min_z_shift])
 box.maxs[2] += -1*min_z_shift
 
 # Write to table of contents
