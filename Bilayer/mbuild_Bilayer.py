@@ -462,58 +462,6 @@ system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
-"""
-#new stuff
-systembox=system._gen_box()
-# Bilayer needs to be shifted to fit inside the box for gromacs (can't have any negative coordinates)
-mb.translate(system, [np.abs(systembox.mins[0]), np.abs(systembox.mins[1]), np.abs(systembox.mins[2])])
-
-# Shrink the x and y dimensions of the box to prevent packmol from shoving atoms in weird locations
-cross_area = (n_x*spacing-1) * (n_y*spacing-1)
-n_solvent_per_layer = 1280
-leaflet_water_z = n_solvent_per_layer * 2.66602458e-2/cross_area
-# Redefine the box to account for shifted coordinates and add extra space in z-direcction
-smallbox = mb.Box(mins = [0, 0, systembox.mins[2] - leaflet_water_z], 
-        maxs = [n_x * spacing, n_y * spacing, systembox.maxs[2] + leaflet_water_z])
-# shift everything to be in box
-min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-smallbox.maxs[2] += -1*min_z_shift
-# The solvate box will have a reduced cross-sectional area to prevent waters in strange locations
-solvatebox = mb.Box(mins = [0.5, 0.5, smallbox.mins[2]],
-    maxs = [smallbox.maxs[0] - 0.5, smallbox.maxs[1] - 0.5, smallbox.maxs[2]])
-
-
-# Solvate system
-system = mb.solvate(system, H2O(), 2*n_solvent_per_layer, solvatebox)
-
-# Bilayer needs to be shifted to fit inside the box for gromacs (can't have any negative coordinates)
-mb.translate(system, [np.abs(smallbox.mins[0]), np.abs(smallbox.mins[1]), np.abs(smallbox.mins[2])])
-
-# Shift everything to positive z and off x and y axes
-min_z_shift = min(system.xyz[:,2])
-mb.translate(system, [0.1, 0.1, -1 * min_z_shift])
-smallbox.maxs[2] += -1*min_z_shift
-
-with warnings.catch_warnings():
-    warnings.simplefilter("ignore")
-    system.save(filename + '.gro', box =smallbox,overwrite=True)
-
-
-# Add waters to lipid atom dict for index file
-lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles), 1))
-atom_index += 2 * n_x * n_y * n_solvent_per_lipid * H2O().n_particles
-write_ndx_file(filename = filename, lipid_atom_dict = lipid_atom_dict)
-
-
-# Add waters to table of contents
-for i in range(2* n_x * n_y * n_solvent_per_lipid):
-        table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, 'HOH', H2O().n_particles))
-        res_index += 1
-write_toc_file_box(table_of_contents = table_of_contents, box = smallbox)
-# end new stuff
-"""
-
 # Script writer stuff
 scriptWriter = scriptWriter("{}".format(options.filename)) 
 scriptWriter.write_Titan_script(STrun = True)
