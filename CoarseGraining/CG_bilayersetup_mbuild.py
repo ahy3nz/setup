@@ -402,12 +402,12 @@ area_per_lipid = options.area_per_lipid
 spacing = np.sqrt(area_per_lipid)
 
 # Default parameters, less likely to be changed
-n_x = 16 #8
-n_y = 16 #8
+n_x = 8 #8
+n_y = 8 #8
 #n_x = 1
 #n_y = 1
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 10#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 20#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
 #n_solvent_per_lipid = 2
 random_z_displacement = 0.3
 
@@ -453,7 +453,7 @@ bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
 
 # Generate the top layer randomly
 top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3.2,
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 5.0,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
@@ -466,7 +466,7 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 1.2, 
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
@@ -494,8 +494,8 @@ system.save(filename + '.gro', box =box,overwrite=True)
 # Also need to divide by 10 because of a unit conversion
 
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
-system.xyz /= 10
-box = system.boundingbox()
+#system.xyz /= 10
+box = system.boundingbox
 box.lengths = box.lengths+0.2
 #system.save(filename + 'noff.hoomdxml',overwrite=True )
 system.save(filename + '.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
