@@ -119,7 +119,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
                 molecule_to_add.children[1].charge = -1
 
             # Apply tilt angle
-            mb.spin_y(molecule_to_add, tilt_angle)
+            molecule_to_add.spin(tilt_angle, [0,1,0])
 
             # Apply z_offset
             z_offset = lipid_type[2]
