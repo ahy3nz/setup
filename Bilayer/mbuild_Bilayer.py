@@ -10,7 +10,7 @@ from optparse import OptionParser
 from Prototypes import *
 from scriptWriter import *
 
-GMX_FF_DIR = "/home/yangah/Programs/setup/FF/gromos53a6/"
+GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/gromos53a6/"
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
         layer_shift = 0, res_index = 0, table_of_contents = None,
