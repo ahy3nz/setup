@@ -505,9 +505,15 @@ system.save(filename + '.gro', box =box,overwrite=True)
 
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
 box = system.boundingbox
-box.lengths = box.lengths+0.2
-system.save(filename + '.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + '.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
+box.lengths = box.lengths+2.0
+# IF passing reference distances
+system.save(filename + 'withref.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + 'withref.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
+# For scaling by hand
+system.xyz /= 10
+box.lengths /=10
+system.save(filename + 'scaled.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + 'scaled.gsd', box=box, forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
