@@ -114,18 +114,27 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
                 convert_name_to_type(child)
 
             # Set charges (for the phospholipids)(not working)
-            if 'PC' in molecule_to_add.name:
-                molecule_to_add.children[0].charge = 1
-                molecule_to_add.children[1].charge = -1
+            #if 'PC' in molecule_to_add.name:
+            #    molecule_to_add.children[0].charge = 0.000122
+            #    molecule_to_add.children[1].charge = -0.000122
+
+            # When the pdb files are loaded, the coordinates are angstroms
+            # Convert them to nm for all mbuild operations
+            #molecule_to_add.xyz /= 10
 
             # Apply tilt angle
             molecule_to_add.spin(tilt_angle, [0,1,0])
+
+            # Randomly orient them
+            molecule_to_add.spin((np.pi/2)*np.random.rand() - (np.pi/4), [0,0,1])
 
             # Apply z_offset
             z_offset = lipid_type[2]
 
             # Apply APL and z_offset to identify the position for the molecule in the grid
-            position = [i * spacing, j * spacing, z_offset + layer_shift +
+            # Also generate random x and y offsets (+/- 0.1 nm)
+            rand_x, rand_y = 0.2*np.random.rand(2) - 0.1
+            position = [i * spacing + rand_x, j * spacing + rand_y, z_offset + layer_shift +
                         (-1 * np.random.random() * random_z_displacement)]
             molecule_to_add.translate(position)
 
@@ -453,7 +462,7 @@ bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
 
 # Generate the top layer randomly
 top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
-        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 5.0,
+        tilt_angle = tilt_angle, spacing = spacing, layer_shift = 4.0,
         res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
        
@@ -466,13 +475,14 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 1.2, 
+system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 0.8,
         res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
 system.translate( [0.1, 0.1, -1 * min_z_shift])
+box = system.boundingbox
 box.maxs[2] = max(system.xyz[:,2]) + 0.1
 box.maxs[1] = max(system.xyz[:,1]) + 0.1
 box.maxs[0] = max(system.xyz[:,0]) + 0.1
@@ -491,15 +501,13 @@ system.save(filename + '.gro', box =box,overwrite=True)
 # In gromacs coordiantes, the smallest coordiante is just 0,0,0 
 # We can just shift everything by the max/2
 # Before saving hoomdxml, center everything around 0,0,0
-# Also need to divide by 10 because of a unit conversion
+# Also need to divide by 10 because of a unit conversion (pass as ref_distance)
 
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
-#system.xyz /= 10
 box = system.boundingbox
 box.lengths = box.lengths+0.2
-#system.save(filename + 'noff.hoomdxml',overwrite=True )
-system.save(filename + '.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + '.gsd', box=box, forcefield_files=HOOMD_FF,overwrite=True)
+system.save(filename + '.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + '.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
 table_of_contents.close()
 
 # Write to an index file
