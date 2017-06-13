@@ -1,8 +1,6 @@
-init-bilayer_tilted.py
-Constructs bilayer systems in lammps while using option parser parameters, rotations still need specification
-
-bilayer_lmps2gmx.py
-Constructs bilayer systmes in gmx while using option parser parameters. Much of the same construction as the lammps construction
+mbuild_bilayer.py
+Uses mbuild to construct bilayer systems with optionparser arguments. Topology files written based on the GMX FF directory.
+Gro files are written and updated according to molecular information and a table of contents file
 
 bilayersetup.py
 Calls init-bilayer_tilted and bilayer_lmps2gmx.py using option parser parameters, writes out initial structure
@@ -12,7 +10,7 @@ tempering or classical MD
 Option parser parameters
 -f : specify a filename for lammps file, gmx gro file, and gmx top file 
 -a : specify an area per lipid for bilayer construction
---DSPC : specify the DSPC fraction (1 for 100%, 0.33 for 33%, 0.5 for 50%, etc)
+--explicit : used to specify component numbers, not just fractions
 --alc12: specify the alcohol fraction
 --acid16: specify the acid fraction
 ...etc for all other major components
@@ -33,10 +31,6 @@ These top files need to be edited so that the directories in the include stateme
 The ff.itp file is located in ./gromos53a6/ff.itp, but absolute directory needs to be listed in the topology file
 The "#include gromos53a6.ff/forcefield.itp" should be commented out
 The ff.itp points to the topologies of some common prototypes for gel-phase bilayers
-
-common_apl.txt
-This is a list of some possible APL to initialize the bilayers at. If APLs are not correctly specified, the EM step will likely crash due to
-atoms on top of each other
 
 UpdateGroWithLmps.py
 This is a supplemental file to replace the coordinates of a gro file with the coordinates of a lammps file. The topology file is untouched.
