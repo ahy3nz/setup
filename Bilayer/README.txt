@@ -2,7 +2,7 @@ mbuild_bilayer.py
 Uses mbuild to construct bilayer systems with optionparser arguments. Topology files written based on the GMX FF directory.
 Gro files are written and updated according to molecular information and a table of contents file
 
-bilayersetup.py
+bilayersetup.py (Deprecated)
 Calls init-bilayer_tilted and bilayer_lmps2gmx.py using option parser parameters, writes out initial structure
 parameters, writes slurm submission script to cori, casll mdprep.sh (see below) to prepare for simulated
 tempering or classical MD
