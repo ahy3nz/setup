@@ -334,6 +334,132 @@ def write_ndx_file(filename = None, lipid_atom_dict = None):
     ndx_file.write(system_string+"\n")
     ndx_file.close()
 
+def split_lines(source = None, toc = False):
+    """ Simple script to take a file.readlines() and split each line into a list
+
+    Parameters
+    ----------
+    source : list
+        A file whose lines have been read into a list
+    toc : Boolean
+        True if the file-to-be-read is a table of contents file
+
+    Returns
+    -------
+    destination : list
+        A list whose entries are lists of the split lines
+    """
+    destination = []
+    last_index = len(source)
+    if toc:
+        for i, line in enumerate(source):
+            destination.append(line.split())
+    else:
+        for i, line in enumerate(source):
+            if i <= 1 or i == last_index: # For header and foote reading
+                destination.append(line.split())
+            else:
+                gro_entry = []
+                gro_entry.append(line[0:5])
+                gro_entry.append(line[5:10])
+                gro_entry.append(line[10:15])
+                gro_entry.append(line[15:20])
+                gro_entry.append(line[20:28])
+                gro_entry.append(line[28:36])
+                gro_entry.append(line[36:44])
+
+                destination.append(gro_entry)
+    return destination
+
+def gather_header(old_gro_lines = None, new_gro_file = None):
+    """ Write gro file header information
+
+    Parameters
+    ---------
+    old_gro_lines : list
+        List whose entries are split lines of gro file
+    new_gro_file : file
+        Output gro file
+
+    Returns
+    -------
+    old_gro_lines : list
+        List whose entries are split lines of gro file, with updated lines removed
+
+        """
+    line_index = 0
+    while (len(old_gro_lines[0]) != 7 or line_index < 2):
+        #pdb.set_trace()
+        new_gro_file.write(" ".join(old_gro_lines.pop(0)) + "\n")
+        line_index += 1
+    return old_gro_lines
+
+def gather_body(old_gro_lines = None, table_of_contents = None, new_gro_file = None):
+    """ Write body of the topology file
+
+    Parameters
+    ----------
+    old_gro_lines : list
+        List whose entries are split lines of gro file
+    table_of_contents : file
+        Input file listing residue index, residue name, n_particles for tha residue
+    new_gro_file : file
+        Output gro file
+
+    Returns
+    -------
+    old_gro_lines : list
+        List whose entries are split lines of gro file, with updated lines removed
+
+    Notes
+    -----
+    Gro file format
+    {:>5.0f}{:5s}{:>5s}{:>5s}{:8.3f}{:8.3f}{:8.3f}
+    resindex(1 indexed), resname, atomtype, atomindex(1 indexed), x-coord, y-coord, z-coord
+
+    """
+    # Iterate through the table of contents, which then tells the inner loop how many times to iterate
+    for i in range(len(table_of_contents)-1):
+        entry = table_of_contents[i]
+        res_index = entry[0]
+        res_name = entry[1]
+        res_atoms = int(entry[2])
+        for j in range(res_atoms):
+            
+            old_line = old_gro_lines.pop(0)
+            if "HOH" in res_name and j==0:
+                new_line = (float(res_index), res_name, 'OW', old_line[3], float(old_line[4]),
+                    float(old_line[5]), float(old_line[6]))
+            elif "HOH" in res_name and j==1:
+                new_line = (float(res_index), res_name, 'HW1', old_line[3], float(old_line[4]),
+                    float(old_line[5]), float(old_line[6]))
+            elif "HOH" in res_name and j==2:
+                new_line = (float(res_index), res_name, 'HW2', old_line[3], float(old_line[4]),
+                    float(old_line[5]), float(old_line[6]))
+            else:
+                new_line = (float(res_index), res_name, old_line[2], old_line[3], float(old_line[4]),
+                    float(old_line[5]), float(old_line[6]))
+
+
+            new_gro_file.write("{:>5.0f}{:5s}{:>5s}{:>5s}{:8.3f}{:8.3f}{:8.3f}\n".format(new_line[0], new_line[1],
+                new_line[2], new_line[3], new_line[4], new_line[5], new_line[6]))
+    return old_gro_lines
+
+def gather_footer(table_of_contents= None, new_gro_file = None):
+    """ Print footer information (box size)
+
+    Parameters
+    ----------
+    table_of_contents : file
+        Input file listing residue index, residue name, n_particles for tha residue
+    new_gro_file : file
+        Output gro file
+
+    """
+    #new_gro_file.write(' '.join(table_of_contents[-1])+"\n")
+    new_gro_file.write('{:>10.5f}{:>10.5f}{:>10.5f}\n'.format(float(table_of_contents[-1][0]), float(table_of_contents[-1][1]), 
+        float(table_of_contents[-1][2])))
+
 parser = OptionParser()
 parser.add_option("-f", action="store", type="string", default = "CG_bilayer", dest = "filename")
 parser.add_option("-a", "--APL", action="store",type="float", default = 0.50, dest = "area_per_lipid")
@@ -484,21 +610,37 @@ box.maxs[2] += -1*min_z_shift
 
 # Write to table of contents
 write_toc_file_box(table_of_contents = table_of_contents, box = box)
+table_of_contents.close()
 
 
 # Write gro file suppressing mbuild warnings
 with warnings.catch_warnings():
     warnings.simplefilter("ignore")
     system.save(filename + '.gro', box =box,overwrite=True)
-    #system.save(filename + '.gsd')
-    #system.save(filename + '.xml')
-table_of_contents.close()
 
 # Write to an index file
 write_ndx_file(filename = filename, lipid_atom_dict = lipid_atom_dict)
 
-# Write job scripts
-#thing1 = scriptWriter('{}'.format(filename))
-#thing1.write_Rahman_script(MDrun = True)
+# Use table of contents to update the gro file
+table_of_contents_file = open(filename + '.dat', 'r').readlines()
+old_gro_file = open(filename + '.gro', 'r').readlines()
+new_gro_file = open(filename + '.gro', 'w')
+print("Updating <{0}.gro> ...".format(filename))
+
+# Split each line in the old gro file
+old_gro_lines = split_lines(old_gro_file, toc = False)
+
+# Split each line in the table of contents file
+table_of_contents = split_lines(table_of_contents_file, toc=True)
+
+# Header information
+old_gro_lines = gather_header(old_gro_lines = old_gro_lines, new_gro_file = new_gro_file)
+        
+# Body information 
+old_gro_lines = gather_body(old_gro_lines = old_gro_lines, 
+        table_of_contents = table_of_contents, new_gro_file = new_gro_file)
+
+# Footer information
+gather_footer(table_of_contents = table_of_contents, new_gro_file = new_gro_file)
 
 
