@@ -34,11 +34,8 @@ def convert_name_to_type(particle):
     for atomtype in TYPE_TO_NAME_DICT:
         corresponding_atoms = TYPE_TO_NAME_DICT[atomtype]
         for single_atom in corresponding_atoms:
-            #print(old_name+', ' + single_atom)
             if str(old_name) == str(single_atom):
                 particle.name = atomtype
-        #if str(old_name) in corresponding_atoms:
-            #particle.name = atomtype
             else:
                 pass
 
@@ -272,7 +269,12 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     bot_water = mb.Compound()
     for compound in bot_water_list:
         for child in compound:
-            convert_name_to_type(child)
+            # Martini needs about 10% of waters to be antifreeze
+            antifreeze_chance = np.random.rand()
+            if antifreeze_chance <= 0.1:
+                child.name = "_BP4"
+            else:
+                convert_name_to_type(child)
             bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
@@ -296,7 +298,12 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     top_water = mb.Compound()
     for compound in top_water_list:
         for child in compound:
-            convert_name_to_type(child)
+            # Martini needs about 10% of waters to be antifreeze
+            antifreeze_chance = np.random.rand()
+            if antifreeze_chance <= 0.1:
+                child.name="_BP4"
+            else:
+                convert_name_to_type(child)
             top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
@@ -506,14 +513,10 @@ system.save(filename + '.gro', box =box,overwrite=True)
 system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
 box = system.boundingbox
 box.lengths = box.lengths+2.0
-# IF passing reference distances
-system.save(filename + 'withref.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + 'withref.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
-# For scaling by hand
-system.xyz /= 10
-box.lengths /=10
-system.save(filename + 'scaled.hoomdxml', box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + 'scaled.gsd', box=box, forcefield_files=HOOMD_FF,overwrite=True)
+# passing reference distances
+system.save(filename + '.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
+system.save(filename + '.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
+
 table_of_contents.close()
 
 # Write to an index file
