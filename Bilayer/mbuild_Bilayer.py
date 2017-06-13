@@ -87,7 +87,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Apply APL and z_offset to identify the position for the molecule in the grid
             position = [i * spacing, j * spacing, z_offset + layer_shift +
                         (-1 * np.random.random() * random_z_displacement)]
-            molecule.to_add.translate(position)
+            molecule_to_add.translate(position)
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
@@ -127,7 +127,8 @@ def write_top_file_header(filename = 'default', lipid_system_info = None, n_solv
 
     """
 
-    top_file = open(filename + '2.top', 'w')
+    #top_file = open(filename + '2.top', 'w')
+    top_file = open(filename + '.top', 'w')
 
     # Include statment, edit for path to maritini FF, make "_b" itp for no charges
     #top_file.write("#include \"{}martini_ff.itp\" \n".format(GMX_FF_DIR))
@@ -231,7 +232,8 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         bot_water.add(compound)
     highest_botwater = max(bot_water.xyz[:,2])
     lowest_botlipid = min(system.xyz[:,2])
-    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
+    #shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
+    shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.1
     bot_water.translate( [0, 0, -1 * shift_botwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -252,7 +254,8 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         top_water.add(compound)
     lowest_topwater = min(top_water.xyz[:,2])
     highest_toplipid = max(system.xyz[:,2])
-    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
+    #shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.3
+    shift_topwater = abs(highest_toplipid - lowest_topwater) + 0.1
     top_water.translate([0,0, shift_topwater])
     # Add waters to table of contents
     for i in range(n_x * n_y * n_solvent_per_lipid):
@@ -464,15 +467,12 @@ top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Script writer stuff
 scriptWriter = scriptWriter("{}".format(options.filename)) 
-scriptWriter.write_Titan_script(STrun = True)
 scriptWriter.write_Titan_script(MDrun = True)
-scriptWriter.write_Cori_script(STrun = True)
 scriptWriter.write_Cori_script(MDrun = True)
 scriptWriter.write_Rahman_script(STrun = True)
 scriptWriter.write_Rahman_script(MDrun = True)
 scriptWriter.write_Accre_script(STrun = True)
 scriptWriter.write_Accre_script(MDrun = True)
-scriptWriter.write_Edison_script(STrun = True)
 scriptWriter.write_Edison_script(MDrun = True)
 
 
