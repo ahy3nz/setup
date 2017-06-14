@@ -94,7 +94,7 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
 
-            # Add to list of residue strings
+            # Add to set of residue strings
             residues.add(molecule_to_add.name)
                 
             # Add to lipid dictionary
@@ -237,7 +237,6 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     #shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.3
     shift_botwater = abs(highest_botwater - lowest_botlipid) + 0.1
     bot_water.translate( [0, 0, -1 * shift_botwater])
-    # Add waters to table of contents
     
     # Construct 3D grid of water
     # Compute distances to translate such that water is either below or above bilayer
