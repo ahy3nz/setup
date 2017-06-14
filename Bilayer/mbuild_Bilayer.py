@@ -15,7 +15,7 @@ residues = set()
 
 
 def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
-        layer_shift = 0, res_index = 0, table_of_contents = None,
+        layer_shift = 0, res_index = 0, 
         random_z_displacement = 0, top_file = None, lipid_atom_dict = None, atom_index = 0):
     """ Generate a bilayer leaflet by laying down molecules in a 2D grid at random grid points
 
@@ -33,8 +33,6 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
         Leaflet weparation from z-axis (used to separate bilayer leaflets)
     res_index : int
         Starting residue index for leaflet construction and residue counting
-    table_of_contents : file
-        Output file listing residue index, residue name, n_particles for tha residue
     random_z_displacement : float
         Randomly offset molecules by a small amount
     lipid_atom_dict : OrderedDict()
@@ -179,7 +177,7 @@ def write_top_file_footer(top_file = None, n_solvent = 0):
     return top_file
 
 def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, water_spacing = 0.3, 
-        res_index = 0, table_of_contents = None, lipid_atom_dict = None, atom_index = 0):
+        res_index = 0, lipid_atom_dict = None, atom_index = 0):
     """ Solvate the top and bottom parts of the bilayer, return water box
 
     Parameters
@@ -192,8 +190,6 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
         Number of water beads per lipid, another grid dimension
     res_index : int
         Starting residue index for leaflet construction and residue counting
-    table_of_contents : file
-        Output file listing residue index, residue name, n_particles for tha residue
     lipid_atom_dict : OrderedDict()
         Dictionary whose values are mb.Compounds()s and values are a list of atom indices of that compound
     atom_index : int
@@ -406,13 +402,13 @@ top_file = write_top_file_header(filename = filename, lipid_system_info = lipid_
 # Generate bottom layer randomly
 bot_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
         tilt_angle = tilt_angle, spacing = spacing, layer_shift = 3,
-        res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
+        res_index = res_index,  random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 
 # Generate the top layer randomly
 top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n_y = n_y, lipid_system_info = lipid_system_info, 
         tilt_angle = tilt_angle, spacing = spacing, layer_shift = 0,
-        res_index = res_index, table_of_contents = table_of_contents, random_z_displacement = random_z_displacement, 
+        res_index = res_index,  random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 # Rotate bottom layer to form bilayer
 top_layer.spin(np.pi, [0, 1, 0])
@@ -424,7 +420,7 @@ system.add(top_layer)
 
 # Solvate system, get new box
 system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
-        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
+        res_index = res_index,  lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Script writer stuff
