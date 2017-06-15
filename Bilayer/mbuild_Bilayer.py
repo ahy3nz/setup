@@ -388,7 +388,7 @@ n_lipid = 2 * n_x * n_y
 
 #lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
                      #(Calc12(), np.floor(n_lipid * options.Calc12_frac), 1.4)] #was 2.6
-if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid/2):
+if(round(sum([lipid[1] for lipid in lipid_system_info]),2) != round(n_lipid/2)):
     sys.exit("System setup error: number of components does not match layer size")
 
 lipid_atom_dict = OrderedDict()
