@@ -257,13 +257,13 @@ def solvate_bilayer(system = None, n_x = 8, n_y = 8, n_solvent_per_lipid = 5, wa
     system.add(top_water)
 
     #waterbox = mb.Box(mins = [0,0,0], maxs = [max(top_water.xyz[:,0])+0.2, max(top_water.xyz[:,1])+0.2, max(top_water.xyz[:,2])+0.2])
-    waterbox = mb.Box(mins = [0,0,0], maxs = [max(system.xyz[:,0])+0.2, max(system.xyz[:,1])+0.2, max(system.xyz[:,2])+0.2])
+    #waterbox = mb.Box(mins = [0,0,0], maxs = [max(system.xyz[:,0])+0.2, max(system.xyz[:,1])+0.2, max(system.xyz[:,2])+0.2])
 
     
     # Add waters to lipid_atom_dict
     lipid_atom_dict['SOL'] = list(range(atom_index, atom_index + (2 * n_x * n_y * n_solvent_per_lipid * HOH().n_particles), 1))
     atom_index += 2 * n_x * n_y * n_solvent_per_lipid * HOH().n_particles
-    return system, waterbox, lipid_atom_dict, atom_index
+    return system, lipid_atom_dict, atom_index
 
 
 def write_ndx_file(filename = None, lipid_atom_dict = None):
@@ -356,15 +356,16 @@ outfile.close()
 n_x = 8#8
 n_y = 8 #8
 n_lipid = 2 * n_x * n_y
-n_solvent_per_lipid = 20#5 # This is usually 20 waters per molecule, but a water bead is 4 waters
+n_solvent_per_lipid = 20
 n_solvent = n_lipid * n_solvent_per_lipid
 random_z_displacement = 0.05
 
-
+# Workaround for doing explicit numbers for a SINGLE LEAFLET
 if options.explicit:
-    n_lipid = 1
+    n_lipid = 2
 
-# For doing fractions
+# Large list of tuples that represents each compound, 
+# the number of that compound, and the initial z-offset
 lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (DPPC(), np.ceil(n_lipid*options.DPPC_frac), -0.3),
                           (acd12(), np.floor(n_lipid*options.acd12_frac), -0.2),
@@ -384,11 +385,10 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
 
                       
+# If we called options.explicit, put it back for sum checking
 n_lipid = 2 * n_x * n_y
 
-#lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
-                     #(Calc12(), np.floor(n_lipid * options.Calc12_frac), 1.4)] #was 2.6
-if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid):
+if(round(sum([lipid[1] for lipid in lipid_system_info]),2) != round(n_lipid)):
     sys.exit("System setup error: number of components does not match layer size")
 
 lipid_atom_dict = OrderedDict()
@@ -418,8 +418,8 @@ system = mb.Compound()
 system.add(bot_layer)
 system.add(top_layer)
 
-# Solvate system, get new box
-system, box, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+# Solvate system
+system, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
         res_index = res_index,  lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
@@ -437,8 +437,9 @@ scriptWriter.write_Edison_script(MDrun = True)
 
 # Shift everything to positive z and off x and y axes
 min_z_shift = min(system.xyz[:,2])
-system.translate( [0.1, 0.1, -1 * min_z_shift])
-box.maxs[2] += -1*min_z_shift
+system.translate( [0.1, 0.1, 0.1 + (-1 * min_z_shift)])
+final_box = mb.Box(lengths = system.boundingbox.maxs + [0.1, 0.1, 0.1])
 
 # Write gro file 
-system.save(filename + '.gro', box =box,overwrite=True, residues = list(residues))
+system.save(filename + '.gro', box = final_box,overwrite=True, residues = list(residues))
+
