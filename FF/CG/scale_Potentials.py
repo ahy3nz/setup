@@ -13,8 +13,8 @@ parser.add_option("--input", action = "store", type = "string", dest = "inp")
 parser.add_option("--output", action = "store", type = "string", dest = "out")
 parser.add_option("--scale", action = "store", type = "float", default = "1", dest = "scale")
 (options, args) = parser.parse_args()
-if not options.inp or not options.out or not options.scale:
-    sys.exit("ERROR: Specify input, option, and scale")
+#if not options.inp or not options.out or not options.scale:
+#    sys.exit("ERROR: Specify input, option, and scale")
 
 
 input_dir = str(os.getcwd())+ "/" + str(options.inp)
@@ -23,8 +23,9 @@ scale = options.scale
 current_dir = os.getcwd()
 
 # Make directory
-subprocess.Popen("mkdir -p {}".format(
+p=subprocess.Popen("mkdir -p {}".format(
             options.out), shell=True, stdout=subprocess.PIPE)
+p.wait()
 
 # Read every file in the input directory, 
 dir_contents = os.listdir("{}".format(input_dir))
