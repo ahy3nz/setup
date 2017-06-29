@@ -16,7 +16,8 @@ HOOMD_FF="/raid6/homes/ahy3nz/Programs/setup/FF/CG/myforcefield.xml"
 TYPE_TO_NAME_DICT = {'_Q0': ('_NC3', ''), '_Qa': ('_PO4', ''),
         '_Na': ('_GL1', '_GL2'), '_Nda': ('_LOH', '_COH', '_AOH', '_LgOH'),
         '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF', ''),
-        '_C1': ('_C1', '_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B') }
+        '_C1': ('_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B'),
+        '_C1a': ('_C1')}
 
 def convert_name_to_type(particle):
     """ Convert atom name to its corresponding atomtype
