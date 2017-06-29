@@ -5,7 +5,7 @@ import numpy as np
 
 atomtypes = ['P5' , 'P4' , 'BP4' , 'SP4' , 'P3'	, 'P2', 'P1','SP1' ,
              'Nda' 	,'Nd', 'SNd', 'Na','SNa', 'N0'	,
-             'C5', 'SC5', 'C4', 'SC4', 'C3'	, 'SC3'	, 'C2', 'AC2', 'SC2', 'C1', 'AC1', 'SC1',
+             'C5', 'SC5', 'C4', 'SC4', 'C3'	, 'SC3'	, 'C2', 'AC2', 'SC2', 'C1', 'C1a', 'AC1', 'SC1',
              'Qda', 'Qd', 'Qa', 'Q0']
 outfile = open('xmlstuff.xml','w')
 outfile.write("<ForceField>\n")
@@ -46,8 +46,22 @@ for x,z in itertools.combinations_with_replacement(atomtypes,2):
             xml_line = "\t<Angle class1=\"{}\" class2=\"{}\" class3=\"{}\" angle=\"1\" k=\"1\"/>".format(x,y,z)
         outfile.write(xml_line+"\n")
 #<Angle class1="tail" class2="mhead2" class3="oh2" angle="7" k="7"/>
-# TODO: add nonbonded force stuff
 outfile.write("</HarmonicAngleForce>\n")
+
+#Nonbonded force writing
+outfile.write("<NonbondedForce coulomb14scale=\"0\" lj14scale=\"0\">\n")
+for x in atomtypes:
+    # Q0 has charge +1, Qa has chareg -1
+    if 'Q0' == x:
+        xml_line="\t<Atom type=\"{0}\" charge=\"1\" sigma=\"1\" epsilon=\"1\"/>".format(x)
+    elif 'Qa' == x:
+        xml_line="\t<Atom type=\"{0}\" charge=\"-1\" sigma=\"1\" epsilon=\"1\"/>".format(x)
+    else:
+    # <Atom type="P5" charge="0" sigma="1" epsilon="1"/>
+        xml_line="\t<Atom type=\"{0}\" charge=\"0\" sigma=\"1\" epsilon=\"1\"/>".format(x)
+    outfile.write(xml_line+"\n")
+
+outfile.write("</NonbondedForce>\n")
 outfile.write("</ForceField>\n")
 outfile.close()
 
