@@ -167,6 +167,12 @@ def set_cosine_angles(timtails = False):
                 cosine_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), 
                         k=angle_kappa_2, t0=angle_theta0_2)
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
+
+            # This angle is not actually parametrized, leave as 0
+            elif set(x,z) <= set('C1', 'Na') and y =='Na':
+                cosine_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
+                harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
+
             # Original martini angle
             else:
                 cosine_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), 
