@@ -156,12 +156,12 @@ energies = interpolate_r0(values = energies, distances = distances)
 forces = interpolate_r0(values = forces, distances = distances)
 
 
-table_distances = [convert_unit(value = r, tag ="distance") for r in distances]
-table_energies = [convert_unit(value = energy, tag = "energy") for energy in energies]
-table_forces = [convert_unit(value = force, tag = "force") for force in forces]
+#table_distances = [convert_unit(value = r, tag ="distance") for r in distances]
+#table_energies = [convert_unit(value = energy, tag = "energy") for energy in energies]
+#table_forces = [convert_unit(value = force, tag = "force") for force in forces]
 
 # Save to text file
-zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(table_distances, table_energies, table_forces)] 
+zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(distances, energies, forces)] 
 np.savetxt('{}.txt'.format(options.filename), zipped, fmt='%s')
 
 #zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(distances, energies, forces)] 
