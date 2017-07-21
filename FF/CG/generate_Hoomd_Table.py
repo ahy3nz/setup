@@ -169,20 +169,20 @@ np.savetxt('{}.txt'.format(options.filename), zipped, fmt='%s')
 
 
 # Plot tabulated potentials
-f, axarray= plt.subplots(2,1)
-axarray[0].plot(distances, energies, label="energy")
-axarray[0].plot(distances, forces, label = "force")
-axarray[0].plot(distances, np.zeros(len(table_distances)))
-axarray[0].set_ylim([-10, 10])
-axarray[0].set_title("Gromacs")
-axarray[0].legend()
-
-axarray[1].plot(table_distances, table_energies, label="energy")
-axarray[1].plot(table_distances, table_forces, label = "force")
-axarray[1].plot(table_distances, np.zeros(len(table_distances)))
-axarray[1].set_ylim([-10, 10])
-axarray[1].set_title("Tabulated")
-axarray[1].legend()
-
-#plt.savefig(options.filename+".png")
-plt.close()
+#f, axarray= plt.subplots(2,1)
+#axarray[0].plot(distances, energies, label="energy")
+#axarray[0].plot(distances, forces, label = "force")
+#axarray[0].plot(distances, np.zeros(len(table_distances)))
+#axarray[0].set_ylim([-10, 10])
+#axarray[0].set_title("Gromacs")
+#axarray[0].legend()
+#
+#axarray[1].plot(table_distances, table_energies, label="energy")
+#axarray[1].plot(table_distances, table_forces, label = "force")
+#axarray[1].plot(table_distances, np.zeros(len(table_distances)))
+#axarray[1].set_ylim([-10, 10])
+#axarray[1].set_title("Tabulated")
+#axarray[1].legend()
+#
+##plt.savefig(options.filename+".png")
+#plt.close()
