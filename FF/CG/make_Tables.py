@@ -9,7 +9,8 @@ filename = 'martini_pair.txt'
 martini_file = open(filename,'r')
 martini_lines = martini_file.readlines()
 for i, line in enumerate(martini_lines):
-    split_lines = line.split()
+    split_lines = line.split(';')
+    split_lines = split_lines[0].split()
     # element 0 is first atom
     if(line.rstrip()):
         print(split_lines)
