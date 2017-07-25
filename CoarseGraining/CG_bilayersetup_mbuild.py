@@ -451,7 +451,10 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 3.2),
                       """
 
 lipid_system_info = [(DSPC(), np.ceil(n_lipid * options.DSPC_frac), 0.0), #was 3.2
-                     (OH12(), np.floor(n_lipid * options.C12OH_frac), 1.4)] #was 2.6
+                     (OH12(), np.floor(n_lipid * options.C12OH_frac), 1.4),
+                     (OH16(), np.floor(n_lipid * options.C16OH_frac), 1.0),
+                     (FA16(), np.floor(n_lipid * options.C16FFA_frac), 1.0)
+                     ] #was 2.6
 
 if(sum([lipid[1] for lipid in lipid_system_info]) != n_lipid):
     sys.exit("System setup error: number of components does not match layer size")
@@ -487,17 +490,23 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system, get new box
-system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 0.8,
-        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
-top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
+#system, box, lipid_atom_dict, atom_index, n_solvent = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, water_spacing = 0.8,
+#        res_index = res_index, table_of_contents = table_of_contents, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
+#top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
-# Shift everything to positive z and off x and y axes
+## Shift everything to positive z and off x and y axes
+#min_z_shift = min(system.xyz[:,2])
+#system.translate( [0.1, 0.1, -1 * min_z_shift])
+#box = system.boundingbox
+#box.maxs[2] = max(system.xyz[:,2]) + 0.1
+#box.maxs[1] = max(system.xyz[:,1]) + 0.1
+#box.maxs[0] = max(system.xyz[:,0]) + 0.1
+
+
 min_z_shift = min(system.xyz[:,2])
-system.translate( [0.1, 0.1, -1 * min_z_shift])
-box = system.boundingbox
-box.maxs[2] = max(system.xyz[:,2]) + 0.1
-box.maxs[1] = max(system.xyz[:,1]) + 0.1
-box.maxs[0] = max(system.xyz[:,0]) + 0.1
+system.translate( [0.1, 0.1, 0.1 + (-1 * min_z_shift)])
+box = mb.Box(lengths = system.boundingbox.maxs + [0.1, 0.1, 0.1])
+
 
 
 
