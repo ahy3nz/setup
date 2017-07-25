@@ -12,10 +12,12 @@ from scriptWriter import *
 
 GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/CG/"
 HOOMD_FF="/raid6/homes/ahy3nz/Programs/setup/FF/CG/myforcefield.xml"
+residues = set()
 # Mapping martini atomtpyes to atom names that are of that type
 TYPE_TO_NAME_DICT = {'_Q0': ('_NC3', ''), '_Qa': ('_PO4', ''),
-        '_Na': ('_GL1', '_GL2'), '_Nda': ('_LOH', '_COH', '_AOH', '_LgOH'),
-        '_P2': ('_MOH', '_SOH', '_BOH'), '_P4': ('_W', '_COO'), '_BP4':  ('_WF', ''),
+        '_Na': ('_GL1', '_GL2'), '_Nda': ('_OH', '_LOH', '_COH', '_AOH', '_LgOH'),
+        '_P2': ('_MOH', '_SOH', '_BOH'), '_P3': ('_COO', ''), '_P4': ('_W', ''), 
+        '_BP4':  ('_WF', ''),
         '_C1': ('_C1', '_C2', '_C3', '_C4', '_C5', '_C1A', '_C2A', '_C3A', '_C4A', '_C5A', '_C1B', '_C2B', '_C3B', '_C4B', '_C5B') }
 
 def convert_name_to_type(particle):
@@ -137,6 +139,9 @@ def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, s
 
             # Add the new molecule to the layer
             layer.add(molecule_to_add)
+
+            # Add to set of residue strings
+            residues.add(molecule_to_add.name)
                 
             # Add to table of contents
             table_of_contents.write("{:<10d}{:<10s}{:<10d}\n".format(res_index, molecule_to_add.name, molecule_to_add.n_particles))
@@ -514,8 +519,8 @@ system.translate([-box.maxs[0]/2, -box.maxs[1]/2, -box.maxs[2]/2])
 box = system.boundingbox
 box.lengths = box.lengths+2.0
 # passing reference distances
-system.save(filename + '.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True)
-system.save(filename + '.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True)
+system.save(filename + '.hoomdxml', ref_energy = 0.239, ref_distance = 10, box=box, forcefield_files=HOOMD_FF, overwrite=True, residues=list(residues))
+system.save(filename + '.gsd', ref_energy = 0.239, ref_distance = 10,box=box, forcefield_files=HOOMD_FF,overwrite=True,residues=list(residues))
 
 table_of_contents.close()
 
