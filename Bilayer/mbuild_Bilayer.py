@@ -335,6 +335,7 @@ parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
 parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "PMEA_frac")
+parser.add_option("--nowater", action="store_true", default=False, dest = "nowater")
 parser.add_option("--explicit", action ="store_true",dest="explicit")
 #parser.add_option("--water", action="store",type="float", default = 0.0, dest = "Water_frac")
 (options, args) = parser.parse_args()
@@ -419,9 +420,10 @@ system.add(bot_layer)
 system.add(top_layer)
 
 # Solvate system
-system, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
-        res_index = res_index,  lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
-top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
+if not options.nowater:
+    system, lipid_atom_dict, atom_index = solvate_bilayer(system = system, n_x = n_x, n_y = n_y, n_solvent_per_lipid = n_solvent_per_lipid, 
+            res_index = res_index,  lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
+    top_file = write_top_file_footer(top_file = top_file, n_solvent = n_solvent)
 
 # Script writer stuff
 scriptWriter = scriptWriter("{}".format(options.filename)) 
