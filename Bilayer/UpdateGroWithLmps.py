@@ -9,6 +9,7 @@ from optparse import OptionParser
 The goal of this is to fill a gro file with the coordinates of a respective lmps file
 A priori coordinates in the gro file are irrelevant, 
 but still need correct atom and indices. Topology file remains untouched
+RE-EMPHASIZING: THE ATOM INDICES NEED TO CORRESPOND BETWEEN THE TWO FILES
 '''
 parser = OptionParser()
 parser.add_option("--gro", action = "store", type = "string", dest = "grofilename")
@@ -33,10 +34,11 @@ gro_xyz = [list()] * (n_atoms+1)
 #gro_xyz=list()
 lmps_atom_list_start = 0 
 #Get Box stuff
-if "zlo" in lmpslines[16]:
-    lmps_z_box = float(lmpslines[16].split()[1])
-    lmps_y_box = float(lmpslines[15].split()[1])
-    lmps_x_box = float(lmpslines[14].split()[1])
+boxindex = [index for index,val in enumerate(lmpslines) if 'xlo' in val][0]
+if "xlo" in lmpslines[boxindex]:
+    lmps_z_box = float(lmpslines[boxindex+2].split()[1])
+    lmps_y_box = float(lmpslines[boxindex+1].split()[1])
+    lmps_x_box = float(lmpslines[boxindex].split()[1])
         
     #print (lmpslines[15])
 else:
