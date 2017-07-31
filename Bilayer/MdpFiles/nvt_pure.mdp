@@ -1,0 +1,50 @@
+title                     = Bilayer NVT Equilibration
+; Run parameters
+integrator                = md        ; leap-frog integrator
+nsteps                    = 2500000     ; 2 * 2500000 = 5000ps = 5ns
+dt                        = 0.002     ; 2 fs
+
+; Output control
+nstxout                   = 500       ; Every 1.0 ps
+nstvout                   = 500       
+nstenergy                 = 500
+nstlog                    = 500
+
+;Bond parameters
+continuation              = no
+constraint_algorithm    = lincs
+constraints             =   all-bonds
+lincs_iter              = 1
+lincs_order             = 4
+
+; Neighbor searching
+cutoff-scheme           = Verlet
+nstype                  = grid
+nstlist                 = 10
+rcoulomb                = 1.4
+rvdw                    = 1.4
+
+; Electorstatics
+coulombtype             = PME
+pme_order               = 4
+fourierspacing          = 0.16
+
+; Temperature coupling
+tcoupl                  = nose-hoover  ;nose hoover or v-rescale
+tc-grps                 = system
+tau_t                   = 0.4      
+ref_t                   = 305
+
+; Pressure coupling
+pcoupl                 = no
+
+;Periodic boundary conditions
+pbc                     = xyz
+
+; Dispersion correction
+DispCorr                = EnerPres
+
+;Velocity generation
+gen_vel                 = yes
+gen_temp                = 305
+gen_seed                = -1
