@@ -39,7 +39,7 @@ DISTANCE_TABLE = 0.6
 FORCE_TABLE = ENERGY_TABLE/DISTANCE_TABLE
 
 # Atom types
-atom_types=['P4', 'P3', 'Nda', 'Na', 'C1', 'Qa', 'Q0']
+atom_types=['P4', 'P3', 'Nda', 'Na', 'C2', 'C1', 'Qa', 'Q0']
 
 # FF directory
 FF_dir = '/raid6/homes/ahy3nz/Programs/setup/FF/CG/'
