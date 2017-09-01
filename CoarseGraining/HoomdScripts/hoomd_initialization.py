@@ -97,25 +97,54 @@ def set_bonds():
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), k=0, r0=0)
         
         
-def set_pairs(table_dir = "lambda0", nl = None, table=None, ignore=None):
-    # load pair-wise interaction table for non-bonded interactions
+def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=None):
+    """ load pair-wise interaction table for non-bonded interactions
+
+    Parameters
+    ---------
+    table_dir = string
+        Directory in which all the pair potnetials are located
+    nl = hoomd neighborlist
+    ignore = list of tuples
+        [(i, j), (a, b),...] of pairs to ignore setting interactions
+
+    Notes
+    -----
+    C1 is a 3:1 alkyl carbon mapping
+    C2 is a 2:1 alkyl carbon mapping
+    C2 pairs can jut use the C1 pairs
+
+
+
+    """
     tabulated_potential = os.path.join(FF_dir, table_dir)
     tablelength = 121
     if table is None:
         table = hoomd.md.pair.table(width = tablelength, nlist=nl)
     for atomtype_i, atomtype_j in itertools.combinations_with_replacement(atom_types,2):
-        atomtype_i = str(atomtype_i).strip()
-        atomtype_j = str(atomtype_j).strip()
-        if not set([atomtype_i, atomtype_j]) <= set(ignore):
-            table_file = '{}/{}-{}.txt'.format(tabulated_potential, atomtype_i, atomtype_j)
-            table.set_from_file(atomtype_i, atomtype_j, table_file)
-            table.set_from_file(atomtype_j, atomtype_i, table_file)
-        elif set([atomtype_i, atomtype_j])<=set(['C1','C1']):
-            table_file = '{}/{}-{}.txt'.format(tabulated_potential, atomtype_i, atomtype_j)
-            table.set_from_file(atomtype_i, atomtype_j, table_file)
-            table.set_from_file(atomtype_j, atomtype_i, table_file)
+        real_atomtype_i = str(atomtype_i).strip()
+        if 'C2' in real_atomtype_i:
+            virtual_atomtype_i = 'C1'
+        else:
+            virtual_atomtype_i = real_atomtype_i
 
-    return table
+        real_atomtype_j = str(atomtype_j).strip()
+        if 'C2' in real_atomtype_j:
+            virtual_atomtype_j = 'C1'
+        else:
+            virtual_atomtype_j = real_atomtype_j
+
+        if not set([real_atomtype_i, real_atomtype_j]) <= set(ignore):
+            table_file = '{}/{}-{}.txt'.format(tabulated_potential, virtual_atomtype_i, virtual_atomtype_j)
+            table.set_from_file(real_atomtype_i, real_atomtype_j, table_file)
+            table.set_from_file(real_atomtype_j, real_atomtype_i, table_file)
+        #elif set([atomtype_i, atomtype_j])<=set(['C1','C1']):
+        #    table_file = '{}/{}-{}.txt'.format(tabulated_potential, atomtype_i, atomtype_j)
+        #    table.set_from_file(atomtype_i, atomtype_j, table_file)
+        #    table.set_from_file(atomtype_j, atomtype_i, table_file)
+
+
+        return table
 
 def set_exclusions(nl=None):
     """ Set 1-2 and 1-3 exclusions
