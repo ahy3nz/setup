@@ -65,16 +65,19 @@ def set_harmonic_angles():
     angle_parameter_labels = angle_parameters.index.values.tolist()
     harmonic_angles = hoomd.md.angle.harmonic()
     for x,z in itertools.product(atom_types,repeat=2):
+    #for x,z in itertools.combinations_with_replacement(atom_types,2):
         for y in atom_types: 
             if '{}-{}-{}'.format(x,y,z) in angle_parameter_labels:
-                angle_triplet = angle_parameters.loc('{}-{}-{}'.format(x,y,z))
+                angle_triplet = angle_parameters.loc['{}-{}-{}'.format(x,y,z)]
                 harmonic_angles.angle_coeff.set(angle_triplet.name, k=angle_triplet.force_constant, t0=angle_triplet.x0)
+                harmonic_angles.angle_coeff.set('{}-{}-{}'.format(z,y,x), k=angle_triplet.force_constant, t0=angle_triplet.x0)
                 
             elif '{}-{}-{}'.format(z,y,x) in angle_parameter_labels:
-                angle_triplet = angle_parameters.loc('{}-{}-{}'.format(z,y,x))
+                angle_triplet = angle_parameters.loc['{}-{}-{}'.format(z,y,x)]
                 harmonic_angles.angle_coeff.set(angle_triplet.name, k=angle_triplet.force_constant, t0=angle_triplet.x0)
+                harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=angle_triplet.force_constant, t0=angle_triplet.x0)
             else:
-                print("WARNING: {}-{}-{} not found in angle parameters, setting to zero".format(x,y))
+                print("WARNING: {}-{}-{} not found in angle parameters, setting to zero".format(x,y,z))
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
 
 
@@ -87,14 +90,25 @@ def set_bonds():
     bond_parameters = pd.read_csv(bond_parameters_file, sep='\t',index_col=0)
     bond_harmonic = hoomd.md.bond.harmonic(name="mybond")
     for x,y in itertools.product(atom_types,repeat=2):
-        if '{}-{}'.format(x,y) in bonding_parameters.index.values.tolist()
-        try:
-            bond_pair = bond_parameters.loc('{}-{}'.format(x,y))
+    #for x,y in itertools.combinations_with_replacement(atom_types,2):
+        if '{}-{}'.format(x,y) in bond_parameters.index.values.tolist():
+            bond_pair = bond_parameters.loc['{}-{}'.format(x,y)]
             bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
-                    r0=bond_pair.x0)
-        except KeyError:
+                        r0=bond_pair.x0)
+            bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), 
+                    k=bond_pair.force_constant, r0=bond_pair.x0)
+        elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
+            bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
+            bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
+                        r0=bond_pair.x0)
+            bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), 
+                    k=bond_pair.force_constant, r0=bond_pair.x0)
+
+
+        else:
             print("WARNING: {}-{} not found in bond parameters, setting to zero".format(x,y))
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), k=0, r0=0)
+            bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), k=0, r0=0)
         
         
 def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=None):
