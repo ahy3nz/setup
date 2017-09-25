@@ -5,6 +5,7 @@ import sys
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 
 from optparse import OptionParser
 """
@@ -109,6 +110,45 @@ def calc_LJ_force(r = 1, c12 = 0, c6 = 0):
     force = ((12*c12/r13) - (6*c6/r7))
     return force
 
+
+def calc_morse_energy(r, D, alpha, r0):
+    """Morse pair potential. """
+    return D * (np.exp(-2 * alpha * (r - r0)) - 2 * np.exp(-alpha * (r - r0)))
+
+def calc_morse_force(r, D, alpha, r0):
+    """ Morse pair force"""
+    return D*(-2*alpha*np.exp(-alpha*(r-r0)) + 2*alpha*np.exp(-2*alpha*(r-r0)))
+
+def LJ_to_morse(start_fit=0.3, end_fit=0.6, sigma=1, eps=1, output_plot=False):
+    """ Take LJ parameters and fit to a morse potential
+    
+    Parameters
+    ----------
+    start_fit : float
+        Fit to a particular region of the LJ potential
+    end_fit : float
+        Fit to a particular region of hte LJ potential
+
+    Returns
+    -------
+    morse_params : dict
+
+    """
+    distance_vals = np.arange(start_fit, end_fit, 0.01)
+    c6 = 4*eps*(sigma**6)
+    c12 = 4*eps*(sigma**12)
+    LJ_energies = [calc_LJ_energy(r=r, c6=c6, c12=c12) for r in distance_vals]
+
+    params, covar = curve_fit(calc_morse_energy, distance_vals, LJ_energies, 
+            bounds=[(0,0,0), (np.inf, np.inf, np.inf)])
+    morse_params = {'D': params[0], 'alpha': params[1], 'r0': params[2]}
+
+
+    return morse_params
+
+
+
+
 def interpolate_r0(values = None, distances = None):
     """ Compute values at r=0 by interpolating
     
@@ -160,6 +200,41 @@ def gmx_to_sigeps(c6=0, c12=0, type_A=None, type_B=None):
         print("Numerical error with epsilon checking {}-{}".format(type_A, type_B))
     return sig, eps_1
 
+
+def generate_morse_Table(output=None, plot=False, D=1, alpha=1, r0=1):
+    """ Generated rabulated tabulated morse potentials
+
+    """
+
+    distances = np.linspace(0, 1.2, num = 121) 
+    rcut = 1.1 
+    energies = [calc_morse_energy(r, D, alpha, r0) for r in distances] 
+    forces = [calc_morse_force(r, D, alpha, r0) for r in distances] 
+
+    # Set energies to zero beyond cutoff
+    for i, distance in enumerate(distances):
+        if distance >= rcut:
+            energies[i] = 0
+
+        
+    # Save to text file
+    zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(distances, energies, forces)] 
+    np.savetxt('{}.txt'.format(output), zipped, fmt='%s')
+
+    
+    # Plot tabulated potentials
+    if plot:
+        f, axarray= plt.subplots(1,1)
+        axarray.plot(distances, energies, label="energy")
+        axarray.plot(distances, forces, label = "force")
+        axarray.plot(distances, np.zeros(len(distances)))
+        axarray.set_ylim([-10, 10])
+        axarray.set_title("Gromacs")
+        axarray.legend()
+        
+        plt.savefig(output+".png")
+        plt.close()
+
 def generate_Table(c6=0, c12=0, output=None, plot=False):
     """ Generated tabulated pair potential
 
@@ -185,13 +260,6 @@ def generate_Table(c6=0, c12=0, output=None, plot=False):
     zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(distances, energies, forces)] 
     np.savetxt('{}.txt'.format(output), zipped, fmt='%s')
 
-    #table_distances = [convert_unit(value = r, tag ="distance") for r in distances]
-    #table_energies = [convert_unit(value = energy, tag = "energy") for energy in energies]
-    #table_forces = [convert_unit(value = force, tag = "force") for force in forces]
-
-    #zipped =["{:.18e} {:.18e} {:.18e}".format(dist, ener, force) for dist,ener,force in zip(distances, energies, forces)] 
-    #np.savetxt('{}_gro.txt'.format(options.filename), zipped, fmt='%s')
-    
     
     # Plot tabulated potentials
     if plot:
@@ -203,13 +271,6 @@ def generate_Table(c6=0, c12=0, output=None, plot=False):
         axarray.set_title("Gromacs")
         axarray.legend()
         
-        #axarray[1].plot(table_distances, table_energies, label="energy")
-        #axarray[1].plot(table_distances, table_forces, label = "force")
-        #axarray[1].plot(table_distances, np.zeros(len(table_distances)))
-        #axarray[1].set_ylim([-10, 10])
-        #axarray[1].set_title("Tabulated")
-        #axarray[1].legend()
-        #
         plt.savefig(output+".png")
         plt.close()
 

@@ -9,7 +9,7 @@ import ff_utils
 """ Generate tabulated potnetials from a pair file
 First take c6 and c12 to get sigma and epsilon
 Scale sigma and epsilon if specified
-Generate table
+Generate table (morse or LJ)
 """
 # Optimized pairs are those derived in earlier work by Tim
 optimized_pairs = [ ('P4', 'P4'), ('P4', 'P3'), ('P4', 'Nda'), ('P4', 'C1'),
@@ -25,6 +25,8 @@ parser.add_argument("--scale_epsilon", type=float,help="Scale epsilon val",
         default=1.0)
 parser.add_argument("--output", default="new_pairs")
 parser.add_argument("--plot", action="store_true", default=False)
+parser.add_argument("--morse", action="store_true", default=False)
+parser.add_argument("--lj", action="store_true", default=False)
 args = parser.parse_args()
 
 p = subprocess.Popen("mkdir -p {}".format(args.output),shell=True,
@@ -33,6 +35,8 @@ p.wait()
 
 #filename = 'martini_pair.dat'
 #filename='testpair.txt'
+if not args.lj and not args.morse:
+    sys.exit("Specify LJ and/or morse potnetial fits")
 martini_file = open(args.filename,'r')
 martini_lines = martini_file.readlines()
 for i, line in enumerate(martini_lines):
@@ -56,11 +60,17 @@ for i, line in enumerate(martini_lines):
         new_c6 = 4*scaled_eps*(scaled_sig**6)
         new_c12 = 4*scaled_eps*(scaled_sig**12)
 
+        
         # For making tables:
-        #p = subprocess.Popen("python generate_Hoomd_Table.py -f {}-{} --c6 {} --c12 {}".format(
-            #atom_1, atom_2, c6, c12), shell=True, stdout=subprocess.PIPE)
-        #p.wait()
-        ff_utils.generate_Table(c6=new_c6, c12=new_c12, 
+        if args.lj:
+            ff_utils.generate_Table(c6=new_c6, c12=new_c12, 
+                output='{}/{}-{}'.format(args.output, atom_1, atom_2),plot=args.plot)
+        if args.morse:
+            # Get some morse potentials
+            morse_params = ff_utils.LJ_to_morse(start_fit=sig-0.10, end_fit=sig+0.10,
+                sigma=scaled_sig, eps=scaled_eps)
+
+            ff_utils.generate_morse_Table(**morse_params,
                 output='{}/{}-{}'.format(args.output, atom_1, atom_2),plot=args.plot)
 
         
