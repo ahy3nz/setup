@@ -119,7 +119,7 @@ def calc_morse_force(r, D, alpha, r0):
     """ Morse pair force"""
     return D*(-2*alpha*np.exp(-alpha*(r-r0)) + 2*alpha*np.exp(-2*alpha*(r-r0)))
 
-def LJ_to_morse(start_fit=0.3, end_fit=0.6, sigma=1, eps=1, output_plot=False):
+def LJ_to_morse(start_fit=0.3, end_fit=0.6, sigma=1, eps=1, output_plot=False, output_name=""):
     """ Take LJ parameters and fit to a morse potential
     
     Parameters
@@ -142,6 +142,17 @@ def LJ_to_morse(start_fit=0.3, end_fit=0.6, sigma=1, eps=1, output_plot=False):
     params, covar = curve_fit(calc_morse_energy, distance_vals, LJ_energies, 
             bounds=[(0,0,0), (np.inf, np.inf, np.inf)])
     morse_params = {'D': params[0], 'alpha': params[1], 'r0': params[2]}
+
+    if output_plot:
+        morse_energies = [calc_morse_energy(r, **morse_params) for r in distance_vals]
+        fig, ax = plt.subplots(1,1)
+        ax.plot(distance_vals, LJ_energies, label="LJ")
+        ax.plot(distance_vals, morse_energies, label="morse")
+        ax.set_ylim([-10, 10])
+        ax.legend()
+        plt.tight_layout()
+        plt.savefig(output_name+".jpg")
+        plt.close()
 
 
     return morse_params

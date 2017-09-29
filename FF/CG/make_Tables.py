@@ -61,16 +61,18 @@ for i, line in enumerate(martini_lines):
         new_c12 = 4*scaled_eps*(scaled_sig**12)
 
         
+        print("Sig {} -> {}".format(round(sig,3), round(scaled_sig,3)))
+        print("Eps {} -> {}".format(round(eps,3), round(scaled_eps,3)))
         # For making tables:
         if args.lj:
             ff_utils.generate_Table(c6=new_c6, c12=new_c12, 
                 output='{}/{}-{}'.format(args.output, atom_1, atom_2),plot=args.plot)
         if args.morse:
             # Get some morse potentials
-            morse_params = ff_utils.LJ_to_morse(start_fit=sig-0.10, end_fit=sig+0.10,
-                sigma=scaled_sig, eps=scaled_eps)
+            morse_params = ff_utils.LJ_to_morse(start_fit=0.9*scaled_sig, end_fit=1.1*scaled_sig,
+                sigma=scaled_sig, eps=scaled_eps, output_plot=args.plot, output_name="{}/{}-{}_fit_normal".format(args.output,atom_1, atom_2))
 
             ff_utils.generate_morse_Table(**morse_params,
-                output='{}/{}-{}'.format(args.output, atom_1, atom_2),plot=args.plot)
+                output='{}/{}-{}'.format(args.output, atom_1, atom_2))
 
         
