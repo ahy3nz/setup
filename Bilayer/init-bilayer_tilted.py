@@ -18,6 +18,7 @@ parser.add_option("-a", "--APL", action="store",type="float", default=0.0, dest 
 parser.add_option("-r", "--rot", action="store", type ="float", default = 12.0, dest = "rotation")
 parser.add_option("--DSPC", action="store",type="float", default=0.0, dest = "DSPC_frac")
 parser.add_option("--DPPC", action="store",type="float", default=0.0, dest = "DPPC_frac")
+parser.add_option("--acid12", action="store",type="float", default=0.0, dest = "acid12_frac")
 parser.add_option("--acid16", action="store",type="float", default=0.0, dest = "acid16_frac")
 parser.add_option("--acid22", action="store",type="float", default=0.0, dest = "acid22_frac")
 parser.add_option("--alc12", action="store",type="float", default=0.0,  dest = "alc12_frac")
@@ -36,11 +37,13 @@ parser.add_option("--water", action="store",type="float", default=0.0, dest = "w
 
 # load components
 #base_path='/Users/yangah/Programs/setup/SimulationSetup_Remco/Prototypes/'
-base_path='Prototypes/'
+#base_path='Prototypes/'
+base_path = '/raid6/homes/ahy3nz/Programs/setup/Bilayer/Prototypes'
 dspc = Gbb(xml_prototype=base_path+'DSPC.xml',name='dspc')
 dspc.rotate(angles=[0.0,0.0,-math.pi/4.0])
 dppc = Gbb(xml_prototype=base_path+'DPPC.xml',name='dppc')
 dppc.rotate(angles=[0.0,0.0,-math.pi/4.0])
+acid12 = Gbb(xml_prototype=base_path+'c12-acid.xml',name='acid12')
 acid16 = Gbb(xml_prototype=base_path+'c16-acid.xml',name='acid16')
 acid22 = Gbb(xml_prototype=base_path+'c22-acid.xml',name='acid22')
 alc12 = Gbb(xml_prototype=base_path+'c12-alcohol.xml',name='alc12')
@@ -62,6 +65,7 @@ water = Gbb(xml_prototype=base_path+'spc.xml',name='water')
 #DSPC thickness really 16
 lipids = [(dspc,  options.DSPC_frac , 16.0),
           (dppc,  options.DPPC_frac , 13.0),
+          (acid12,options.acid12_frac , 13.0),
           (acid16,options.acid16_frac , 22.0),
           (acid22,options.acid22_frac , 16.0),
           (alc12, options.alc12_frac , 13.0),
@@ -116,19 +120,20 @@ if (phasesep=='no'):
     
     resid_atom_list = [ (dspc, 2 * n_x * n_y * np.float(lipids[0][1])),
                         (dppc, 2 * n_x * n_y * np.float(lipids[1][1])),
-                        (acid16, 2 * n_x * n_y * np.float(lipids[2][1])),
-                        (acid22, 2 * n_x * n_y * np.float(lipids[3][1])),
-                        (alc12, 2 * n_x * n_y * np.float(lipids[4][1])),
-                        (alc14, 2 * n_x * n_y * np.float(lipids[5][1])),
-                        (alc16, 2 * n_x * n_y * np.float(lipids[6][1])),
-                        (alc18, 2 * n_x * n_y * np.float(lipids[7][1])),
-                        (alc20, 2 * n_x * n_y * np.float(lipids[8][1])),
-                        (alc22, 2 * n_x * n_y * np.float(lipids[9][1])),
-                        (alc24, 2 * n_x * n_y * np.float(lipids[10][1])),
-                        (isis, 2 * n_x * n_y * np.float(lipids[11][1])),
-                        (ss, 2 * n_x * n_y * np.float(lipids[12][1])),
-                        (chol, 2 * n_x * n_y * np.float(lipids[13][1])),
-                        (pmea, 2 * n_x * n_y * np.float(lipids[14][1])),
+                        (acid12, 2 * n_x * n_y * np.float(lipids[2][1])),
+                        (acid16, 2 * n_x * n_y * np.float(lipids[3][1])),
+                        (acid22, 2 * n_x * n_y * np.float(lipids[4][1])),
+                        (alc12, 2 * n_x * n_y * np.float(lipids[5][1])),
+                        (alc14, 2 * n_x * n_y * np.float(lipids[6][1])),
+                        (alc16, 2 * n_x * n_y * np.float(lipids[7][1])),
+                        (alc18, 2 * n_x * n_y * np.float(lipids[8][1])),
+                        (alc20, 2 * n_x * n_y * np.float(lipids[9][1])),
+                        (alc22, 2 * n_x * n_y * np.float(lipids[10][1])),
+                        (alc24, 2 * n_x * n_y * np.float(lipids[11][1])),
+                        (isis, 2 * n_x * n_y * np.float(lipids[12][1])),
+                        (ss, 2 * n_x * n_y * np.float(lipids[13][1])),
+                        (chol, 2 * n_x * n_y * np.float(lipids[14][1])),
+                        (pmea, 2 * n_x * n_y * np.float(lipids[15][1])),
                         (water, 2 * n_x * n_y * np.float(solvent_per_lipid)) ]
 
 
@@ -154,7 +159,7 @@ if (phasesep=='no'):
     #mygbb = Gbb() 
     #mygbb.load_lammps_data(data_file='bilayer.lammpsdata')
     #pdb.set_trace()
-    system.sort_by_name([x[0].name for x in lipids])
+    #system.sort_by_name([x[0].name for x in lipids])
     #Break, check what system has, print to gromacs not lammps, need
     #to add functionality in system.py
     system.print_lammpsdata(filename=(options.filename+'.lammpsdata'),
