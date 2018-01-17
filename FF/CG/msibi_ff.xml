@@ -472,6 +472,5 @@
 	<Atom type="C2" charge="0" sigma="1" epsilon="1"/>
 	<Atom type="PCP" charge="0" sigma="1" epsilon="1"/>
 	<Atom type="PCN" charge="0" sigma="1" epsilon="1"/>
-	<Atom type="W" charge="0" sigma="1" epsilon="1"/>
 </NonbondedForce>
 </ForceField>
