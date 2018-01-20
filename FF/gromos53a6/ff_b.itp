@@ -9,6 +9,7 @@
 #include "gromos53a6.ff/ffbonded.itp"
 #include "CHOL_b.itp"
 #include "DPPC_b.itp"
+#include "PC_b.itp"
 #include "DSPC_b.itp"
 #include "ISIS_b.itp"
 #include "PMEA_b.itp"
