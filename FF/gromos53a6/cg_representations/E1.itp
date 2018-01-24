@@ -6,10 +6,10 @@
 
 [ atoms ]
 ;      nr    type    renr  residu    atom    cgnr  charge      mass
-       1     CH1       1      PC     CH1       2   0.300   13.0190
-       2      OE       1      PC      OE       2  -0.700   15.9994
-       3       C       1      PC       C       3   0.700   12.0110
-       4       O       1      PC       O       3  -0.700   15.9994
+       1     CH1       1      E1     CH1       2   0.300   13.0190
+       2      OE       1      E1      OE       2  -0.700   15.9994
+       3       C       1      E1       C       3   0.700   12.0110
+       4       O       1      E1       O       3  -0.700   15.9994
 
 [ bonds ]
 ;    ai    aj funct          c0          c1          c2          c3

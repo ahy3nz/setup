@@ -6,11 +6,11 @@
 
 [ atoms ]
 ;      nr    type    renr  residu    atom    cgnr  charge      mass
-       1     CH3       1      PC     CH3       1   0.000   15.0350
-       2     CH3       1      PC     CH3       1   0.000   15.0350
-       3     CH3       1      PC     CH3       1   0.000   15.0350
-       4      NL       1      PC      NL       1  -0.000   14.0067
-       5     CH2       1      PC     CH2       1   0.000   14.0270
+       1     CH3       1     PCN     CH3       1   0.000   15.0350
+       2     CH3       1     PCN     CH3       1   0.000   15.0350
+       3     CH3       1     PCN     CH3       1   0.000   15.0350
+       4      NL       1     PCN      NL       1  -0.000   14.0067
+       5     CH2       1     PCN     CH2       1   0.000   14.0270
     
 [ bonds ]
 ;    ai    aj funct          c0          c1          c2          c3

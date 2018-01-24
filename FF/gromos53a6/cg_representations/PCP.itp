@@ -6,13 +6,13 @@
 
 [ atoms ]
 ;      nr    type    renr  residu    atom    cgnr  charge      mass
-       1     CH2       1      PC     CH2       1   0.400   14.0270
-       2      OA       1      PC      OA       1  -0.800   15.9994
-       3       P       1      PC       P       1   1.700   30.9738
-       4      OM       1      PC      OM       1  -0.800   15.9994
-       5      OM       1      PC      OM       1  -0.800   15.9994
-       6      OA       1      PC      OA       1  -0.700   15.9994
-       7     CH2       1      PC     CH2       2   0.400   14.0270
+       1     CH2       1     PCP     CH2       1   0.400   14.0270
+       2      OA       1     PCP      OA       1  -0.800   15.9994
+       3       P       1     PCP       P       1   1.700   30.9738
+       4      OM       1     PCP      OM       1  -0.800   15.9994
+       5      OM       1     PCP      OM       1  -0.800   15.9994
+       6      OA       1     PCP      OA       1  -0.700   15.9994
+       7     CH2       1     PCP     CH2       2   0.400   14.0270
      
 [ bonds ]
 ;    ai    aj funct          c0          c1          c2          c3
