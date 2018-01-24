@@ -1,0 +1,49 @@
+
+[ moleculetype ]
+; Name 		nrexcl
+  PCP 		2
+
+
+[ atoms ]
+;      nr    type    renr  residu    atom    cgnr  charge      mass
+       1     CH2       1      PC     CH2       1   0.000   14.0270
+       2      OA       1      PC      OA       1  -0.000   15.9994
+       3       P       1      PC       P       1   0.000   30.9738
+       4      OM       1      PC      OM       1  -0.000   15.9994
+       5      OM       1      PC      OM       1  -0.000   15.9994
+       6      OA       1      PC      OA       1  -0.000   15.9994
+       7     CH2       1      PC     CH2       2   0.000   14.0270
+     
+[ bonds ]
+;    ai    aj funct          c0          c1          c2          c3
+     1     2     2       gb_18
+     2     3     2       gb_28
+     3     4     2       gb_24
+     3     5     2       gb_24
+     3     6     2       gb_28
+     6     7     2       gb_18
+    
+[ pairs ]
+;    ai    aj funct          c0          c1
+
+[ angles ]
+;    ai    aj    ak funct          c0          c1
+     1     2     3     2       ga_26
+     2     3     4     2       ga_14
+     2     3     5     2       ga_14
+     2     3     6     2        ga_5
+     3     6     7     2       ga_26
+     4     3     5     2       ga_29
+     4     3     6     2       ga_14
+     5     3     6     2       ga_14
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1          c2
+     1     2     3     4     1       gd_20
+     1     2     3     4     1       gd_27
+     2     3     6     7     1       gd_20
+     2     3     6     7     1       gd_27
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1
+
