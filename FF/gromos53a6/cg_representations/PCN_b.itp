@@ -1,0 +1,39 @@
+
+[ moleculetype ]
+; Name 		nrexcl
+  PCN 		2
+
+
+[ atoms ]
+;      nr    type    renr  residu    atom    cgnr  charge      mass
+       1     CH3       1      PC     CH3       1   0.000   15.0350
+       2     CH3       1      PC     CH3       1   0.000   15.0350
+       3     CH3       1      PC     CH3       1   0.000   15.0350
+       4      NL       1      PC      NL       1  -0.000   14.0067
+       5     CH2       1      PC     CH2       1   0.000   14.0270
+    
+[ bonds ]
+;    ai    aj funct          c0          c1          c2          c3
+     1     4     2       gb_21
+     2     4     2       gb_21
+     3     4     2       gb_21
+     4     5     2       gb_21
+   
+[ pairs ]
+;    ai    aj funct          c0          c1
+
+[ angles ]
+;    ai    aj    ak funct          c0          c1
+     1     4     2     2       ga_13
+     1     4     3     2       ga_13
+     1     4     5     2       ga_13
+     2     4     3     2       ga_13
+     2     4     5     2       ga_13
+     3     4     5     2       ga_13
+  
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1          c2
+ 
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1
+
