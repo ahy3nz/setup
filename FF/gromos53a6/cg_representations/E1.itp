@@ -1,0 +1,33 @@
+
+[ moleculetype ]
+; Name 		nrexcl
+  E1 		2
+
+
+[ atoms ]
+;      nr    type    renr  residu    atom    cgnr  charge      mass
+      13     CH1       1      PC     CH1       2   0.300   13.0190
+      14      OE       1      PC      OE       2  -0.700   15.9994
+      15       C       1      PC       C       3   0.700   12.0110
+      16       O       1      PC       O       3  -0.700   15.9994
+
+[ bonds ]
+;    ai    aj funct          c0          c1          c2          c3
+    13    14     2       gb_18
+    14    15     2       gb_10
+    15    16     2        gb_5
+    
+[ pairs ]
+;    ai    aj funct          c0          c1
+
+[ angles ]
+;    ai    aj    ak funct          c0          c1
+    13    14    15     2       ga_22
+    14    15    16     2       ga_31
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1          c2
+
+[ dihedrals ]
+;    ai    aj    ak    al funct          c0          c1
+

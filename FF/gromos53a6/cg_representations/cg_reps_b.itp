@@ -1,0 +1,12 @@
+#define _FF_GROMOS96
+#define _FF_GROMOS53A6
+
+[ defaults ]
+; nbfunc    comb-rule   gen-pairs   fudgeLJ fudgeQQ
+1   1   yes 1.0 1.0
+
+#include "PC_b.itp"
+#include "PCP_b.itp"
+#include "PCN_b.itp"
+#include "E1_b.itp"
+
