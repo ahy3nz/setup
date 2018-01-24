@@ -26,3 +26,4 @@
 #include "alc22_b.itp"
 #include "alc24_b.itp"
 #include "acd24_b.itp"
+#include "cg_representations/cg_reps_b.itp"
