@@ -64,17 +64,20 @@ annealing                   = single single
 """.format(**locals()))
 
 def _generate_annealing_points(f, temp_low=305, temp_high=560, interval=5, 
-        time_anneal=25000, final_time=50000):
+        time_anneal=25000, final_time=50000, water_temp=500):
     """ Generate annealing points
     temp_low : lowest temperature, float
     temp_high : highest temperature, float
     interval : duration for each annealing interval, int (ps)
     time_anneal: duration of annealing, int (ps) 
+    final_time : last time point such that the RWMD gradually
+        brings temperature down to temp_low at final_time, int (ps)
+    water_temp : temperature to keep water at, K 
     """
     n_points = int(time_anneal/interval)
     times = [0]
     temps = [temp_low]
-    last_temp = 305
+    last_temp = temp_low
     for i in np.arange(1,n_points):
         # If we're at the lowest temperature, only go up
         if abs(last_temp - temp_low) < 0.1:
@@ -96,10 +99,10 @@ def _generate_annealing_points(f, temp_low=305, temp_high=560, interval=5,
     time_string += " " + str(final_time)
     f.write("annealing-npoints\t={0} 2 \n".format(n_points+1))
     f.write("annealing-time\t={0} 0 {1}\n".format(time_string, str(final_time)))
-    f.write("annealing-temp\t={0} {1} {1}\n".format(temp_string, str(temp_low)))
+    f.write("annealing-temp\t={0} {1} {1}\n".format(temp_string, str(water_temp)))
 
 if __name__ == "__main__":
     with open('RW.mdp','w') as f:
-        _write_body(f, ref_temp=305)
-        _generate_annealing_points(f, temp_low=305, temp_high=560, interval=5,
-                time_anneal=25000, final_time=50000)
+        _write_body(f, ref_temp=570)
+        _generate_annealing_points(f, temp_low=570, temp_high=620, interval=5,
+                time_anneal=25000, final_time=50000, water_temp=500)
