@@ -2,13 +2,13 @@ CRYST1   14.828   19.090   28.446  90.00  90.00  90.00 P 1
 HETATM    1 _PCN RES     1       0.000  16.683  -9.910  0.00  0.00          EP  
 HETATM    2 _PCP RES     1       0.000  12.782  -9.910  0.00  0.00          EP  
 HETATM    3 _E1  RES     1       1.560  13.737  -6.151  0.00  0.00          EP  
-HETATM    4 _E1  RES     1       1.799  10.276  -4.187  0.00  0.00          EP  
-HETATM    5 _C3  RES     1       1.169  15.523  -3.584  0.00  0.00          EP  
-HETATM    6 _C3  RES     1       1.112  15.596   0.154  0.00  0.00          EP  
-HETATM    7 _C3  RES     1       0.739  15.701   3.958  0.00  0.00          EP  
-HETATM    8 _C3  RES     1       0.605  15.499   7.728  0.00  0.00          EP  
-HETATM    9 _C3  RES     1       0.477  15.549  11.322  0.00  0.00          EP  
-HETATM   10 _C2  RES     1       1.189  15.272  14.371  0.00  0.00          EP  
+HETATM    4 _C3  RES     1       1.169  15.523  -3.584  0.00  0.00          EP  
+HETATM    5 _C3  RES     1       1.112  15.596   0.154  0.00  0.00          EP  
+HETATM    6 _C3  RES     1       0.739  15.701   3.958  0.00  0.00          EP  
+HETATM    7 _C3  RES     1       0.605  15.499   7.728  0.00  0.00          EP  
+HETATM    8 _C3  RES     1       0.477  15.549  11.322  0.00  0.00          EP  
+HETATM    9 _C2  RES     1       1.189  15.272  14.371  0.00  0.00          EP  
+HETATM   10 _E1  RES     1       1.799  10.276  -4.187  0.00  0.00          EP  
 HETATM   11 _C3  RES     1       2.426  10.591  -0.910  0.00  0.00          EP  
 HETATM   12 _C3  RES     1       1.885  11.012   2.849  0.00  0.00          EP  
 HETATM   13 _C3  RES     1       2.022  11.237   6.698  0.00  0.00          EP  
@@ -18,13 +18,13 @@ HETATM   16 _C2  RES     1       0.000  10.920  17.214  0.00  0.00          EP
 CONECT    1    2
 CONECT    2    3
 CONECT    3    4
-CONECT    3    5
+CONECT    3   10
+CONECT    4    5
 CONECT    5    6
 CONECT    6    7
 CONECT    7    8
 CONECT    8    9
-CONECT    9   10
-CONECT    4   11
+CONECT   10   11
 CONECT   11   12
 CONECT   12   13
 CONECT   13   14
