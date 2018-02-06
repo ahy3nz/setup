@@ -6,7 +6,7 @@ import subprocess
 refactor_dict = {"Q0": "PCN", "Qa": "PCP",
         "Na": "E1", "C1":"C3", "C2":"C2",
         "P3":"P3",
-        "P4":"P4",
+        "P4":"W",
         "Nda":"Nda"}
 
 all_files = [thing for thing in os.listdir() if '.txt' in thing and os.path.isfile(thing)]
