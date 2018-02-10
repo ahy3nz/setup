@@ -247,9 +247,9 @@ def _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=560
 
         histogram[new_temp] += 1
         temps.append(new_temp)
-        #if water_thermostat_style == 'proportional':
-        #    w_temps.append(new_w_temp)
-        #    last_w_temp = new_w_temp
+        if water_thermostat_style == 'proportional':
+            w_temps.append(new_w_temp)
+            last_w_temp = new_w_temp
         #if water_thermostat_style == 'plateau':
         #    w_temps.append(new_w_temp)
         #    last_w_temp = new_w_temp
@@ -269,6 +269,7 @@ def _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=560
 
     time_string = " ".join([str(time) for time in times])
     time_string += " " + str(final_time)
+    print(len(temp_string))
 
     if water_thermostat_style == 'proportional':
         w_temp_string = " ".join([str(temp) for temp in w_temps])
@@ -293,8 +294,8 @@ if __name__ == "__main__":
     with open('RW.mdp','w') as f:
         _write_body(f, ref_temp=305)
         #_generate_annealing_points(f, nonw_temp_low=305, nonw_temp_high=705, interval=5,
-                #time_anneal=25000, final_time=50000, w_temp_low=305, 
-                #w_temp_high=505, dtemp=40, water_thermostat_style='proportional')
+        #        time_anneal=25000, final_time=50000, w_temp_low=305, 
+        #        w_temp_high=505, dtemp=40, water_thermostat_style='proportional')
         _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=705,
-                interval=5, time_anneal=25000, final_time=50000, w_temp_low=305,
+                interval=5, time_anneal=20000, final_time=40000, w_temp_low=305,
                 w_temp_high=505, dtemp=40, water_thermostat_style='proportional')
