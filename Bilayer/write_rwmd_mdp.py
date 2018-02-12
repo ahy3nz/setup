@@ -196,7 +196,6 @@ def _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=560
         'constant' for water to maintain a single temperature
             """
     n_points = int(final_time/interval)
-    decay_rate = (final_time - time_anneal) / dtemp
     times = [0]
     temps = [nonw_temp_low]
     if water_thermostat_style == 'proportional':
@@ -210,6 +209,10 @@ def _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=560
 
     last_temp = nonw_temp_low
     possible_temps = np.arange(nonw_temp_low, nonw_temp_high+1, dtemp)
+
+    decay_rate = (final_time - time_anneal) / len(possible_temps)
+    decay_rate = 1000*int(np.round(decay_rate/1000,0))
+    print(decay_rate)
     # Construct the histogram
     histogram = {val: 0 for val in possible_temps}
     histogram[last_temp] += 1
@@ -266,14 +269,15 @@ def _generate_dampened_annealing_points(f, nonw_temp_low=305, nonw_temp_high=560
 
     temp_string = " ".join([str(temp) for temp in temps])
     temp_string += " " + str(nonw_temp_low)
+    print(temp_string)
 
     time_string = " ".join([str(time) for time in times])
     time_string += " " + str(final_time)
-    print(len(temp_string))
 
     if water_thermostat_style == 'proportional':
         w_temp_string = " ".join([str(temp) for temp in w_temps])
         w_temp_string += " " + str(w_temp_low)
+        print(w_temp_string)
         f.write("annealing-npoints\t={0} {0}\n".format(n_points+1))
         f.write("annealing-time\t={0} {0}\n".format(time_string))
         f.write("annealing-temp\t={0} {1}\n".format(temp_string, w_temp_string))
