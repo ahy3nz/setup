@@ -5,8 +5,6 @@ import pdb
 from msibi.potentials import tail_correction, head_correction, alpha_array
 from msibi.utils.smoothing import savitzky_golay
 
-""" My own simple Boltzmann inversion script """
-
 
 def _invert_rdf(rdf_i, kT):
     """ Invert RDF to get potnetial"""
@@ -41,13 +39,14 @@ for rdf_file in rdfs:
     filename = "-".join(rdf_file.split('-')[0:2])
     print(filename)
     rdf = np.loadtxt(rdf_file) 
+    dr = rdf[1,0] - rdf[0,0]
     potential = _invert_rdf(rdf[:,1], kT)
     potential = tail_correction(rdf[:,0], potential, r_switch)
     potential  = _linear_head(rdf[:,0], potential)
-    #potential,last_bad_value = head_correction(rdf[:,0], potential,
-                #self.previous_potential, self.head_correction_form)
+    forces = -1.0 * np.gradient(potential, dr)
+
 
     potential = savitzky_golay(potential,9,2,deriv=0,rate=1)
-    np.savetxt(filename+".pot", np.column_stack((rdf[:,0], potential)))
+    np.savetxt(filename+".pot", np.column_stack((rdf[:,0], potential, forces)))
 
 
