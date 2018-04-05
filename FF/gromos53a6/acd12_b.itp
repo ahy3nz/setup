@@ -1,6 +1,6 @@
 [ moleculetype ]
 ; Name 		nrexcl
-acd12 		2
+acd12 		3
 
 [ atoms ]
 ;      nr    type    renr  residu    atom    cgnr  charge      mass

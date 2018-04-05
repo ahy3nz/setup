@@ -1,6 +1,6 @@
 [ moleculetype ]
 ; Name   nrexcl
-acd18     2
+acd18     3
 
 [ atoms ]
 ;  nr  type  resnr  resid  atom  cgnr  charge    mass    total_charge
