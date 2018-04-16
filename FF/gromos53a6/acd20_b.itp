@@ -1,6 +1,6 @@
 [ moleculetype ]
 ; Name   nrexcl
-acd20     2
+acd20     3
 
 ;renaming, there are 23 atoms, new = 24-old
 [ atoms ]

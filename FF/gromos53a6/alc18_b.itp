@@ -1,6 +1,6 @@
 [ moleculetype ]
 ; Name 		nrexcl
-alc18 		2
+alc18 		3
 
 
 [ atoms ]
@@ -50,6 +50,23 @@ alc18 		2
 
 [ pairs ]
 ;    ai    aj funct          c0          c1
+     1     4     1
+     2     5     1
+     3     6     1
+     4     7     1
+     5     8     1
+     6     9     1
+     7    10     1
+     8    11     1
+     9    12     1
+    10    13     1
+    11    14     1
+    12    15     1
+    13    16     1
+    14    17     1
+    15    18     1
+    16    19     1
+    17    20     1
 
 [ angles ]
 ;    ai    aj    ak funct          c0          c1
