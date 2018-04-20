@@ -1,0 +1,65 @@
+title                     = Bilayer NPT Equilibration
+; Run parameters
+integrator                = md        ; leap-frog integrator
+nsteps                    = 100000000   ; 1e-3 ps/step  * 1e8 steps = 1e5 ps = 1e2 ns
+dt                        = 0.001     ; 1 fs
+
+; Output control
+nstxout                   = 0       ; Every 1.0 ps
+nstvout                   = 0       
+nstenergy                 = 5000
+nstlog                    = 5000
+nstxtcout                 = 5000
+
+;Bond parameters
+continuation             = no
+constraint_algorithm    = lincs
+constraints             = h-bonds
+lincs_iter              = 1
+lincs_order             = 4
+
+; Neighbor searching
+cutoff-scheme           = Verlet
+nstype                  = grid
+vdwtype                 = cutoff
+vdw-modifier            = force-switch
+rlist                   = 1.2
+rvdw                    = 1.2
+rvdw-switch             = 1.0
+
+nstlist                 = 10
+;rcoulomb                = 1.4
+;rvdw                    = 1.4
+
+; Electorstatics
+coulombtype             = PME
+rcoulomb=1.2
+pme_order               = 4
+fourierspacing          = 0.16
+
+; Temperature coupling
+tcoupl                  = nose-hoover  ;nose hoover or v-rescale
+tc-grps                 = non-water water  
+tau_t                   = 1.0   1.0   
+ref_t                   = 305   305   
+
+;Pressure coupling
+pcoupl                      = Parrinello-Rahman
+pcoupltype                  = semiisotropic
+tau_p                       = 10.0           ; ps
+ref_p                       = 1.0 1.0          ; bar   
+compressibility             = 4.5e-5 4.5e-5
+refcoord_scaling            = com
+
+
+; Pressure coupling
+;pcoupl                 = no
+
+;Periodic boundary conditions
+pbc                     = xyz
+
+; Dispersion correction
+DispCorr                = no
+
+;Velocity generation
+gen_vel                 = no
