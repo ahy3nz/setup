@@ -39,12 +39,13 @@ DISTANCE_TABLE = 0.6
 FORCE_TABLE = ENERGY_TABLE/DISTANCE_TABLE
 
 # Atom types
-atom_types=['P4', 'P3', 'Nda', 'Na', 'C2', 'C1', 'Qa', 'Q0']
+#atom_types=['P4', 'P3', 'Nda', 'Na', 'C2', 'C1', 'Qa', 'Q0']
+atom_types= ['W', 'E1','C2', 'C3', 'PCP', 'PCN']
 
 # FF directory
-FF_dir = '/raid6/homes/ahy3nz/Programs/setup/FF/CG/'
-bond_parameters_file = os.path.join(FF_dir,'bond_parameters.dat')
-angle_parameters_file = os.path.join(FF_dir, 'angle_parameters.dat')
+FF_dir = '/home/yangah/Programs/setup/FF/CG/'
+bond_parameters_file = os.path.join(FF_dir,'bond_parameters_msibi.dat')
+angle_parameters_file = os.path.join(FF_dir, 'angle_parameters_msibi.dat')
 
 def get_atom_types():
     """ Return a dictionary of all atom types"""
@@ -71,11 +72,13 @@ def set_harmonic_angles():
                 angle_triplet = angle_parameters.loc['{}-{}-{}'.format(x,y,z)]
                 harmonic_angles.angle_coeff.set(angle_triplet.name, k=angle_triplet.force_constant, t0=angle_triplet.x0)
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(z,y,x), k=angle_triplet.force_constant, t0=angle_triplet.x0)
+                print("Setting angle {}-{}-{}".format(x,y,z))
                 
             elif '{}-{}-{}'.format(z,y,x) in angle_parameter_labels:
                 angle_triplet = angle_parameters.loc['{}-{}-{}'.format(z,y,x)]
                 harmonic_angles.angle_coeff.set(angle_triplet.name, k=angle_triplet.force_constant, t0=angle_triplet.x0)
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=angle_triplet.force_constant, t0=angle_triplet.x0)
+                print("Setting angle {}-{}-{}".format(z,y,x))
             else:
                 print("WARNING: {}-{}-{} not found in angle parameters, setting to zero".format(x,y,z))
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
@@ -97,12 +100,14 @@ def set_bonds():
                         r0=bond_pair.x0)
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), 
                     k=bond_pair.force_constant, r0=bond_pair.x0)
+            print("Setting bond {}-{}".format(x,y))
         elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
             bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
             bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
                         r0=bond_pair.x0)
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), 
                     k=bond_pair.force_constant, r0=bond_pair.x0)
+            print("Setting bond {}-{}".format(y,x))
 
 
         else:
@@ -111,7 +116,7 @@ def set_bonds():
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), k=0, r0=0)
         
         
-def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=None):
+def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=[]):
     """ load pair-wise interaction table for non-bonded interactions
 
     Parameters
@@ -131,27 +136,30 @@ def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=None):
 
 
     """
-    tabulated_potential = os.path.join(FF_dir, table_dir)
+    #tabulated_potential = os.path.join(FF_dir, table_dir)
+    tabulated_potential = table_dir
     tablelength = 121
     if table is None:
         table = hoomd.md.pair.table(width = tablelength, nlist=nl)
     for atomtype_i, atomtype_j in itertools.combinations_with_replacement(atom_types,2):
         real_atomtype_i = str(atomtype_i).strip()
-        if 'C2' in real_atomtype_i:
-            virtual_atomtype_i = 'C1'
-        else:
-            virtual_atomtype_i = real_atomtype_i
+        #if 'C2' in real_atomtype_i:
+        #    virtual_atomtype_i = 'C1'
+        #else:
+        #    virtual_atomtype_i = real_atomtype_i
 
         real_atomtype_j = str(atomtype_j).strip()
-        if 'C2' in real_atomtype_j:
-            virtual_atomtype_j = 'C1'
-        else:
-            virtual_atomtype_j = real_atomtype_j
+        #if 'C2' in real_atomtype_j:
+        #    virtual_atomtype_j = 'C1'
+        #else:
+        #    virtual_atomtype_j = real_atomtype_j
 
-        if not set([real_atomtype_i, real_atomtype_j]) <= set(ignore):
-            table_file = '{}/{}-{}.txt'.format(tabulated_potential, virtual_atomtype_i, virtual_atomtype_j)
-            table.set_from_file(real_atomtype_i, real_atomtype_j, table_file)
-            table.set_from_file(real_atomtype_j, real_atomtype_i, table_file)
+        #if not set([real_atomtype_i, real_atomtype_j]) <= set(ignore):
+        if True:
+            table_file = '{}/{}-{}.txt'.format(tabulated_potential, real_atomtype_i, real_atomtype_j)
+            table.set_from_file(real_atomtype_i, real_atomtype_j, filename=table_file)
+            table.set_from_file(real_atomtype_j, real_atomtype_i, filename=table_file)
+            print("Setting pair {}-{}".format(real_atomtype_i, real_atomtype_j))
         #elif set([atomtype_i, atomtype_j])<=set(['C1','C1']):
         #    table_file = '{}/{}-{}.txt'.format(tabulated_potential, atomtype_i, atomtype_j)
         #    table.set_from_file(atomtype_i, atomtype_j, table_file)
