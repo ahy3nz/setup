@@ -213,5 +213,5 @@ def _set_constraints(type_a, type_b, distance, system):
             system.particles[bond.b].type == type_a):
                 #system.constraints.add(bond.a, bond.b, distance)
                 system.constraints.add(bond.a, bond.b,
-                        np.linalg.norm(system.particles[bond.a].position 
-                                     - system.particles[bond.b].position))
+                        np.linalg.norm(np.array(system.particles[bond.a].position)
+                                     - np.array(system.particles[bond.b].position)))
