@@ -124,7 +124,7 @@ def set_bonds(system, constraints=True):
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), k=0, r0=0)
     if constraints:
         constraints = hoomd.md.constrain.distance()
-        constraint.set_params(rel_tol=0.01)
+        constraints.set_params(rel_tol=0.01)
         return constraints
 
         
