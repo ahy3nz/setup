@@ -211,4 +211,4 @@ def _set_constraints(type_a, type_b, distance, system):
             system.particles[bond.b].type == type_b) or \
            (system.particles[bond.a].type == type_b and \
             system.particles[bond.b].type == type_a):
-                system.constraints.add(index_a, index_b, distance)
+                system.constraints.add(bond.a, bond.b, distance)
