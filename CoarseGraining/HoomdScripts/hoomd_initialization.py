@@ -108,7 +108,7 @@ def set_bonds(system, constraints=True):
                     k=bond_pair.force_constant, r0=bond_pair.x0)
             print("Setting bond {}-{}".format(x,y))
             if constraints:
-                _set_constraints(x, y, bond_pair.x0, constraint)
+                _set_constraints(x, y, bond_pair.x0, system)
         elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
             bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
             bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
@@ -117,7 +117,7 @@ def set_bonds(system, constraints=True):
                     k=bond_pair.force_constant, r0=bond_pair.x0)
             print("Setting bond {}-{}".format(y,x))
             if constraints:
-                _set_constraints(y, x, bond_pair.x0, constraint)
+                _set_constraints(y, x, bond_pair.x0, system)
         else:
             print("WARNING: {}-{} not found in bond parameters, setting to zero".format(x,y))
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), k=0, r0=0)
@@ -208,7 +208,7 @@ def _set_constraints(type_a, type_b, distance, system):
         """
     for bond in system.bonds:
         if (system.particles[bond.a].type == type_a and \
-            system.particles[bond.b].type == type_b) or 
+            system.particles[bond.b].type == type_b) or \
            (system.particles[bond.a].type == type_b and \
             system.particles[bond.b].type == type_a):
                 system.constraints.add(index_a, index_b, distance)
