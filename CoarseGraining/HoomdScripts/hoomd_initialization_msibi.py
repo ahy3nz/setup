@@ -40,7 +40,7 @@ FORCE_TABLE = ENERGY_TABLE/DISTANCE_TABLE
 
 # Atom types
 #atom_types=['P4', 'P3', 'Nda', 'Na', 'C2', 'C1', 'Qa', 'Q0']
-atom_types= ['E1','C2', 'C3', 'PCP', 'PCN']
+atom_types= ['W', 'E1','C2', 'C3', 'PCP', 'PCN']
 
 # FF directory
 FF_dir = '/home/yangah/Programs/setup/FF/CG/'
@@ -94,20 +94,21 @@ def set_bonds():
     bond_harmonic = hoomd.md.bond.harmonic(name="mybond")
     for x,y in itertools.product(atom_types,repeat=2):
     #for x,y in itertools.combinations_with_replacement(atom_types,2):
-        if '{}-{}'.format(x,y) in bond_parameters.index.values.tolist():
+        if '{}-{}'.format(x,y) in bond_parameters.index.values.tolist() or
+            '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
             bond_pair = bond_parameters.loc['{}-{}'.format(x,y)]
             bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
                         r0=bond_pair.x0)
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), 
                     k=bond_pair.force_constant, r0=bond_pair.x0)
             print("Setting bond {}-{}".format(x,y))
-        elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
-            bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
-            bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
-                        r0=bond_pair.x0)
-            bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), 
-                    k=bond_pair.force_constant, r0=bond_pair.x0)
-            print("Setting bond {}-{}".format(y,))
+        #elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
+        #    bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
+        #    bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
+        #                r0=bond_pair.x0)
+        #    bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), 
+        #            k=bond_pair.force_constant, r0=bond_pair.x0)
+        #    print("Setting bond {}-{}".format(y,))
 
 
         else:

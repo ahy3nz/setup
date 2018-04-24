@@ -14,4 +14,18 @@ HETATM   12  O   RES     1       0.081  -1.926  14.171  0.00  0.00           O
 HETATM   13  C   RES     1      -0.087  -0.725  14.076  0.00  0.00           C  
 HETATM   14  OA  RES     1      -0.123   0.087  15.158  0.00  0.00           O  
 HETATM   15  H   RES     1       0.001  -0.479  15.945  0.00  0.00           H  
+CONECT    1    2
+CONECT    2    3
+CONECT    3    4
+CONECT    4    5
+CONECT    5    6
+CONECT    6    7
+CONECT    7    8
+CONECT    8    9
+CONECT    9   10
+CONECT   10   11
+CONECT   11   13
+CONECT   12   13
+CONECT   13   14
+CONECT   14   15
 END                                                                             

@@ -20,4 +20,24 @@ HETATM   18  O   RES     1       0.041  -1.929  21.365  0.00  0.00           O
 HETATM   19  C   RES     1       0.029  -0.703  21.226  0.00  0.00           C  
 HETATM   20  OA  RES     1       0.016   0.038  22.374  0.00  0.00           O  
 HETATM   21  H   RES     1       0.018  -0.554  23.143  0.00  0.00           H  
+CONECT    1    2
+CONECT    2    3
+CONECT    3    4
+CONECT    4    5
+CONECT    5    6
+CONECT    6    7
+CONECT    7    8
+CONECT    8    9
+CONECT    9   10
+CONECT   10   11
+CONECT   11   12
+CONECT   12   13
+CONECT   13   14
+CONECT   14   15
+CONECT   15   16
+CONECT   16   17
+CONECT   17   19
+CONECT   18   19
+CONECT   19   20
+CONECT   20   21
 END                                                                             

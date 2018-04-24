@@ -3,7 +3,7 @@
 
 [ defaults ]
 ; nbfunc    comb-rule   gen-pairs   fudgeLJ fudgeQQ
-1   1   yes 1.0 1.0
+1   1   no 1.0 1.0
 
 #include "gromos53a6.ff/ffnonbonded.itp"
 #include "gromos53a6.ff/ffbonded.itp"
