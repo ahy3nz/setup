@@ -84,9 +84,15 @@ def set_harmonic_angles():
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
 
 
-def set_bonds():
+def set_bonds(system, constraints=True):
     """ Set all bond parameters
     Use a pandas dataframe to load in files
+
+    Parameters
+    ---------
+    system : hoomd system object
+    constraints : bool, default True
+        If True, specifyc hoomd constraints for that bond
 
 
         """
@@ -101,6 +107,8 @@ def set_bonds():
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), 
                     k=bond_pair.force_constant, r0=bond_pair.x0)
             print("Setting bond {}-{}".format(x,y))
+            if constraints:
+                _set_constraints(x, y, bond_pair.x0, constraint)
         elif '{}-{}'.format(y,x) in bond_parameters.index.values.tolist():
             bond_pair = bond_parameters.loc['{}-{}'.format(y,x)]
             bond_harmonic.bond_coeff.set(bond_pair.name, k=bond_pair.force_constant,
@@ -108,12 +116,17 @@ def set_bonds():
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), 
                     k=bond_pair.force_constant, r0=bond_pair.x0)
             print("Setting bond {}-{}".format(y,x))
-
-
+            if constraints:
+                _set_constraints(y, x, bond_pair.x0, constraint)
         else:
             print("WARNING: {}-{} not found in bond parameters, setting to zero".format(x,y))
             bond_harmonic.bond_coeff.set('{}-{}'.format(x,y), k=0, r0=0)
             bond_harmonic.bond_coeff.set('{}-{}'.format(y,x), k=0, r0=0)
+    if constraints:
+        constraints = hoomd.md.constrain.distance()
+        constraint.set_params(rel_tol=0.01)
+        return constraints
+
         
         
 def set_pairs(table_dir="lambda0", nl=None, table=None, ignore=[]):
@@ -176,3 +189,26 @@ def set_exclusions(nl=None):
     nl.reset_exclusions(exclusions = excludelist)
 
 
+def _set_constraints(type_a, type_b, distance, system):
+    """ Set bond constraints
+
+    Parameters
+    ---------
+    type_a : str
+        atomtype
+    type_b : str
+        atomtype
+    distance : float
+        Distance for constraint
+    system : hoomd system object
+
+    Returns
+    -------
+    constraint : hoomd.md.constrain.distance()
+        """
+    for bond in system.bonds:
+        if (system.particles[bond.a].type == type_a and \
+            system.particles[bond.b].type == type_b) or 
+           (system.particles[bond.a].type == type_b and \
+            system.particles[bond.b].type == type_a):
+                system.constraints.add(index_a, index_b, distance)
