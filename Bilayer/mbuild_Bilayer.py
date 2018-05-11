@@ -1,22 +1,26 @@
 import mbuild as mb
 from collections import OrderedDict
-import warnings
-import pdb
 import numpy as np
-import mdtraj as mdtraj
 import sys
 from itertools import product
 from optparse import OptionParser
 from Prototypes import *
 from scriptWriter import *
 
+from atomistic.ecer2_hairpin.ecer2 import ecer2
+from atomistic.ecer3_hairpin.ecer3 import ecer3
+from atomistic.cholesterol.chol import chol
+from atomistic.c24ffa.ffa24 import ffa24
+from atomistic.c16ffa.ffa16 import ffa16
+from atomistic.tip3p.tip3p import tip3p
+
 GMX_FF_DIR = "/raid6/homes/ahy3nz/Programs/setup/FF/gromos53a6/"
 residues = set()
 
 
-def new_make_layer(n_x = 8, n_y = 8, lipid_system_info = None, tilt_angle = 0, spacing = 0, 
-        layer_shift = 0, res_index = 0, 
-        random_z_displacement = 0, top_file = None, lipid_atom_dict = None, atom_index = 0):
+def new_make_layer(n_x=8, n_y=8, lipid_system_info=None, tilt_angle=0, spacing=0, 
+        layer_shift=0, res_index=0, 
+        random_z_displacement=0, top_file=None, lipid_atom_dict=None, atom_index=0):
     """ Generate a bilayer leaflet by laying down molecules in a 2D grid at random grid points
 
     Parameters
@@ -333,8 +337,13 @@ parser.add_option("--alc22", action="store",type="float", default = 0.0, dest = 
 parser.add_option("--alc24", action="store",type="float", default = 0.0, dest = "alc24_frac")
 parser.add_option("--ISIS", action="store",type="float", default = 0.0, dest = "ISIS_frac")
 parser.add_option("--SS", action="store",type="float", default = 0.0, dest = "SS_frac")
-parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
+#parser.add_option("--CHOL", action="store",type="float", default = 0.0, dest = "CHOL_frac")
 parser.add_option("--PMEA", action="store",type="float", default = 0.0, dest = "PMEA_frac")
+parser.add_option("--ecer2", action="store",type="float", default = 0.0, dest = "ecer2_frac")
+parser.add_option("--ecer3", action="store",type="float", default = 0.0, dest = "ecer3_frac")
+parser.add_option("--chol", action="store",type="float", default = 0.0, dest = "chol_frac")
+parser.add_option("--ffa24", action="store",type="float", default = 0.0, dest = "ffa24_frac")
+
 parser.add_option("--nowater", action="store_true", default=False, dest = "nowater")
 parser.add_option("--explicit", action ="store_true",dest="explicit")
 #parser.add_option("--water", action="store",type="float", default = 0.0, dest = "Water_frac")
@@ -383,7 +392,16 @@ lipid_system_info = [(DSPC(), np.ceil(n_lipid*options.DSPC_frac), 0.0),
                           (alc24(), np.floor(n_lipid*options.alc24_frac), -0.4),
                           (acd24(), np.floor(n_lipid*options.acd24_frac), -0.4),
                           (ISIS(), np.floor(n_lipid*options.ISIS_frac), -2.5),
-                          (CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)] 
+                          #(CHOL(), np.floor(n_lipid*options.CHOL_frac), -0.8)
+                          (ecer2(), np.floor(n_lipid*options.ecer2_frac),-0.4),
+                          (ecer3(), np.floor(n_lipid*options.ecer3_frac),-0.4),
+                          (chol(), np.floor(n_lipid*options.chol_frac), -0.8),
+                          (ffa24(), np.floor(n_lipid*options.ffa24_frac),-0.4)
+                          
+                          
+                          
+                          
+                          ] 
 
                       
 # If we called options.explicit, put it back for sum checking
@@ -412,7 +430,7 @@ top_layer, res_index, lipid_atom_dict, atom_index  = new_make_layer(n_x = n_x, n
         res_index = res_index,  random_z_displacement = random_z_displacement, 
         top_file = top_file, lipid_atom_dict = lipid_atom_dict, atom_index = atom_index)
 # Rotate bottom layer to form bilayer
-top_layer.spin(np.pi, [0, 1, 0])
+bot_layer.spin(np.pi, [0, 1, 0])
 
 # Create system class that includes top and bottom layers
 system = mb.Compound()
