@@ -1,8 +1,8 @@
 title                     = Bilayer NPT Equilibration
 ; Run parameters
 integrator                = md        ; leap-frog integrator
-nsteps                    = 500000   ; 1e-3 ps/step  * 5e5 steps = 5e2 ps 
-dt                        = 0.001     ; 1 fs
+nsteps                    = 250000   ; 2e-3 ps/step  * 2.5e5 steps = 5e2 ps 
+dt                        = 0.002     ; 1 fs
 
 ; Output control
 nstxout                   = 0       ; Every 1.0 ps

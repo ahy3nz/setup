@@ -1,8 +1,8 @@
 title                     = Bilayer NVT Equilibration
 ; Run parameters
 integrator                = md        ; leap-frog integrator
-nsteps                    = 50000     ; 1 * 50000 = 50ps
-dt                        = 0.001     ; 1 fs
+nsteps                    = 50000     ; 2 * 50000 = 100ps
+dt                        = 0.002     ; 1 fs
 
 ; Output control
 nstxout                   = 500       ; Every 1.0 ps
