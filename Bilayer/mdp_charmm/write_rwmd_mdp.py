@@ -1,46 +1,41 @@
-import os
-import pdb
 import random
 import sys
 import numpy as np
-import matplotlib
-matplotlib.use('agg')
-import matplotlib.pyplot as plt
-plt.style.use('bmh')
 
 def main():
+    # Based on how gromacs was recompiled to take longer strings, the longest
+    # time for any given step of RWMD is about 40 ns
     # First 25 ns is just the maximum range of heating
     cooling_rate = 1000 # 1 K every 1000 ps
-    tc_groups = ['DSPC', 'alc12', 'water']
-    t_pairs = [[305,575], [305,375], [305,505]]
+    tc_groups = ['DSPC',  'SOL']
+    t_pairs = [[305,395],[305,395]]
     total_cooling_time = (t_pairs[0][1] - t_pairs[0][0])*cooling_rate 
     with open("heating_phase.mdp", 'w')as f:
-        _write_body(f, ref_temp=305, n_steps=25000000, tc_groups=tc_groups)
+        _write_body(f, t_init=0, ref_temp=305, n_steps=25000000, tc_groups=tc_groups)
         times, all_temps, t_pairs = _generate_heating_phase(f, t_pairs=t_pairs, 
                 interval=5, time_anneal=25000, 
-                dtemp=40, water_thermostat_style='plateau')
+                dtemp=10, thermostat_style='plateau')
 
         _write_annealing_lines(f, times, all_temps)
 
-    
     # Cooling phase is a series of 25ns simulations
-    for i, t_start in enumerate(np.arange(25000, 25000 + total_cooling_time, 20000)):
+    for i, t_start in enumerate(np.arange(25000, 25000 + total_cooling_time, 25000)):
         print("Writing cooling_phase{}.mdp".format(i))
-        print("Temperature Pairs: {}".format(t_pairs))
+        print("Temperature Pairs: {}".format(t_pairs[0]))
         with open("cooling_phase{}.mdp".format(i),'w') as f:
-            _write_body(f, ref_temp=305, n_steps=20000000, t_init=t_start, 
+            _write_body(f, ref_temp=305, n_steps=25000000, t_init=t_start, 
                     tc_groups=tc_groups)
             times, all_temps, t_pairs = _generate_cooling_phase(t_pairs=t_pairs,
-                duration=20000, interval=5, cooling_rate=cooling_rate, 
+                duration=25000, interval=5, cooling_rate=cooling_rate, 
                 time_start=t_start, 
-                water_thermostat_style='plateau')
+                thermostat_style='plateau')
             _write_annealing_lines(f, times, all_temps)
 
 
 
 def _write_body(f, ref_temp=305, n_steps=50000000,t_init=0,tc_groups=None):
     tc_grps_string = " ".join([thing for thing in tc_groups])
-    tau_t_string = " ".join(["0.4" for _ in range(len(tc_groups))])
+    tau_t_string = " ".join(["0.1" for _ in range(len(tc_groups))])
     ref_t_string = " ".join(["{:5.0f}".format(ref_temp) for _ in range(len(tc_groups))])
     annealing_string = " ".join(["single" for _ in range(len(tc_groups))])
     f.write(""" title                       = RWMD
@@ -60,21 +55,26 @@ nstxtcout                   = 10000
 ;bond parameters
 continuation                = yes
 constraint_algorithm        = lincs
-;constraints                 = all-bonds
+constraints                 = h-bonds
 constraints                 = none
 lincs_iter                  = 1
 lincs_order                 = 4
 
 ; Neighbor searching
 cutoff-scheme               = Verlet
-ns_type                     = grid
+nstype                     = grid
 nstlist                     = 10
-rcoulomb                    = 1.4
-rvdw                        = 1.4
+vdwtype                     = cutoff
+vdw-modifier                = force-switch
+rlist                       = 1.2
+rvdw                        = 1.2
+rvdw-switch                 = 1.0
+
 
 ;Electrostatics
 coulombtype                 = PME
 pme_order                   = 4
+rcoulomb                    = 1.2
 fourierspacing              = 0.16
 
 ; Temperature coupling
@@ -86,7 +86,7 @@ ref_t                       = {ref_t_string}
 ;Pressure coupling
 pcoupl                      = Parrinello-Rahman
 pcoupltype                  = semiisotropic
-tau_p                       = 2.0           ; ps
+tau_p                       = 5.0           ; ps
 ref_p                       = 1.0 1.0          ; bar   
 compressibility             = 4.5e-5 4.5e-5
 refcoord_scaling            = com
@@ -106,9 +106,11 @@ annealing                   = {annealing_string}
 
 def _generate_heating_phase(f,t_pairs=None,
         interval=5, time_anneal=25000, final_time=50000, dtemp=20,
-        water_thermostat_style=None):
+        thermostat_style=None):
     """Generate annealing points
     f : File to write to 
+    dtemp : int
+        Temperature intervals
     t_pairs : list of pairs,
         In each pair, (low temp, high temp). Convention
         is that the first ordered pair is the DSPC and the last 
@@ -125,7 +127,7 @@ def _generate_heating_phase(f,t_pairs=None,
     times = [0]
 
     # Generate scaling factors based on temperatre pairs
-    if water_thermostat_style == 'proportional':
+    if thermostat_style == 'proportional':
         scaling_factors = np.zeros(len(t_pairs))
         for i, t_pair in enumerate(t_pairs): 
             scaling_factors[i] = (t_pairs[i][1] - t_pairs[i][0]) / \
@@ -150,12 +152,12 @@ def _generate_heating_phase(f,t_pairs=None,
             new_temp = candidate_temp
             # Adjust temperature step for each tc group
             for j, tc_group in enumerate(t_pairs):
-                if water_thermostat_style == 'proportional':
+                if thermostat_style == 'proportional':
                     primary_temp_change = new_temp - t_pairs[0][0]
                     other_temp_change = scaling_factors[j] * primary_temp_change 
                     all_temps[j, i] = tc_group[0] + other_temp_change
             
-                if water_thermostat_style == 'plateau':
+                if thermostat_style == 'plateau':
                     if candidate_temp > tc_group[1]:
                         all_temps[j,i] = tc_group[1]
                     else:
@@ -182,7 +184,7 @@ def _generate_heating_phase(f,t_pairs=None,
 def _generate_cooling_phase(time_start=25000, duration=50000, interval=5, 
         cooling_rate=500,
         t_pairs=None, 
-        water_thermostat_style=None):
+        thermostat_style=None):
     """
     Change temperatures every 5 ps
     Reduce ceiling 2 K every ns
@@ -193,7 +195,7 @@ def _generate_cooling_phase(time_start=25000, duration=50000, interval=5,
         duration of particular temperature before attempting jumpg
     cooling_rate : float
         Every `cooling_rate` ps, drop the RWMD temperature ceiling by 1 K
-    water_thermostat_style : str
+    thermostat_style : str
         Specifies how to thermstat water 
         'plateau' for water to plateau if thermostat exceeds a temperature
         'proportional' for water temp changes to be proportional to lipid temp
@@ -209,7 +211,7 @@ def _generate_cooling_phase(time_start=25000, duration=50000, interval=5,
         if t_pair[0] > t_pairs[0][0]:
             t_pairs[i][0] = t_pairs[0][0]
     
-    if water_thermostat_style == 'proportional':
+    if thermostat_style == 'proportional':
         scaling_factors = np.zeros(len(t_pairs))
         for i, t_pair in enumerate(t_pairs): 
             scaling_factors[i] = (t_pairs[i][1] - t_pairs[i][0]) / \
@@ -228,17 +230,18 @@ def _generate_cooling_phase(time_start=25000, duration=50000, interval=5,
         # If we've hit a cooling step, reduce the temperature range
         # Ensure that there is still a range of temperatures to choose from
         if time % cooling_rate == 0 and t_pairs[0][1] > t_pairs[0][0] + 1:
-            t_pairs[0][1] -= 1
+            for i, t_pair in enumerate(t_pairs):
+                t_pairs[i][1] -=1
 
         new_temp = np.random.randint(t_pairs[0][0], t_pairs[0][1])
 
         for j, tc_group in enumerate(t_pairs):
-            if water_thermostat_style == 'proportional':
+            if thermostat_style == 'proportional':
                 primary_temp_change = new_temp - t_pairs[0][0]
                 other_temp_change = scaling_factors[j] * primary_temp_change 
                 all_temps[j, i+1] = tc_group[0] + other_temp_change
         
-            if water_thermostat_style == 'plateau':
+            if thermostat_style == 'plateau':
                 if new_temp > tc_group[1]:
                     all_temps[j,i+1] = tc_group[1]
                 else:
