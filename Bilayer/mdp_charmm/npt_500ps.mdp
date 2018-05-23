@@ -44,7 +44,8 @@ tau_t                   = 1.0   1.0
 ref_t                   = 305   305   
 
 ;Pressure coupling
-pcoupl                      = Parrinello-Rahman
+;pcoupl                      = Parrinello-Rahman
+pcoupl                      = berendsen
 pcoupltype                  = semiisotropic
 tau_p                       = 10.0           ; ps
 ref_p                       = 1.0 1.0          ; bar   
