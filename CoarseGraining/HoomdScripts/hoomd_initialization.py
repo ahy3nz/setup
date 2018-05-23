@@ -43,9 +43,10 @@ FORCE_TABLE = ENERGY_TABLE/DISTANCE_TABLE
 atom_types= ['W', 'E1','C2', 'C3', 'PCP', 'PCN']
 
 # FF directory
-FF_dir = '/home/yangah/Programs/setup/FF/CG/'
-bond_parameters_file = os.path.join(FF_dir,'bond_parameters_msibi.dat')
-angle_parameters_file = os.path.join(FF_dir, 'angle_parameters_msibi.dat')
+FF_dir = '/home/yangah/Programs/McCabeGroup/cg/bonded_parameters'
+bond_parameters_file = os.path.join(FF_dir,'phospholipid_bonds.dat')
+angle_parameters_file = os.path.join(FF_dir, 'phospholipid_angles.dat')
+
 
 def get_atom_types():
     """ Return a dictionary of all atom types"""
@@ -84,7 +85,7 @@ def set_harmonic_angles():
                 harmonic_angles.angle_coeff.set('{}-{}-{}'.format(x,y,z), k=0, t0=0)
 
 
-def set_bonds(system, constraints=True):
+def set_bonds(system, constraints=False):
     """ Set all bond parameters
     Use a pandas dataframe to load in files
 
