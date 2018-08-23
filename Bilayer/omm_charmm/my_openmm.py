@@ -11,14 +11,14 @@ sim_time = 100 * u.nanoseconds
 n_steps = round(sim_time/timestep)
 
 print("Reading grofiles")
-top = pmd.load_file('compound.top',xyz='npt_273_400-500ns.gro')
+top = pmd.load_file(topfile, xyz=grofile)
 
 print("Creating system from topology")
 system = top.createSystem(nonbondedMethod=app.PME,
                             constraints=app.HBonds,
                             nonbondedCutoff=12.0*u.angstroms,
                             switchDistance=10.0*u.angstroms)
-barostat = mm.MonteCarloMembraneBarostatp(pressure, 0.0*u.bar*u.nanometer, 
+barostat = mm.MonteCarloMembraneBarostat(pressure, 0.0*u.bar*u.nanometer, 
                                       temp,
                                       mm.MonteCarloMembraneBarostat.XYIsotropic,
                                       mm.MonteCarloMembraneBarostat.ZFree,
@@ -34,12 +34,11 @@ sim = app.Simulation(top.topology, system, integrator)
 
 print("Setting context")
 sim.context.setPositions(top.positions)
-sim.reporters.append(app.StateDataReporter('thermo.log', 1000, step=True, time=True,
+sim.reporters.append(app.StateDataReporter(open('thermo.log','a'), 1000, step=True, time=True,
                                             potentialEnergy=True,
                                             temperature=True,
                                             volume=True, speed=True))
 sim.reporters.append(app.DCDReporter('trajectory.dcd', 5000))
-sim.reporters.append(app.PDBReporter('trajectory.pdb', 5000))
 sim.reporters.append(app.CheckpointReporter('trajectory.chk', 5000))
 # Load the checkpoint
 #with open('my_checkpoint.chk', 'rb') as f:
@@ -48,5 +47,5 @@ sim.reporters.append(app.CheckpointReporter('trajectory.chk', 5000))
 print("Running MD")
 sim.step(n_steps)
 
-for reporter in sim.reporters:
-    reporter.report(sim, sim.context.getState(-1))
+pdbreporter = app.PDBReporter('trajectory.pdb', 5000)
+pdbreporter.report(sim, sim.context.getState(-1))
