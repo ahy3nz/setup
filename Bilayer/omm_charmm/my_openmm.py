@@ -1,3 +1,4 @@
+import sys
 import parmed as pmd
 import simtk.openmm as mm
 import simtk.openmm.app as app
@@ -8,7 +9,9 @@ temp = 305 * u.kelvin
 pressure = 1 * u.bar
 timestep = 2.0 * u.femtoseconds
 sim_time = 100 * u.nanoseconds
-n_steps = round(sim_time/timestep)
+platform = mm.Platform.getPlatformByName('OpenCL')
+properties = {'DeviceIndex': 0}
+n_steps = int(round(sim_time/timestep))
 
 print("Reading grofiles")
 top = pmd.load_file(topfile, xyz=grofile)
@@ -30,7 +33,7 @@ integrator = mm.LangevinIntegrator(temp,
                                     timestep)
 
 print("Creating Simulation")
-sim = app.Simulation(top.topology, system, integrator)
+sim = app.Simulation(top.topology, system, integrator, platform, properties)
 
 print("Setting context")
 sim.context.setPositions(top.positions)
@@ -38,14 +41,16 @@ sim.reporters.append(app.StateDataReporter(open('thermo.log','a'), 1000, step=Tr
                                             potentialEnergy=True,
                                             temperature=True,
                                             volume=True, speed=True))
-sim.reporters.append(app.DCDReporter('trajectory.dcd', 5000))
-sim.reporters.append(app.CheckpointReporter('trajectory.chk', 5000))
+sim.reporters.append(app.DCDReporter('trajectory.dcd', 2500))
+sim.reporters.append(app.CheckpointReporter('trajectory.chk', 2500))
 # Load the checkpoint
 #with open('my_checkpoint.chk', 'rb') as f:
 #        sim.context.loadCheckpoint(f.read())
-
 print("Running MD")
-sim.step(n_steps)
+remaining_time = sim_time - sim.context.getState(-1).getTime()
+remaining_steps = int(round(remaining_time/timestep))
+
+sim.step(remaining_steps)
 
 pdbreporter = app.PDBReporter('trajectory.pdb', 5000)
 pdbreporter.report(sim, sim.context.getState(-1))
