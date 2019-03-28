@@ -1,3 +1,4 @@
+# EDIT THIS IS DEPRECATED AND BAD
 import itertools
 import os
 import sys
