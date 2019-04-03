@@ -47,7 +47,6 @@ FF_dir = '/home/yangah/Programs/McCabeGroup/cg/bonded_parameters'
 bond_parameters_file = os.path.join(FF_dir,'phospholipid_bonds.dat')
 angle_parameters_file = os.path.join(FF_dir, 'phospholipid_angles.dat')
 
-
 def get_atom_types():
     """ Return a dictionary of all atom types"""
     return atom_types
