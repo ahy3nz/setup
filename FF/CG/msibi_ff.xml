@@ -67,6 +67,43 @@
     <Angle class1="W" class2="W" class3="PCN" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="OH5" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="W" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="W" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="W" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="W" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="W" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="W" angle="1" k="1"/>
     <Angle class1="W" class2="HS" class3="HS" angle="1" k="1"/>
     <Angle class1="W" class2="HS" class3="E1" angle="1" k="1"/>
     <Angle class1="W" class2="HS" class3="C2" angle="1" k="1"/>
@@ -75,34 +112,6 @@
     <Angle class1="W" class2="HS" class3="PCN" angle="1" k="1"/>
     <Angle class1="W" class2="HS" class3="OH5" angle="1" k="1"/>
     <Angle class1="W" class2="HS" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="E1" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="C2" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="C3" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="PCP" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="PCN" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="E1" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="C2" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="C3" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="PCP" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="PCN" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="C2" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="C3" class3="C3" angle="1" k="1"/>
-    <Angle class1="W" class2="C3" class3="PCP" angle="1" k="1"/>
-    <Angle class1="W" class2="C3" class3="PCN" angle="1" k="1"/>
-    <Angle class1="W" class2="C3" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="C3" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="PCP" class3="PCP" angle="1" k="1"/>
-    <Angle class1="W" class2="PCP" class3="PCN" angle="1" k="1"/>
-    <Angle class1="W" class2="PCP" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="PCP" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="PCN" class3="PCN" angle="1" k="1"/>
-    <Angle class1="W" class2="PCN" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="W" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="W" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="HS" class2="HS" class3="HS" angle="1" k="1"/>
     <Angle class1="HS" class2="HS" class3="E1" angle="1" k="1"/>
     <Angle class1="HS" class2="HS" class3="C2" angle="1" k="1"/>
@@ -111,6 +120,44 @@
     <Angle class1="HS" class2="HS" class3="PCN" angle="1" k="1"/>
     <Angle class1="HS" class2="HS" class3="OH5" angle="1" k="1"/>
     <Angle class1="HS" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="HS" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="HS" angle="1" k="1"/>
     <Angle class1="HS" class2="E1" class3="E1" angle="1" k="1"/>
     <Angle class1="HS" class2="E1" class3="C2" angle="1" k="1"/>
     <Angle class1="HS" class2="E1" class3="C3" angle="1" k="1"/>
@@ -118,27 +165,6 @@
     <Angle class1="HS" class2="E1" class3="PCN" angle="1" k="1"/>
     <Angle class1="HS" class2="E1" class3="OH5" angle="1" k="1"/>
     <Angle class1="HS" class2="E1" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="C2" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="C3" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="PCP" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="PCN" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="OH5" angle="1" k="1"/>
-    <Angle class1="HS" class2="C2" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="C3" class3="C3" angle="1" k="1"/>
-    <Angle class1="HS" class2="C3" class3="PCP" angle="1" k="1"/>
-    <Angle class1="HS" class2="C3" class3="PCN" angle="1" k="1"/>
-    <Angle class1="HS" class2="C3" class3="OH5" angle="1" k="1"/>
-    <Angle class1="HS" class2="C3" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCP" class3="PCP" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCP" class3="PCN" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCP" class3="OH5" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCP" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCN" class3="PCN" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCN" class3="OH5" angle="1" k="1"/>
-    <Angle class1="HS" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="HS" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="HS" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="E1" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="C2" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="C3" angle="1" k="1"/>
@@ -146,81 +172,295 @@
     <Angle class1="E1" class2="E1" class3="PCN" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="OH5" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="E1" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="E1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="E1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="C2" class3="E1" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="C2" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="C3" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="PCP" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="PCN" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="OH5" angle="1" k="1"/>
     <Angle class1="E1" class2="C2" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="E1" class2="C3" class3="C3" angle="1" k="1"/>
-    <Angle class1="E1" class2="C3" class3="PCP" angle="1" k="1"/>
-    <Angle class1="E1" class2="C3" class3="PCN" angle="1" k="1"/>
-    <Angle class1="E1" class2="C3" class3="OH5" angle="1" k="1"/>
-    <Angle class1="E1" class2="C3" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCP" class3="PCP" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCP" class3="PCN" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCP" class3="OH5" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCP" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCN" class3="PCN" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCN" class3="OH5" angle="1" k="1"/>
-    <Angle class1="E1" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="E1" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="E1" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="E1" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="C2" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="C3" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="PCP" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="PCN" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="OH5" angle="1" k="1"/>
     <Angle class1="C2" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="C2" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="C2" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C2" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="C3" class3="C2" angle="1" k="1"/>
     <Angle class1="C2" class2="C3" class3="C3" angle="1" k="1"/>
     <Angle class1="C2" class2="C3" class3="PCP" angle="1" k="1"/>
     <Angle class1="C2" class2="C3" class3="PCN" angle="1" k="1"/>
     <Angle class1="C2" class2="C3" class3="OH5" angle="1" k="1"/>
     <Angle class1="C2" class2="C3" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCP" class3="PCP" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCP" class3="PCN" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCP" class3="OH5" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCP" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCN" class3="PCN" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCN" class3="OH5" angle="1" k="1"/>
-    <Angle class1="C2" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C2" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="C2" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C2" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="C3" class2="C3" class3="C3" angle="1" k="1"/>
     <Angle class1="C3" class2="C3" class3="PCP" angle="1" k="1"/>
     <Angle class1="C3" class2="C3" class3="PCN" angle="1" k="1"/>
     <Angle class1="C3" class2="C3" class3="OH5" angle="1" k="1"/>
     <Angle class1="C3" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C3" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCP" class3="C3" angle="1" k="1"/>
     <Angle class1="C3" class2="PCP" class3="PCP" angle="1" k="1"/>
     <Angle class1="C3" class2="PCP" class3="PCN" angle="1" k="1"/>
     <Angle class1="C3" class2="PCP" class3="OH5" angle="1" k="1"/>
     <Angle class1="C3" class2="PCP" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C3" class2="PCN" class3="PCN" angle="1" k="1"/>
-    <Angle class1="C3" class2="PCN" class3="OH5" angle="1" k="1"/>
-    <Angle class1="C3" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C3" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="C3" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="C3" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCP" class3="PCP" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCP" class3="PCN" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCP" class3="OH5" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCN" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCN" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="PCN" class3="PCP" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCN" class3="PCN" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCN" class3="OH5" angle="1" k="1"/>
     <Angle class1="PCP" class2="PCN" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="PCP" class2="OH5" class3="OH5" angle="1" k="1"/>
-    <Angle class1="PCP" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="PCP" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="PCN" class2="PCN" class3="PCN" angle="1" k="1"/>
     <Angle class1="PCN" class2="PCN" class3="OH5" angle="1" k="1"/>
     <Angle class1="PCN" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="OH5" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="OH5" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="OH5" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="OH5" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="OH5" class3="PCN" angle="1" k="1"/>
     <Angle class1="PCN" class2="OH5" class3="OH5" angle="1" k="1"/>
     <Angle class1="PCN" class2="OH5" class3="COOH1" angle="1" k="1"/>
-    <Angle class1="PCN" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="OH5" class2="OH5" class3="OH5" angle="1" k="1"/>
     <Angle class1="OH5" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="COOH1" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="E1" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="C2" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="C3" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="E1" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="C2" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="C3" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C2" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="C3" class2="COOH1" class3="C3" angle="1" k="1"/>
+    <Angle class1="C3" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="C3" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="C3" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="C3" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCP" class2="COOH1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="PCP" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCP" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCP" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="PCN" class2="COOH1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="PCN" class2="COOH1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="PCN" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="OH5" class2="COOH1" class3="OH5" angle="1" k="1"/>
     <Angle class1="OH5" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="COOH1" class2="COOH1" class3="COOH1" angle="1" k="1"/>
   </HarmonicAngleForce>

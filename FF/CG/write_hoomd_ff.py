@@ -23,13 +23,14 @@ for a, b in it.combinations_with_replacement(beadtypes, 2):
     new_node.attrib['k'] = "1"
 
 angles = ET.SubElement(root, "HarmonicAngleForce")
-for a, b, c in it.combinations_with_replacement(beadtypes, 3):
-    new_node = ET.SubElement(angles, "Angle")
-    new_node.attrib['class1'] = a
-    new_node.attrib['class2'] = b
-    new_node.attrib['class3'] = c
-    new_node.attrib['angle'] = "1"
-    new_node.attrib['k'] = "1"
+for b in beadtypes:
+    for a, c in it.combinations_with_replacement(beadtypes, 2):
+        new_node = ET.SubElement(angles, "Angle")
+        new_node.attrib['class1'] = a
+        new_node.attrib['class2'] = b
+        new_node.attrib['class3'] = c
+        new_node.attrib['angle'] = "1"
+        new_node.attrib['k'] = "1"
 
 nb = ET.SubElement(root, "NonbondedForce")
 nb.attrib['coulomb14scale'] = '0'
