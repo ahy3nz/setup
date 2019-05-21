@@ -2,7 +2,7 @@
 from lxml import etree as ET
 import itertools as it
 
-beadtypes = ['W', 'E1','C2', 'C3', 'PCP', 'PCN', 'OH5' , 'COOH1']
+beadtypes = ['W', 'HS', 'E1','C2', 'C3', 'PCP', 'PCN', 'OH5' , 'COOH1']
 root = ET.Element('ForceField')
 atomtypes = ET.SubElement(root, "AtomTypes")
 for bead in beadtypes:

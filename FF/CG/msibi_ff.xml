@@ -1,6 +1,7 @@
 <ForceField>
   <AtomTypes>
     <Type name="W" class="W" element="_W" mass="72" def="[_W]"/>
+    <Type name="HS" class="HS" element="_HS" mass="72" def="[_HS]"/>
     <Type name="E1" class="E1" element="_E1" mass="72" def="[_E1]"/>
     <Type name="C2" class="C2" element="_C2" mass="72" def="[_C2]"/>
     <Type name="C3" class="C3" element="_C3" mass="72" def="[_C3]"/>
@@ -11,6 +12,7 @@
   </AtomTypes>
   <HarmonicBondForce>
     <Bond class1="W" class2="W" length="1" k="1"/>
+    <Bond class1="W" class2="HS" length="1" k="1"/>
     <Bond class1="W" class2="E1" length="1" k="1"/>
     <Bond class1="W" class2="C2" length="1" k="1"/>
     <Bond class1="W" class2="C3" length="1" k="1"/>
@@ -18,6 +20,14 @@
     <Bond class1="W" class2="PCN" length="1" k="1"/>
     <Bond class1="W" class2="OH5" length="1" k="1"/>
     <Bond class1="W" class2="COOH1" length="1" k="1"/>
+    <Bond class1="HS" class2="HS" length="1" k="1"/>
+    <Bond class1="HS" class2="E1" length="1" k="1"/>
+    <Bond class1="HS" class2="C2" length="1" k="1"/>
+    <Bond class1="HS" class2="C3" length="1" k="1"/>
+    <Bond class1="HS" class2="PCP" length="1" k="1"/>
+    <Bond class1="HS" class2="PCN" length="1" k="1"/>
+    <Bond class1="HS" class2="OH5" length="1" k="1"/>
+    <Bond class1="HS" class2="COOH1" length="1" k="1"/>
     <Bond class1="E1" class2="E1" length="1" k="1"/>
     <Bond class1="E1" class2="C2" length="1" k="1"/>
     <Bond class1="E1" class2="C3" length="1" k="1"/>
@@ -49,6 +59,7 @@
   </HarmonicBondForce>
   <HarmonicAngleForce>
     <Angle class1="W" class2="W" class3="W" angle="1" k="1"/>
+    <Angle class1="W" class2="W" class3="HS" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="E1" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="C2" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="C3" angle="1" k="1"/>
@@ -56,6 +67,14 @@
     <Angle class1="W" class2="W" class3="PCN" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="OH5" angle="1" k="1"/>
     <Angle class1="W" class2="W" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="HS" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="E1" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="C2" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="C3" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="W" class2="HS" class3="COOH1" angle="1" k="1"/>
     <Angle class1="W" class2="E1" class3="E1" angle="1" k="1"/>
     <Angle class1="W" class2="E1" class3="C2" angle="1" k="1"/>
     <Angle class1="W" class2="E1" class3="C3" angle="1" k="1"/>
@@ -84,6 +103,42 @@
     <Angle class1="W" class2="OH5" class3="OH5" angle="1" k="1"/>
     <Angle class1="W" class2="OH5" class3="COOH1" angle="1" k="1"/>
     <Angle class1="W" class2="COOH1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="HS" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="HS" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="E1" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="E1" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="C2" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="C2" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="C3" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="C3" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="PCP" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCP" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="PCN" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="PCN" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="OH5" angle="1" k="1"/>
+    <Angle class1="HS" class2="OH5" class3="COOH1" angle="1" k="1"/>
+    <Angle class1="HS" class2="COOH1" class3="COOH1" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="E1" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="C2" angle="1" k="1"/>
     <Angle class1="E1" class2="E1" class3="C3" angle="1" k="1"/>
@@ -171,6 +226,7 @@
   </HarmonicAngleForce>
   <NonbondedForce coulomb14scale="0" lj14scale="0">
     <Atom type="W" charge="0" sigma="1" epsilon="1"/>
+    <Atom type="HS" charge="0" sigma="1" epsilon="1"/>
     <Atom type="E1" charge="0" sigma="1" epsilon="1"/>
     <Atom type="C2" charge="0" sigma="1" epsilon="1"/>
     <Atom type="C3" charge="0" sigma="1" epsilon="1"/>
