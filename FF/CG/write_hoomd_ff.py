@@ -10,7 +10,10 @@ for bead in beadtypes:
     new_node.attrib['name'] = bead
     new_node.attrib['class'] = bead
     new_node.attrib['element'] = "_"+bead
-    new_node.attrib['mass'] = "72"
+    if bead == 'HS':
+        new_node.attrib['mass'] = "36"
+    else:
+        new_node.attrib['mass'] = "72"
     new_node.attrib['def'] = '[_{}]'.format(bead)
     atomtypes.append(new_node)
 
