@@ -44,8 +44,8 @@ atom_types= ['W', 'HS','E1','C2', 'C3', 'PCP', 'PCN']
 
 # FF directory
 FF_dir = '/home/yangah/Programs/McCabeGroup/cg/bonded_parameters'
-bond_parameters_file = os.path.join(FF_dir,'phospholipid_bonds.dat')
-angle_parameters_file = os.path.join(FF_dir, 'phospholipid_angles.dat')
+bond_parameters_file = os.path.join(FF_dir,'phospholipid_bonds.csv')
+angle_parameters_file = os.path.join(FF_dir, 'phospholipid_angles.csv')
 
 def get_atom_types():
     """ Return a dictionary of all atom types"""
@@ -62,7 +62,7 @@ def set_harmonic_angles():
 
     """
 
-    angle_parameters = pd.read_csv(angle_parameters_file, sep='\t',index_col=0)
+    angle_parameters = pd.read_csv(angle_parameters_file, index_col=0)
     angle_parameter_labels = angle_parameters.index.values.tolist()
     harmonic_angles = hoomd.md.angle.harmonic()
     for x,z in itertools.product(atom_types,repeat=2):
@@ -96,7 +96,7 @@ def set_bonds(system, constraints=False):
 
 
         """
-    bond_parameters = pd.read_csv(bond_parameters_file, sep='\t',index_col=0)
+    bond_parameters = pd.read_csv(bond_parameters_file,index_col=0)
     bond_harmonic = hoomd.md.bond.harmonic(name="mybond")
     for x,y in itertools.product(atom_types,repeat=2):
     #for x,y in itertools.combinations_with_replacement(atom_types,2):
