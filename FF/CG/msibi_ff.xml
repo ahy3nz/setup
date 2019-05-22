@@ -1,7 +1,7 @@
 <ForceField>
   <AtomTypes>
     <Type name="W" class="W" element="_W" mass="72" def="[_W]"/>
-    <Type name="HS" class="HS" element="_HS" mass="72" def="[_HS]"/>
+    <Type name="HS" class="HS" element="_HS" mass="36" def="[_HS]"/>
     <Type name="E1" class="E1" element="_E1" mass="72" def="[_E1]"/>
     <Type name="C2" class="C2" element="_C2" mass="72" def="[_C2]"/>
     <Type name="C3" class="C3" element="_C3" mass="72" def="[_C3]"/>
