@@ -2,13 +2,13 @@
   <AtomTypes>
     <Type name="W" class="W" element="_W" mass="72" def="[_W]"/>
     <Type name="HS" class="HS" element="_HS" mass="36" def="[_HS]"/>
-    <Type name="E1" class="E1" element="_E1" mass="72" def="[_E1]"/>
-    <Type name="C2" class="C2" element="_C2" mass="72" def="[_C2]"/>
-    <Type name="C3" class="C3" element="_C3" mass="72" def="[_C3]"/>
-    <Type name="PCP" class="PCP" element="_PCP" mass="72" def="[_PCP]"/>
-    <Type name="PCN" class="PCN" element="_PCN" mass="72" def="[_PCN]"/>
-    <Type name="OH5" class="OH5" element="_OH5" mass="72" def="[_OH5]"/>
-    <Type name="COOH1" class="COOH1" element="_COOH1" mass="72" def="[_COOH1]"/>
+    <Type name="E1" class="E1" element="_E1" mass="58.04" def="[_E1]"/>
+    <Type name="C2" class="C2" element="_C2" mass="29.06" def="[_C2]"/>
+    <Type name="C3" class="C3" element="_C3" mass="42.08" def="[_C3]"/>
+    <Type name="PCP" class="PCP" element="_PCP" mass="123.03" def="[_PCP]"/>
+    <Type name="PCN" class="PCN" element="_PCN" mass="73.14" def="[_PCN]"/>
+    <Type name="OH5" class="OH5" element="_OH5" mass="17.01" def="[_OH5]"/>
+    <Type name="COOH1" class="COOH1" element="_COOH1" mass="44.00" def="[_COOH1]"/>
   </AtomTypes>
   <HarmonicBondForce>
     <Bond class1="W" class2="W" length="1" k="1"/>
