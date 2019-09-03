@@ -40,7 +40,7 @@ FORCE_TABLE = ENERGY_TABLE/DISTANCE_TABLE
 
 # Atom types
 #atom_types=['P4', 'P3', 'Nda', 'Na', 'C2', 'C1', 'Qa', 'Q0']
-atom_types= ['W', 'HS','E1','C2', 'C3', 'PCP', 'PCN']
+atom_types= ['W', 'HS','E1','C2', 'C3', 'head', 'PCP', 'PCN']
 
 # FF directory
 FF_dir = '/home/yangah/Programs/McCabeGroup/cg/bonded_parameters'
