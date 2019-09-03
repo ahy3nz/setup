@@ -1,19 +1,31 @@
 #import xml.etree.ElementTree as ET
+from collections import OrderedDict
 from lxml import etree as ET
 import itertools as it
 
-beadtypes = ['W', 'HS', 'E1','C2', 'C3', 'PCP', 'PCN', 'OH5' , 'head']
+#beadtypes = ['W', 'HS', 'E1','C2', 'C3', 'PCP', 'PCN', 'OH5' , 'head']
+beadtypes = OrderedDict()
+beadtypes['W'] = '72'
+beadtypes['HS'] = '36'
+beadtypes['E1'] = '58.04'
+beadtypes['C2'] = '29.06'
+beadtypes['C3'] = '42.08'
+beadtypes['PCP'] =  '123.03'
+beadtypes['PCN'] =  '73.14'
+beadtypes['OH5'] =  '17.01'
+beadtypes['head'] = '44.00'
 root = ET.Element('ForceField')
 atomtypes = ET.SubElement(root, "AtomTypes")
-for bead in beadtypes:
+for bead, mass in beadtypes.items():
     new_node = ET.SubElement(atomtypes, "Type")
     new_node.attrib['name'] = bead
     new_node.attrib['class'] = bead
     new_node.attrib['element'] = "_"+bead
-    if bead == 'HS':
-        new_node.attrib['mass'] = "36"
-    else:
-        new_node.attrib['mass'] = "72"
+#    if bead == 'HS':
+#        new_node.attrib['mass'] = "36"
+#    else:
+#        new_node.attrib['mass'] = "72"
+    new_node.attrib['mass'] = mass
     new_node.attrib['def'] = '[_{}]'.format(bead)
     atomtypes.append(new_node)
 
